@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function ProfileLeftSection() {
   return (
-    <div className="flex flex-col items-start justify-between w-[25%] overflow-hidden h-full">
+    <div className="flex flex-col items-start justify-between w-[25%] max-h-screen overflow-y-auto h-full">
       {/* Top Section Group */}
       <div className="flex flex-col w-full">
         {/* Profile Circle */}
