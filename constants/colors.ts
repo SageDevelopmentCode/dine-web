@@ -1,0 +1,6 @@
+export const COLORS = {
+  PAGE_BACKGROUND: '#F9F9F9',
+  HEADER_BACKGROUND: '#FFFFFF',
+  BLACK: '#010101',
+  SECONDARY_TEXT_GRAY: '#A1A1A1',
+} as const;
