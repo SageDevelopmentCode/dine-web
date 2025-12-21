@@ -5,33 +5,8 @@ import Image from "next/image";
 // Note: Add PNG files to public/assets/emojis/ with hex code filenames (e.g., 1f95c.png)
 const emojiAssets: { [key: string]: string } = {
   // Major allergen emojis
-  "1f95c": "/assets/emojis/1f95c.png", // 🥜 peanuts
-  "1f330": "/assets/emojis/1f330.png", // 🌰 tree nuts
-  "1f95b": "/assets/emojis/1f95b.png", // 🥛 dairy (milk)
-  "1f95a": "/assets/emojis/1f95a.png", // 🥚 eggs
-  "1f41f": "/assets/emojis/1f41f.png", // 🐟 fish
-  "1f990": "/assets/emojis/1f990.png", // 🦐 shellfish
-  "1f33e": "/assets/emojis/1f33e.png", // 🌾 wheat/gluten
-  "1f331": "/assets/emojis/1f331.png", // 🌱 soy (seedling)
-  "1f33b": "/assets/emojis/1f33b.png", // 🌻 sesame
-
-  // Essential UI/Utility icons
-  "2705": "/assets/emojis/2705.png", // ✅ check mark (green)
-  "274c": "/assets/emojis/274c.png", // ❌ cross mark (red)
-  "26a0": "/assets/emojis/26a0.png", // ⚠️ warning
-  "1f514": "/assets/emojis/1f514.png", // 🔔 bell (notification)
-  "1f4c6": "/assets/emojis/1f4c6.png", // 📆 calendar
-  "2b50": "/assets/emojis/2b50.png", // ⭐ star
-  "1f4a1": "/assets/emojis/1f4a1.png", // 💡 lightbulb (tip)
-  "1f389": "/assets/emojis/1f389.png", // 🎉 party/celebration
-  "1f512": "/assets/emojis/1f512.png", // 🔒 lock
-  "1f440": "/assets/emojis/1f440.png", // 👀 eyes
-
-  // Add more emojis as needed...
-  // To add a new emoji:
-  // 1. Download the PNG from https://github.com/twitter/twemoji
-  // 2. Save to public/assets/emojis/ with hex code filename (e.g., 1f600.png)
-  // 3. Add mapping here: "1f600": "/assets/emojis/1f600.png", // 😀 description
+  "1f4de": "/assets/emojis/1f4de.png", // 📞 telephone
+  "2705": "/assets/emojis/2705.png", // ✅ checkmark
 };
 
 interface TwemojiProps {
