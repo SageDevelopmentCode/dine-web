@@ -21,6 +21,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       allergensCount: initialData.allergens.length,
       emergencyContactsCount: initialData.emergencyContacts.length,
     });
+    console.log("📋 Selected Cards:", initialData.selectedCards);
+    console.log("🌾 Allergens:", initialData.allergens);
+    console.log("📞 Emergency Contacts:", initialData.emergencyContacts);
   } catch (error) {
     console.error("❌ Error fetching initial profile data:", error);
   }

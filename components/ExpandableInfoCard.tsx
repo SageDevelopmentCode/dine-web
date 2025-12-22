@@ -115,13 +115,17 @@ export default function ExpandableInfoCard({
             >
               Loading...
             </p>
-          ) : children || (
-            <p
-              className="text-sm font-merriweather"
-              style={{ color: COLORS.WHITE }}
-            >
-              {cardData ? "Data loaded! Check console." : "Content coming soon..."}
-            </p>
+          ) : (
+            children || (
+              <p
+                className="text-sm font-merriweather"
+                style={{ color: COLORS.WHITE }}
+              >
+                {cardData
+                  ? "Data loaded! Check console."
+                  : "Content coming soon..."}
+              </p>
+            )
           )}
         </div>
       </div>
