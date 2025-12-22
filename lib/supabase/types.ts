@@ -59,6 +59,16 @@ export interface UserWebProfileUrl {
   user_id: string;
 }
 
+export interface UserWebProfileSelectedCard {
+  id: string;
+  created_at: string;
+  user_web_profiles_id: string;
+  selected_card_id: string;
+  selected_subitems: any; // JSONB type
+  user_id: string;
+  is_deleted: boolean;
+}
+
 // Example database structure:
 // You can adjust these based on your actual Supabase schema
 
