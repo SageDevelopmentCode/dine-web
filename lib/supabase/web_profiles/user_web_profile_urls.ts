@@ -6,14 +6,19 @@ import {
   UserReactionSymptomWithDetails,
   UserSafetyLevelWithDetails,
   UserSafetyRuleWithDetails,
+  UserAllergen,
   SafetyLevel,
-  SafetyRule
+  SafetyRule,
+  UserEmergencyCard,
+  UserEmergencyCardContact,
+  UserEmergencyCardDoctor,
+  UserEmergencyCardHospital
 } from '@/lib/supabase/types';
 
 /**
  * Get a user's web profile by their URL slug
  * @param slug - The URL slug to lookup
- * @returns The complete user web profile data with selected cards, allergy information, and safety data
+ * @returns The complete user web profile data with selected cards, allergy information, safety data, and emergency card
  * @throws Error if the slug is not found or the profile doesn't exist
  */
 export async function getUserWebProfileBySlug(
@@ -25,6 +30,11 @@ export async function getUserWebProfileBySlug(
   reactionSymptoms: UserReactionSymptomWithDetails[];
   safetyLevels: UserSafetyLevelWithDetails[];
   safetyRules: UserSafetyRuleWithDetails[];
+  allergens: UserAllergen[];
+  emergencyCard: UserEmergencyCard | null;
+  emergencyContacts: UserEmergencyCardContact[];
+  emergencyDoctors: UserEmergencyCardDoctor[];
+  emergencyHospitals: UserEmergencyCardHospital[];
 }> {
   const supabase = await createClient();
 
@@ -129,6 +139,17 @@ export async function getUserWebProfileBySlug(
     custom_symptom_severity: rs.custom_symptom_severity,
     symptom: rs.symptom_id ? symptomsMap.get(rs.symptom_id) || null : null
   }));
+
+  // Get user allergens
+  const { data: allergensData, error: allergensError } = await supabase
+    .schema('allergies')
+    .from('user_allergens')
+    .select('*')
+    .eq('user_id', profileData.user_id);
+
+  if (allergensError) {
+    throw new Error(`Failed to fetch user allergens: ${allergensError.message}`);
+  }
 
   // Get user safety levels
   const { data: userSafetyLevelsRaw, error: userSafetyLevelsError } = await supabase
@@ -258,12 +279,76 @@ export async function getUserWebProfileBySlug(
     .filter(rule => !rule.is_deleted)  // Filter out deleted rules
     .sort((a, b) => a.sort_order - b.sort_order);  // Sort by user's order
 
+  // Get user emergency card from emergency schema
+  const { data: emergencyCardData, error: emergencyCardError } = await supabase
+    .schema('emergency')
+    .from('user_emergency_cards')
+    .select('*')
+    .eq('user_id', profileData.user_id)
+    .maybeSingle();
+
+  if (emergencyCardError) {
+    throw new Error(`Failed to fetch emergency card: ${emergencyCardError.message}`);
+  }
+
+  // Initialize empty arrays for emergency data
+  let emergencyContactsData: UserEmergencyCardContact[] = [];
+  let emergencyDoctorsData: UserEmergencyCardDoctor[] = [];
+  let emergencyHospitalsData: UserEmergencyCardHospital[] = [];
+
+  // Only fetch related data if emergency card exists
+  if (emergencyCardData) {
+    // Get emergency contacts
+    const { data: contactsData, error: contactsError } = await supabase
+      .schema('emergency')
+      .from('user_emergency_card_contacts')
+      .select('*')
+      .eq('card_id', emergencyCardData.card_id)
+      .order('priority', { ascending: true });
+
+    if (contactsError) {
+      throw new Error(`Failed to fetch emergency contacts: ${contactsError.message}`);
+    }
+
+    // Get emergency doctors
+    const { data: doctorsData, error: doctorsError } = await supabase
+      .schema('emergency')
+      .from('user_emergency_card_doctors')
+      .select('*')
+      .eq('card_id', emergencyCardData.card_id);
+
+    if (doctorsError) {
+      throw new Error(`Failed to fetch emergency doctors: ${doctorsError.message}`);
+    }
+
+    // Get emergency hospitals
+    const { data: hospitalsData, error: hospitalsError } = await supabase
+      .schema('emergency')
+      .from('user_emergency_card_hospitals')
+      .select('*')
+      .eq('card_id', emergencyCardData.card_id)
+      .order('priority', { ascending: true });
+
+    if (hospitalsError) {
+      throw new Error(`Failed to fetch emergency hospitals: ${hospitalsError.message}`);
+    }
+
+    emergencyContactsData = contactsData || [];
+    emergencyDoctorsData = doctorsData || [];
+    emergencyHospitalsData = hospitalsData || [];
+  }
+
   return {
     profile: profileData,
     selectedCards: selectedCardsData || [],
     reactionProfile: reactionProfileData,
     reactionSymptoms: reactionSymptomsData,
     safetyLevels: userSafetyLevelsData,
-    safetyRules: safetyRulesData
+    safetyRules: safetyRulesData,
+    allergens: allergensData || [],
+    emergencyCard: emergencyCardData,
+    emergencyContacts: emergencyContactsData,
+    emergencyDoctors: emergencyDoctorsData,
+    emergencyHospitals: emergencyHospitalsData
   };
 }

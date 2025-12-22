@@ -72,6 +72,16 @@ export interface UserWebProfileSelectedCard {
 // Allergies schema types
 export type SeverityLevel = 'mild' | 'moderate' | 'severe';
 
+export interface UserAllergen {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  severity: SeverityLevel;
+  user_id: string;
+  allergen: string;
+  twemoji: string;
+}
+
 export interface Symptom {
   id: string;
   created_at: string;
@@ -155,6 +165,55 @@ export interface UserSafetyRuleWithDetails extends UserSafetyRule {
   safety_rule?: SafetyRule | null;
 }
 
+// Emergency schema types
+export interface UserEmergencyCard {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  card_id: string;
+  user_id: string;
+  full_legal_name: string;
+  blood_type: string | null;
+  height_cm: number | null;
+  weight_kg: number | null;
+  date_of_birth: string | null;
+}
+
+export interface UserEmergencyCardContact {
+  id: string;
+  created_at: string;
+  card_id: string;
+  user_id: string;
+  full_name: string;
+  relationship: string;
+  phone_number: string | null;
+  is_mobile: boolean;
+  email: string | null;
+  priority: number;
+}
+
+export interface UserEmergencyCardDoctor {
+  id: string;
+  created_at: string;
+  card_id: string;
+  user_id: string;
+  doctor_type: string;
+  full_name: string;
+  practice_name: string | null;
+  phone_number: string | null;
+}
+
+export interface UserEmergencyCardHospital {
+  id: string;
+  created_at: string;
+  card_id: string;
+  user_id: string;
+  name: string;
+  address: string | null;
+  phone_number: string | null;
+  priority: number;
+}
+
 // Example database structure:
 // You can adjust these based on your actual Supabase schema
 
@@ -194,6 +253,11 @@ export interface Database {
   };
   allergies: {
     Tables: {
+      user_allergens: {
+        Row: UserAllergen;
+        Insert: Omit<UserAllergen, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<UserAllergen, 'id' | 'created_at'>>;
+      };
       symptoms: {
         Row: Symptom;
         Insert: Omit<Symptom, 'id' | 'created_at'>;
@@ -228,6 +292,30 @@ export interface Database {
         Row: UserSafetyRule;
         Insert: Omit<UserSafetyRule, 'id' | 'created_at'>;
         Update: Partial<Omit<UserSafetyRule, 'id' | 'created_at'>>;
+      };
+    };
+  };
+  emergency: {
+    Tables: {
+      user_emergency_cards: {
+        Row: UserEmergencyCard;
+        Insert: Omit<UserEmergencyCard, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<UserEmergencyCard, 'id' | 'created_at'>>;
+      };
+      user_emergency_card_contacts: {
+        Row: UserEmergencyCardContact;
+        Insert: Omit<UserEmergencyCardContact, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserEmergencyCardContact, 'id' | 'created_at'>>;
+      };
+      user_emergency_card_doctors: {
+        Row: UserEmergencyCardDoctor;
+        Insert: Omit<UserEmergencyCardDoctor, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserEmergencyCardDoctor, 'id' | 'created_at'>>;
+      };
+      user_emergency_card_hospitals: {
+        Row: UserEmergencyCardHospital;
+        Insert: Omit<UserEmergencyCardHospital, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserEmergencyCardHospital, 'id' | 'created_at'>>;
       };
     };
   };
