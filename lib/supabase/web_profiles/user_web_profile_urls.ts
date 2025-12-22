@@ -17,14 +17,16 @@ import {
   UserSweCard,
   UserSweCategoryWithDetails,
   UserSweMeasureWithDetails,
-  SweCategory,
-  SweMeasure
+  UserTravelCard,
+  UserTravelLanguage,
+  UserTravelPhraseWithDetails,
+  TravelPhraseCategory
 } from '@/lib/supabase/types';
 
 /**
  * Get a user's web profile by their URL slug
  * @param slug - The URL slug to lookup
- * @returns The complete user web profile data with selected cards, allergy information, safety data, emergency card, epipen information, and SWE data
+ * @returns The complete user web profile data with selected cards, allergy information, safety data, emergency card, epipen information, SWE data, and travel data
  * @throws Error if the slug is not found or the profile doesn't exist
  */
 export async function getUserWebProfileBySlug(
@@ -46,6 +48,10 @@ export async function getUserWebProfileBySlug(
   sweCard: UserSweCard | null;
   sweCategories: UserSweCategoryWithDetails[];
   sweMeasures: UserSweMeasureWithDetails[];
+  travelCard: UserTravelCard | null;
+  travelLanguages: UserTravelLanguage[];
+  travelPhrases: UserTravelPhraseWithDetails[];
+  travelCategories: TravelPhraseCategory[];
 }> {
   const supabase = await createClient();
 
@@ -606,6 +612,195 @@ export async function getUserWebProfileBySlug(
   const sweMeasuresData: UserSweMeasureWithDetails[] = [...mergedDefaultSweMeasures, ...customSweMeasures]
     .filter(measure => !measure.is_deleted);  // Filter out deleted measures
 
+  // Get user travel card from travel schema
+  const { data: travelCardData, error: travelCardError } = await supabase
+    .schema('travel')
+    .from('user_travel_cards')
+    .select('*')
+    .eq('user_id', profileData.user_id)
+    .maybeSingle();
+
+  if (travelCardError) {
+    throw new Error(`Failed to fetch travel card: ${travelCardError.message}`);
+  }
+
+  // Initialize empty arrays for travel data
+  let travelLanguagesData: UserTravelLanguage[] = [];
+  let travelPhrasesData: UserTravelPhraseWithDetails[] = [];
+  let travelCategoriesData: TravelPhraseCategory[] = [];
+
+  // Only fetch related data if travel card exists
+  if (travelCardData) {
+    // Get user travel languages
+    const { data: languagesData, error: languagesError } = await supabase
+      .schema('travel')
+      .from('user_travel_languages')
+      .select('*')
+      .eq('travel_card_id', travelCardData.card_id);
+
+    if (languagesError) {
+      throw new Error(`Failed to fetch travel languages: ${languagesError.message}`);
+    }
+
+    travelLanguagesData = languagesData || [];
+
+    // Get all default travel phrase categories
+    const { data: allDefaultTravelCategories, error: defaultTravelCategoriesError } = await supabase
+      .schema('travel')
+      .from('travel_phrase_categories')
+      .select('*');
+
+    if (defaultTravelCategoriesError) {
+      throw new Error(`Failed to fetch default travel categories: ${defaultTravelCategoriesError.message}`);
+    }
+
+    travelCategoriesData = allDefaultTravelCategories || [];
+
+    // Get all default travel phrases
+    const { data: allDefaultTravelPhrases, error: defaultTravelPhrasesError } = await supabase
+      .schema('travel')
+      .from('travel_phrases')
+      .select('*');
+
+    if (defaultTravelPhrasesError) {
+      throw new Error(`Failed to fetch default travel phrases: ${defaultTravelPhrasesError.message}`);
+    }
+
+    // Get user's travel phrases
+    const { data: userTravelPhrasesRaw, error: userTravelPhrasesError } = await supabase
+      .schema('travel')
+      .from('user_travel_phrases')
+      .select('*')
+      .eq('user_id', profileData.user_id);
+
+    if (userTravelPhrasesError) {
+      throw new Error(`Failed to fetch user travel phrases: ${userTravelPhrasesError.message}`);
+    }
+
+    // Create a map of default_phrase_id -> user modification for quick lookup
+    const userTravelPhrasesMap = new Map((userTravelPhrasesRaw || []).map(up => [up.default_phrase_id, up]));
+
+    // Collect all allergen_ids and contact_ids for batch fetching
+    const allAllergenIds = new Set<string>();
+    const allContactIds = new Set<string>();
+
+    (userTravelPhrasesRaw || []).forEach(phrase => {
+      (phrase.allergen_ids || []).forEach((id: string) => allAllergenIds.add(id));
+      (phrase.contact_ids || []).forEach((id: string) => allContactIds.add(id));
+    });
+
+    // Fetch all allergens needed
+    let allergensMapForTravel = new Map<string, UserAllergen>();
+    if (allAllergenIds.size > 0) {
+      const { data: allergensForTravel, error: allergensForTravelError } = await supabase
+        .schema('allergies')
+        .from('user_allergens')
+        .select('*')
+        .in('id', Array.from(allAllergenIds));
+
+      if (allergensForTravelError) {
+        throw new Error(`Failed to fetch allergens for travel: ${allergensForTravelError.message}`);
+      }
+
+      allergensMapForTravel = new Map((allergensForTravel || []).map(a => [a.id, a]));
+    }
+
+    // Fetch all contacts needed
+    let contactsMapForTravel = new Map<string, UserEmergencyCardContact>();
+    if (allContactIds.size > 0) {
+      const { data: contactsForTravel, error: contactsForTravelError } = await supabase
+        .schema('emergency')
+        .from('user_emergency_card_contacts')
+        .select('*')
+        .in('id', Array.from(allContactIds));
+
+      if (contactsForTravelError) {
+        throw new Error(`Failed to fetch contacts for travel: ${contactsForTravelError.message}`);
+      }
+
+      contactsMapForTravel = new Map((contactsForTravel || []).map(c => [c.id, c]));
+    }
+
+    // Create a map of category_id -> category for quick lookup
+    const categoriesMap = new Map((travelCategoriesData || []).map(cat => [cat.id, cat]));
+
+    // Merge: for each default phrase, check if user has modified it
+    const mergedDefaultTravelPhrases: UserTravelPhraseWithDetails[] = (allDefaultTravelPhrases || [])
+      .map((defaultPhrase) => {
+        const userModification = userTravelPhrasesMap.get(defaultPhrase.id);
+
+        if (userModification) {
+          // User has modified this phrase - resolve allergen and contact IDs
+          const resolvedAllergens = (userModification.allergen_ids || [])
+            .map((id: string) => allergensMapForTravel.get(id))
+            .filter((a: UserAllergen | undefined): a is UserAllergen => a !== undefined);
+
+          const resolvedContacts = (userModification.contact_ids || [])
+            .map((id: string) => contactsMapForTravel.get(id))
+            .filter((c: UserEmergencyCardContact | undefined): c is UserEmergencyCardContact => c !== undefined);
+
+          return {
+            id: userModification.id,
+            created_at: userModification.created_at,
+            travel_card_id: userModification.travel_card_id,
+            default_phrase_id: userModification.default_phrase_id,
+            allergen_ids: userModification.allergen_ids,
+            user_id: userModification.user_id,
+            contact_ids: userModification.contact_ids,
+            travel_phrase: defaultPhrase,
+            category: categoriesMap.get(defaultPhrase.category_id) || null,
+            allergens: resolvedAllergens,
+            contacts: resolvedContacts
+          };
+        } else {
+          // User hasn't modified this phrase, create a virtual user phrase with default values
+          return {
+            id: `default-${defaultPhrase.id}`,
+            created_at: defaultPhrase.created_at,
+            travel_card_id: travelCardData.card_id,
+            default_phrase_id: defaultPhrase.id,
+            allergen_ids: [],
+            user_id: profileData.user_id,
+            contact_ids: [],
+            travel_phrase: defaultPhrase,
+            category: categoriesMap.get(defaultPhrase.category_id) || null,
+            allergens: [],
+            contacts: []
+          };
+        }
+      });
+
+    // Get custom phrases (phrases that don't have a corresponding default phrase)
+    const customTravelPhrases: UserTravelPhraseWithDetails[] = (userTravelPhrasesRaw || [])
+      .filter(up => !up.default_phrase_id)
+      .map((customPhrase) => {
+        const resolvedAllergens = (customPhrase.allergen_ids || [])
+          .map((id: string) => allergensMapForTravel.get(id))
+          .filter((a: UserAllergen | undefined): a is UserAllergen => a !== undefined);
+
+        const resolvedContacts = (customPhrase.contact_ids || [])
+          .map((id: string) => contactsMapForTravel.get(id))
+          .filter((c: UserEmergencyCardContact | undefined): c is UserEmergencyCardContact => c !== undefined);
+
+        return {
+          id: customPhrase.id,
+          created_at: customPhrase.created_at,
+          travel_card_id: customPhrase.travel_card_id,
+          default_phrase_id: customPhrase.default_phrase_id,
+          allergen_ids: customPhrase.allergen_ids,
+          user_id: customPhrase.user_id,
+          contact_ids: customPhrase.contact_ids,
+          travel_phrase: null,
+          category: null,
+          allergens: resolvedAllergens,
+          contacts: resolvedContacts
+        };
+      });
+
+    // Combine default phrases and custom phrases
+    travelPhrasesData = [...mergedDefaultTravelPhrases, ...customTravelPhrases];
+  }
+
   return {
     profile: profileData,
     selectedCards: selectedCardsData || [],
@@ -622,6 +817,10 @@ export async function getUserWebProfileBySlug(
     epipenInstructions: epipenInstructionsData,
     sweCard: sweCardData,
     sweCategories: sweCategoriesData,
-    sweMeasures: sweMeasuresData
+    sweMeasures: sweMeasuresData,
+    travelCard: travelCardData,
+    travelLanguages: travelLanguagesData,
+    travelPhrases: travelPhrasesData,
+    travelCategories: travelCategoriesData
   };
 }

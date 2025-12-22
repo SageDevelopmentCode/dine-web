@@ -274,6 +274,58 @@ export interface UserSweMeasureWithDetails extends UserSweMeasure {
   swe_measure?: SweMeasure | null;
 }
 
+// Travel schema types
+export interface TravelPhraseCategory {
+  id: string;
+  created_at: string;
+  category_key: string;
+  category_name: string;
+}
+
+export interface TravelPhrase {
+  id: string;
+  created_at: string;
+  phrase_key: string;
+  category_id: string;
+  text: string;
+  placeholder_type: string;
+}
+
+export interface UserTravelCard {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+  card_id: string;
+  is_deleted: boolean;
+}
+
+export interface UserTravelLanguage {
+  id: string;
+  created_at: string;
+  travel_card_id: string;
+  language_code: string;
+  user_id: string;
+}
+
+export interface UserTravelPhrase {
+  id: string;
+  created_at: string;
+  travel_card_id: string;
+  default_phrase_id: string | null;
+  allergen_ids: string[];
+  user_id: string;
+  contact_ids: string[];
+}
+
+// Merged type for user travel phrases with default phrase, allergen, and contact details
+export interface UserTravelPhraseWithDetails extends UserTravelPhrase {
+  travel_phrase?: TravelPhrase | null;
+  category?: TravelPhraseCategory | null;
+  allergens?: UserAllergen[];
+  contacts?: UserEmergencyCardContact[];
+}
+
 // Emergency schema types
 export interface UserEmergencyCard {
   id: string;
@@ -473,6 +525,35 @@ export interface Database {
         Row: UserSweMeasure;
         Insert: Omit<UserSweMeasure, 'id' | 'created_at'>;
         Update: Partial<Omit<UserSweMeasure, 'id' | 'created_at'>>;
+      };
+    };
+  };
+  travel: {
+    Tables: {
+      travel_phrase_categories: {
+        Row: TravelPhraseCategory;
+        Insert: Omit<TravelPhraseCategory, 'id' | 'created_at'>;
+        Update: Partial<Omit<TravelPhraseCategory, 'id' | 'created_at'>>;
+      };
+      travel_phrases: {
+        Row: TravelPhrase;
+        Insert: Omit<TravelPhrase, 'id' | 'created_at'>;
+        Update: Partial<Omit<TravelPhrase, 'id' | 'created_at'>>;
+      };
+      user_travel_cards: {
+        Row: UserTravelCard;
+        Insert: Omit<UserTravelCard, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<UserTravelCard, 'id' | 'created_at'>>;
+      };
+      user_travel_languages: {
+        Row: UserTravelLanguage;
+        Insert: Omit<UserTravelLanguage, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserTravelLanguage, 'id' | 'created_at'>>;
+      };
+      user_travel_phrases: {
+        Row: UserTravelPhrase;
+        Insert: Omit<UserTravelPhrase, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserTravelPhrase, 'id' | 'created_at'>>;
       };
     };
   };
