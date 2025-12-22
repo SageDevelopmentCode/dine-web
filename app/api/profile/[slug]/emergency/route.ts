@@ -1,9 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import {
-  UserEmergencyCard,
-  UserEmergencyCardDoctor,
-  UserEmergencyCardHospital,
-} from '@/lib/supabase/types';
+import { getEmergencyCardData } from '@/lib/supabase/emergency/get_emergency_card_data';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -20,55 +16,38 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get user emergency card
-    const { data: emergencyCardData, error: emergencyCardError } = await supabase
+    // First, get the card_id for this user
+    const { data: emergencyCardLookup, error: lookupError } = await supabase
       .schema('emergency')
       .from('user_emergency_cards')
-      .select('*')
+      .select('card_id')
       .eq('user_id', userId)
       .maybeSingle();
 
-    if (emergencyCardError) {
-      throw new Error(`Failed to fetch emergency card: ${emergencyCardError.message}`);
+    if (lookupError) {
+      throw new Error(`Failed to lookup emergency card: ${lookupError.message}`);
     }
 
-    // Initialize empty arrays
-    let emergencyDoctorsData: UserEmergencyCardDoctor[] = [];
-    let emergencyHospitalsData: UserEmergencyCardHospital[] = [];
-
-    // Only fetch related data if emergency card exists
-    if (emergencyCardData) {
-      // Get emergency doctors
-      const { data: doctorsData, error: doctorsError } = await supabase
-        .schema('emergency')
-        .from('user_emergency_card_doctors')
-        .select('*')
-        .eq('card_id', emergencyCardData.card_id);
-
-      if (doctorsError) {
-        throw new Error(`Failed to fetch emergency doctors: ${doctorsError.message}`);
-      }
-
-      // Get emergency hospitals
-      const { data: hospitalsData, error: hospitalsError } = await supabase
-        .schema('emergency')
-        .from('user_emergency_card_hospitals')
-        .select('*')
-        .eq('card_id', emergencyCardData.card_id)
-        .order('priority', { ascending: true });
-
-      if (hospitalsError) {
-        throw new Error(`Failed to fetch emergency hospitals: ${hospitalsError.message}`);
-      }
-
-      emergencyDoctorsData = doctorsData || [];
-      emergencyHospitalsData = hospitalsData || [];
+    // If no card exists, return empty data
+    if (!emergencyCardLookup) {
+      return NextResponse.json({
+        emergencyCard: null,
+        emergencyContacts: [],
+        emergencyDoctors: [],
+        emergencyHospitals: [],
+      });
     }
+
+    // Use RPC to fetch all related data in a single call
+    const { card, contacts, doctors, hospitals } = await getEmergencyCardData(
+      emergencyCardLookup.card_id
+    );
 
     return NextResponse.json({
-      emergencyCard: emergencyCardData,
-      emergencyDoctors: emergencyDoctorsData,
-      emergencyHospitals: emergencyHospitalsData,
+      emergencyCard: card,
+      emergencyContacts: contacts,
+      emergencyDoctors: doctors,
+      emergencyHospitals: hospitals,
     });
   } catch (error) {
     console.error('Error fetching emergency data:', error);
