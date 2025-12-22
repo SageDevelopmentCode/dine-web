@@ -4,6 +4,24 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { COLORS } from "@/constants/colors";
+import type {
+  UserReactionProfile,
+  UserReactionSymptomWithDetails,
+  UserSafetyLevelWithDetails,
+  UserSafetyRuleWithDetails,
+  UserEmergencyCard,
+  UserEmergencyCardDoctor,
+  UserEmergencyCardHospital,
+  UserEpipenCard,
+  UserEpipenInstructionWithDetails,
+  UserSweCard,
+  UserSweCategoryWithDetails,
+  UserSweMeasureWithDetails,
+  UserTravelCard,
+  UserTravelLanguage,
+  UserTravelPhraseWithDetails,
+  TravelPhraseCategory,
+} from "@/lib/supabase/types";
 
 interface ExpandableInfoCardProps {
   icon: string;
@@ -15,6 +33,34 @@ interface ExpandableInfoCardProps {
   cardType?: "food-allergies" | "emergency" | "epipen" | "swe" | "travel";
 }
 
+type CardDataType =
+  | {
+      reactionProfile: UserReactionProfile | null;
+      reactionSymptoms: UserReactionSymptomWithDetails[];
+      safetyLevels: UserSafetyLevelWithDetails[];
+      safetyRules: UserSafetyRuleWithDetails[];
+    }
+  | {
+      emergencyCard: UserEmergencyCard | null;
+      emergencyDoctors: UserEmergencyCardDoctor[];
+      emergencyHospitals: UserEmergencyCardHospital[];
+    }
+  | {
+      epipenCard: UserEpipenCard | null;
+      epipenInstructions: UserEpipenInstructionWithDetails[];
+    }
+  | {
+      sweCard: UserSweCard | null;
+      sweCategories: UserSweCategoryWithDetails[];
+      sweMeasures: UserSweMeasureWithDetails[];
+    }
+  | {
+      travelCard: UserTravelCard | null;
+      travelLanguages: UserTravelLanguage[];
+      travelPhrases: UserTravelPhraseWithDetails[];
+      travelCategories: TravelPhraseCategory[];
+    };
+
 export default function ExpandableInfoCard({
   icon,
   title,
@@ -25,7 +71,7 @@ export default function ExpandableInfoCard({
   cardType,
 }: ExpandableInfoCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [cardData, setCardData] = useState<any>(null);
+  const [cardData, setCardData] = useState<CardDataType | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
