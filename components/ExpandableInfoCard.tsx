@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { COLORS } from "@/constants/colors";
@@ -11,6 +11,8 @@ interface ExpandableInfoCardProps {
   description: string;
   backgroundColor: string;
   children?: React.ReactNode;
+  slug?: string;
+  cardType?: "food-allergies" | "emergency" | "epipen" | "swe" | "travel";
 }
 
 export default function ExpandableInfoCard({
@@ -19,8 +21,39 @@ export default function ExpandableInfoCard({
   description,
   backgroundColor,
   children,
+  slug,
+  cardType,
 }: ExpandableInfoCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [cardData, setCardData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // Only fetch data when card is expanded and we have a cardType and slug
+    if (isExpanded && cardType && slug && !cardData && !isLoading) {
+      const fetchCardData = async () => {
+        setIsLoading(true);
+        try {
+          console.log(`🔄 Fetching ${cardType} data...`);
+          const response = await fetch(`/api/profile/${slug}/${cardType}`);
+
+          if (!response.ok) {
+            throw new Error(`Failed to fetch ${cardType} data`);
+          }
+
+          const data = await response.json();
+          setCardData(data);
+          console.log(`✅ ${cardType} data loaded:`, data);
+        } catch (error) {
+          console.error(`❌ Error fetching ${cardType} data:`, error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchCardData();
+    }
+  }, [isExpanded, cardType, slug, cardData, isLoading]);
 
   return (
     <div
@@ -75,12 +108,19 @@ export default function ExpandableInfoCard({
         }`}
       >
         <div className="px-6 pb-6">
-          {children || (
+          {isLoading ? (
             <p
               className="text-sm font-merriweather"
               style={{ color: COLORS.WHITE }}
             >
-              Content coming soon...
+              Loading...
+            </p>
+          ) : children || (
+            <p
+              className="text-sm font-merriweather"
+              style={{ color: COLORS.WHITE }}
+            >
+              {cardData ? "Data loaded! Check console." : "Content coming soon..."}
             </p>
           )}
         </div>
