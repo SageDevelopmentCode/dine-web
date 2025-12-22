@@ -13,13 +13,18 @@ import {
   UserEmergencyCardDoctor,
   UserEmergencyCardHospital,
   UserEpipenCard,
-  UserEpipenInstructionWithDetails
+  UserEpipenInstructionWithDetails,
+  UserSweCard,
+  UserSweCategoryWithDetails,
+  UserSweMeasureWithDetails,
+  SweCategory,
+  SweMeasure
 } from '@/lib/supabase/types';
 
 /**
  * Get a user's web profile by their URL slug
  * @param slug - The URL slug to lookup
- * @returns The complete user web profile data with selected cards, allergy information, safety data, emergency card, and epipen information
+ * @returns The complete user web profile data with selected cards, allergy information, safety data, emergency card, epipen information, and SWE data
  * @throws Error if the slug is not found or the profile doesn't exist
  */
 export async function getUserWebProfileBySlug(
@@ -38,6 +43,9 @@ export async function getUserWebProfileBySlug(
   emergencyHospitals: UserEmergencyCardHospital[];
   epipenCard: UserEpipenCard | null;
   epipenInstructions: UserEpipenInstructionWithDetails[];
+  sweCard: UserSweCard | null;
+  sweCategories: UserSweCategoryWithDetails[];
+  sweMeasures: UserSweMeasureWithDetails[];
 }> {
   const supabase = await createClient();
 
@@ -432,6 +440,172 @@ export async function getUserWebProfileBySlug(
     .filter(instruction => !instruction.is_deleted)  // Filter out deleted instructions
     .sort((a, b) => a.sort_order - b.sort_order);  // Sort by user's order
 
+  // Get user SWE card from swe schema
+  const { data: sweCardData, error: sweCardError } = await supabase
+    .schema('swe')
+    .from('user_swe_cards')
+    .select('*')
+    .eq('user_id', profileData.user_id)
+    .maybeSingle();
+
+  if (sweCardError) {
+    throw new Error(`Failed to fetch SWE card: ${sweCardError.message}`);
+  }
+
+  // Get all default SWE categories
+  const { data: allDefaultSweCategories, error: defaultSweCategoriesError } = await supabase
+    .schema('swe')
+    .from('swe_categories')
+    .select('*');
+
+  if (defaultSweCategoriesError) {
+    throw new Error(`Failed to fetch default SWE categories: ${defaultSweCategoriesError.message}`);
+  }
+
+  // Get user's modified/deleted SWE categories
+  const { data: userSweCategoriesRaw, error: userSweCategoriesError } = await supabase
+    .schema('swe')
+    .from('user_swe_categories')
+    .select('*')
+    .eq('user_id', profileData.user_id);
+
+  if (userSweCategoriesError) {
+    throw new Error(`Failed to fetch user SWE categories: ${userSweCategoriesError.message}`);
+  }
+
+  // Create a map of default_category_id -> user modification for quick lookup
+  const userSweCategoriesMap = new Map((userSweCategoriesRaw || []).map(uc => [uc.default_category_id, uc]));
+
+  // Merge: for each default category, check if user has modified/deleted it
+  const mergedDefaultSweCategories: UserSweCategoryWithDetails[] = (allDefaultSweCategories || [])
+    .map((defaultCategory) => {
+      const userModification = userSweCategoriesMap.get(defaultCategory.id);
+
+      if (userModification) {
+        // User has modified this category
+        return {
+          id: userModification.id,
+          created_at: userModification.created_at,
+          user_id: userModification.user_id,
+          default_category_id: userModification.default_category_id,
+          custom_category_name: userModification.custom_category_name,
+          is_deleted: userModification.is_deleted,
+          swe_card_id: userModification.swe_card_id,
+          swe_category: defaultCategory
+        };
+      } else {
+        // User hasn't modified this category, create a virtual user category with default values
+        return {
+          id: `default-${defaultCategory.id}`,
+          created_at: defaultCategory.created_at,
+          user_id: profileData.user_id,
+          default_category_id: defaultCategory.id,
+          custom_category_name: null,
+          is_deleted: false,
+          swe_card_id: sweCardData?.card_id || '',
+          swe_category: defaultCategory
+        };
+      }
+    });
+
+  // Get custom categories (categories that don't have a corresponding default category)
+  const customSweCategories: UserSweCategoryWithDetails[] = (userSweCategoriesRaw || [])
+    .filter(uc => !uc.default_category_id)
+    .map((customCategory) => ({
+      id: customCategory.id,
+      created_at: customCategory.created_at,
+      user_id: customCategory.user_id,
+      default_category_id: customCategory.default_category_id,
+      custom_category_name: customCategory.custom_category_name,
+      is_deleted: customCategory.is_deleted,
+      swe_card_id: customCategory.swe_card_id,
+      swe_category: null
+    }));
+
+  // Combine default categories and custom categories, then filter deleted
+  const sweCategoriesData: UserSweCategoryWithDetails[] = [...mergedDefaultSweCategories, ...customSweCategories]
+    .filter(category => !category.is_deleted);  // Filter out deleted categories
+
+  // Get all default SWE measures
+  const { data: allDefaultSweMeasures, error: defaultSweMeasuresError } = await supabase
+    .schema('swe')
+    .from('swe_measures')
+    .select('*');
+
+  if (defaultSweMeasuresError) {
+    throw new Error(`Failed to fetch default SWE measures: ${defaultSweMeasuresError.message}`);
+  }
+
+  // Get user's modified/deleted SWE measures
+  const { data: userSweMeasuresRaw, error: userSweMeasuresError } = await supabase
+    .schema('swe')
+    .from('user_swe_measures')
+    .select('*')
+    .eq('user_id', profileData.user_id);
+
+  if (userSweMeasuresError) {
+    throw new Error(`Failed to fetch user SWE measures: ${userSweMeasuresError.message}`);
+  }
+
+  // Create a map of instruction_key -> user modification for quick lookup
+  const userSweMeasuresMap = new Map((userSweMeasuresRaw || []).map(um => [um.instruction_key, um]));
+
+  // Merge: for each default measure, check if user has modified/deleted it
+  const mergedDefaultSweMeasures: UserSweMeasureWithDetails[] = (allDefaultSweMeasures || [])
+    .map((defaultMeasure) => {
+      const userModification = userSweMeasuresMap.get(defaultMeasure.instruction_key);
+
+      if (userModification) {
+        // User has modified this measure
+        return {
+          id: userModification.id,
+          created_at: userModification.created_at,
+          user_category_id: userModification.user_category_id,
+          instruction_text: userModification.instruction_text,
+          is_deleted: userModification.is_deleted,
+          is_custom: userModification.is_custom,
+          user_id: userModification.user_id,
+          swe_card_id: userModification.swe_card_id,
+          instruction_key: userModification.instruction_key,
+          swe_measure: defaultMeasure
+        };
+      } else {
+        // User hasn't modified this measure, create a virtual user measure with default values
+        return {
+          id: `default-${defaultMeasure.id}`,
+          created_at: defaultMeasure.created_at,
+          user_category_id: defaultMeasure.category_id,
+          instruction_text: defaultMeasure.instruction_text,
+          is_deleted: false,
+          is_custom: false,
+          user_id: profileData.user_id,
+          swe_card_id: sweCardData?.card_id || '',
+          instruction_key: defaultMeasure.instruction_key,
+          swe_measure: defaultMeasure
+        };
+      }
+    });
+
+  // Get custom measures (measures that don't have a corresponding default measure)
+  const customSweMeasures: UserSweMeasureWithDetails[] = (userSweMeasuresRaw || [])
+    .filter(um => um.instruction_key.startsWith('custom-'))
+    .map((customMeasure) => ({
+      id: customMeasure.id,
+      created_at: customMeasure.created_at,
+      user_category_id: customMeasure.user_category_id,
+      instruction_text: customMeasure.instruction_text,
+      is_deleted: customMeasure.is_deleted,
+      is_custom: customMeasure.is_custom,
+      user_id: customMeasure.user_id,
+      swe_card_id: customMeasure.swe_card_id,
+      instruction_key: customMeasure.instruction_key,
+      swe_measure: null
+    }));
+
+  // Combine default measures and custom measures, then filter deleted
+  const sweMeasuresData: UserSweMeasureWithDetails[] = [...mergedDefaultSweMeasures, ...customSweMeasures]
+    .filter(measure => !measure.is_deleted);  // Filter out deleted measures
+
   return {
     profile: profileData,
     selectedCards: selectedCardsData || [],
@@ -445,6 +619,9 @@ export async function getUserWebProfileBySlug(
     emergencyDoctors: emergencyDoctorsData,
     emergencyHospitals: emergencyHospitalsData,
     epipenCard: epipenCardData,
-    epipenInstructions: epipenInstructionsData
+    epipenInstructions: epipenInstructionsData,
+    sweCard: sweCardData,
+    sweCategories: sweCategoriesData,
+    sweMeasures: sweMeasuresData
   };
 }

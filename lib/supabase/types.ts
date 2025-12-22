@@ -217,6 +217,63 @@ export interface UserEpipenInstructionWithDetails extends UserEpipenInstruction 
   epipen_instruction?: EpipenInstruction | null;
 }
 
+// SWE (Safe Work Environment) schema types
+export interface SweCategory {
+  id: string;
+  created_at: string;
+  category_name: string;
+}
+
+export interface SweMeasure {
+  id: string;
+  created_at: string;
+  category_id: string;
+  instruction_key: string;
+  instruction_text: string;
+}
+
+export interface UserSweCard {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+  card_id: string;
+  notes: string | null;
+  is_deleted: boolean;
+}
+
+export interface UserSweCategory {
+  id: string;
+  created_at: string;
+  user_id: string;
+  default_category_id: string | null;
+  custom_category_name: string | null;
+  is_deleted: boolean;
+  swe_card_id: string;
+}
+
+export interface UserSweMeasure {
+  id: string;
+  created_at: string;
+  user_category_id: string;
+  instruction_text: string;
+  is_deleted: boolean;
+  is_custom: boolean;
+  user_id: string;
+  swe_card_id: string;
+  instruction_key: string;
+}
+
+// Merged type for user SWE categories with default category details
+export interface UserSweCategoryWithDetails extends UserSweCategory {
+  swe_category?: SweCategory | null;
+}
+
+// Merged type for user SWE measures with default measure details
+export interface UserSweMeasureWithDetails extends UserSweMeasure {
+  swe_measure?: SweMeasure | null;
+}
+
 // Emergency schema types
 export interface UserEmergencyCard {
   id: string;
@@ -387,6 +444,35 @@ export interface Database {
         Row: UserEpipenInstruction;
         Insert: Omit<UserEpipenInstruction, 'id' | 'created_at'>;
         Update: Partial<Omit<UserEpipenInstruction, 'id' | 'created_at'>>;
+      };
+    };
+  };
+  swe: {
+    Tables: {
+      swe_categories: {
+        Row: SweCategory;
+        Insert: Omit<SweCategory, 'id' | 'created_at'>;
+        Update: Partial<Omit<SweCategory, 'id' | 'created_at'>>;
+      };
+      swe_measures: {
+        Row: SweMeasure;
+        Insert: Omit<SweMeasure, 'id' | 'created_at'>;
+        Update: Partial<Omit<SweMeasure, 'id' | 'created_at'>>;
+      };
+      user_swe_cards: {
+        Row: UserSweCard;
+        Insert: Omit<UserSweCard, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<UserSweCard, 'id' | 'created_at'>>;
+      };
+      user_swe_categories: {
+        Row: UserSweCategory;
+        Insert: Omit<UserSweCategory, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserSweCategory, 'id' | 'created_at'>>;
+      };
+      user_swe_measures: {
+        Row: UserSweMeasure;
+        Insert: Omit<UserSweMeasure, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserSweMeasure, 'id' | 'created_at'>>;
       };
     };
   };
