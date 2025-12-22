@@ -558,3 +558,10 @@ export interface Database {
     };
   };
 }
+
+export type FoodAllergiesData = {
+  reactionProfile: UserReactionProfile | null;
+  reactionSymptoms: UserReactionSymptomWithDetails[];
+  safetyLevels: UserSafetyLevelWithDetails[];
+  safetyRules: UserSafetyRuleWithDetails[];
+};

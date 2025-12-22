@@ -25,7 +25,7 @@ export async function getInitialProfileData(
   const supabase = await createClient();
 
   // Call the RPC function that fetches all data in a single database round-trip
-  const { data, error } = await supabase.rpc('get_initial_profile_data', {
+  const { data, error } = await (supabase.rpc as any)('get_initial_profile_data', {
     profile_slug: slug,
   });
 
