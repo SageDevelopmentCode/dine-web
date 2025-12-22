@@ -107,6 +107,54 @@ export interface UserReactionSymptomWithDetails extends UserReactionSymptom {
   symptom?: Symptom | null;
 }
 
+export interface SafetyLevel {
+  id: string;
+  created_at: string;
+  name: string;
+}
+
+export interface UserSafetyLevel {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  safety_level_id: string;
+  is_custom: boolean;
+  user_id: string;
+}
+
+export interface SafetyRule {
+  id: string;
+  created_at: string;
+  safety_level_id: string;
+  rule_key: string;
+  rule_text: string;
+  sort_order: number;
+  icon_type: string;
+}
+
+export interface UserSafetyRule {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+  user_safety_level_id: string;
+  sort_order: number;
+  rule_text: string;
+  rule_key: string;
+  is_deleted: boolean;
+  icon_type: string;
+}
+
+// Merged type for user safety levels with safety level details
+export interface UserSafetyLevelWithDetails extends UserSafetyLevel {
+  safety_level?: SafetyLevel | null;
+}
+
+// Merged type for user safety rules with safety rule details
+export interface UserSafetyRuleWithDetails extends UserSafetyRule {
+  safety_rule?: SafetyRule | null;
+}
+
 // Example database structure:
 // You can adjust these based on your actual Supabase schema
 
@@ -160,6 +208,26 @@ export interface Database {
         Row: UserReactionSymptom;
         Insert: Omit<UserReactionSymptom, 'id' | 'created_at'>;
         Update: Partial<Omit<UserReactionSymptom, 'id' | 'created_at'>>;
+      };
+      safety_levels: {
+        Row: SafetyLevel;
+        Insert: Omit<SafetyLevel, 'id' | 'created_at'>;
+        Update: Partial<Omit<SafetyLevel, 'id' | 'created_at'>>;
+      };
+      user_safety_levels: {
+        Row: UserSafetyLevel;
+        Insert: Omit<UserSafetyLevel, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserSafetyLevel, 'id' | 'created_at'>>;
+      };
+      safety_rules: {
+        Row: SafetyRule;
+        Insert: Omit<SafetyRule, 'id' | 'created_at'>;
+        Update: Partial<Omit<SafetyRule, 'id' | 'created_at'>>;
+      };
+      user_safety_rules: {
+        Row: UserSafetyRule;
+        Insert: Omit<UserSafetyRule, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserSafetyRule, 'id' | 'created_at'>>;
       };
     };
   };

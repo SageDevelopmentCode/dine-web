@@ -3,13 +3,17 @@ import {
   UserWebProfile,
   UserWebProfileSelectedCard,
   UserReactionProfile,
-  UserReactionSymptomWithDetails
+  UserReactionSymptomWithDetails,
+  UserSafetyLevelWithDetails,
+  UserSafetyRuleWithDetails,
+  SafetyLevel,
+  SafetyRule
 } from '@/lib/supabase/types';
 
 /**
  * Get a user's web profile by their URL slug
  * @param slug - The URL slug to lookup
- * @returns The complete user web profile data with selected cards and allergy information
+ * @returns The complete user web profile data with selected cards, allergy information, and safety data
  * @throws Error if the slug is not found or the profile doesn't exist
  */
 export async function getUserWebProfileBySlug(
@@ -19,6 +23,8 @@ export async function getUserWebProfileBySlug(
   selectedCards: UserWebProfileSelectedCard[];
   reactionProfile: UserReactionProfile | null;
   reactionSymptoms: UserReactionSymptomWithDetails[];
+  safetyLevels: UserSafetyLevelWithDetails[];
+  safetyRules: UserSafetyRuleWithDetails[];
 }> {
   const supabase = await createClient();
 
@@ -124,10 +130,140 @@ export async function getUserWebProfileBySlug(
     symptom: rs.symptom_id ? symptomsMap.get(rs.symptom_id) || null : null
   }));
 
+  // Get user safety levels
+  const { data: userSafetyLevelsRaw, error: userSafetyLevelsError } = await supabase
+    .schema('allergies')
+    .from('user_safety_levels')
+    .select('*')
+    .eq('user_id', profileData.user_id);
+
+  if (userSafetyLevelsError) {
+    throw new Error(`Failed to fetch user safety levels: ${userSafetyLevelsError.message}`);
+  }
+
+  // Get unique safety_level_ids for non-custom levels
+  const safetyLevelIds = (userSafetyLevelsRaw || [])
+    .filter(usl => !usl.is_custom && usl.safety_level_id)
+    .map(usl => usl.safety_level_id);
+
+  // Fetch default safety levels
+  let safetyLevelsMap = new Map<string, SafetyLevel>();
+  if (safetyLevelIds.length > 0) {
+    const { data: safetyLevelsData, error: safetyLevelsError } = await supabase
+      .schema('allergies')
+      .from('safety_levels')
+      .select('*')
+      .in('id', safetyLevelIds);
+
+    if (safetyLevelsError) {
+      throw new Error(`Failed to fetch safety levels: ${safetyLevelsError.message}`);
+    }
+
+    safetyLevelsMap = new Map((safetyLevelsData || []).map(sl => [sl.id, sl]));
+  }
+
+  // Merge user safety levels with default data
+  const userSafetyLevelsData: UserSafetyLevelWithDetails[] = (userSafetyLevelsRaw || []).map((usl) => ({
+    id: usl.id,
+    created_at: usl.created_at,
+    updated_at: usl.updated_at,
+    safety_level_id: usl.safety_level_id,
+    is_custom: usl.is_custom,
+    user_id: usl.user_id,
+    safety_level: usl.safety_level_id ? safetyLevelsMap.get(usl.safety_level_id) || null : null
+  }));
+
+  // Get all default safety rules
+  const { data: allDefaultRules, error: defaultRulesError } = await supabase
+    .schema('allergies')
+    .from('safety_rules')
+    .select('*')
+    .order('sort_order');
+
+  if (defaultRulesError) {
+    throw new Error(`Failed to fetch default safety rules: ${defaultRulesError.message}`);
+  }
+
+  // Get user's modified/deleted rules
+  const { data: userSafetyRulesRaw, error: userSafetyRulesError } = await supabase
+    .schema('allergies')
+    .from('user_safety_rules')
+    .select('*')
+    .eq('user_id', profileData.user_id);
+
+  if (userSafetyRulesError) {
+    throw new Error(`Failed to fetch user safety rules: ${userSafetyRulesError.message}`);
+  }
+
+  // Create a map of rule_key -> user modification for quick lookup
+  const userRulesMap = new Map((userSafetyRulesRaw || []).map(ur => [ur.rule_key, ur]));
+
+  // Merge: for each default rule, check if user has modified/deleted it
+  const mergedDefaultRules: UserSafetyRuleWithDetails[] = (allDefaultRules || [])
+    .map((defaultRule) => {
+      const userModification = userRulesMap.get(defaultRule.rule_key);
+
+      if (userModification) {
+        // User has modified this rule
+        return {
+          id: userModification.id,
+          created_at: userModification.created_at,
+          updated_at: userModification.updated_at,
+          user_id: userModification.user_id,
+          user_safety_level_id: userModification.user_safety_level_id,
+          sort_order: userModification.sort_order,
+          rule_text: userModification.rule_text,
+          rule_key: userModification.rule_key,
+          is_deleted: userModification.is_deleted,
+          icon_type: userModification.icon_type,
+          safety_rule: defaultRule
+        };
+      } else {
+        // User hasn't modified this rule, create a virtual user rule with default values
+        return {
+          id: `default-${defaultRule.id}`,
+          created_at: defaultRule.created_at,
+          updated_at: defaultRule.created_at,
+          user_id: profileData.user_id,
+          user_safety_level_id: defaultRule.safety_level_id,
+          sort_order: defaultRule.sort_order,
+          rule_text: defaultRule.rule_text,
+          rule_key: defaultRule.rule_key,
+          is_deleted: false,
+          icon_type: defaultRule.icon_type,
+          safety_rule: defaultRule
+        };
+      }
+    });
+
+  // Get custom rules (rules that don't have a corresponding default rule)
+  const customRules: UserSafetyRuleWithDetails[] = (userSafetyRulesRaw || [])
+    .filter(ur => ur.rule_key.startsWith('custom_'))
+    .map((customRule) => ({
+      id: customRule.id,
+      created_at: customRule.created_at,
+      updated_at: customRule.updated_at,
+      user_id: customRule.user_id,
+      user_safety_level_id: customRule.user_safety_level_id,
+      sort_order: customRule.sort_order,
+      rule_text: customRule.rule_text,
+      rule_key: customRule.rule_key,
+      is_deleted: customRule.is_deleted,
+      icon_type: customRule.icon_type,
+      safety_rule: null
+    }));
+
+  // Combine default rules and custom rules, then filter and sort
+  const safetyRulesData: UserSafetyRuleWithDetails[] = [...mergedDefaultRules, ...customRules]
+    .filter(rule => !rule.is_deleted)  // Filter out deleted rules
+    .sort((a, b) => a.sort_order - b.sort_order);  // Sort by user's order
+
   return {
     profile: profileData,
     selectedCards: selectedCardsData || [],
     reactionProfile: reactionProfileData,
-    reactionSymptoms: reactionSymptomsData
+    reactionSymptoms: reactionSymptomsData,
+    safetyLevels: userSafetyLevelsData,
+    safetyRules: safetyRulesData
   };
 }
