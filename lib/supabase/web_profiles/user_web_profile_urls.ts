@@ -636,7 +636,7 @@ export async function getUserWebProfileBySlug(
       .schema('travel')
       .from('user_travel_languages')
       .select('*')
-      .eq('travel_card_id', travelCardData.card_id);
+      .eq('travel_card_id', travelCardData.id);
 
     if (languagesError) {
       throw new Error(`Failed to fetch travel languages: ${languagesError.message}`);
