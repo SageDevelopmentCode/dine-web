@@ -8,17 +8,18 @@ import {
   UserSafetyRuleWithDetails,
   UserAllergen,
   SafetyLevel,
-  SafetyRule,
   UserEmergencyCard,
   UserEmergencyCardContact,
   UserEmergencyCardDoctor,
-  UserEmergencyCardHospital
+  UserEmergencyCardHospital,
+  UserEpipenCard,
+  UserEpipenInstructionWithDetails
 } from '@/lib/supabase/types';
 
 /**
  * Get a user's web profile by their URL slug
  * @param slug - The URL slug to lookup
- * @returns The complete user web profile data with selected cards, allergy information, safety data, and emergency card
+ * @returns The complete user web profile data with selected cards, allergy information, safety data, emergency card, and epipen information
  * @throws Error if the slug is not found or the profile doesn't exist
  */
 export async function getUserWebProfileBySlug(
@@ -35,6 +36,8 @@ export async function getUserWebProfileBySlug(
   emergencyContacts: UserEmergencyCardContact[];
   emergencyDoctors: UserEmergencyCardDoctor[];
   emergencyHospitals: UserEmergencyCardHospital[];
+  epipenCard: UserEpipenCard | null;
+  epipenInstructions: UserEpipenInstructionWithDetails[];
 }> {
   const supabase = await createClient();
 
@@ -338,6 +341,97 @@ export async function getUserWebProfileBySlug(
     emergencyHospitalsData = hospitalsData || [];
   }
 
+  // Get user epipen card from epipen schema
+  const { data: epipenCardData, error: epipenCardError } = await supabase
+    .schema('epipen')
+    .from('user_epipen_cards')
+    .select('*')
+    .eq('user_id', profileData.user_id)
+    .maybeSingle();
+
+  if (epipenCardError) {
+    throw new Error(`Failed to fetch epipen card: ${epipenCardError.message}`);
+  }
+
+  // Get all default epipen instructions
+  const { data: allDefaultEpipenInstructions, error: defaultEpipenInstructionsError } = await supabase
+    .schema('epipen')
+    .from('epipen_instructions')
+    .select('*')
+    .order('sort_order');
+
+  if (defaultEpipenInstructionsError) {
+    throw new Error(`Failed to fetch default epipen instructions: ${defaultEpipenInstructionsError.message}`);
+  }
+
+  // Get user's modified/deleted epipen instructions
+  const { data: userEpipenInstructionsRaw, error: userEpipenInstructionsError } = await supabase
+    .schema('epipen')
+    .from('user_epipen_instructions')
+    .select('*')
+    .eq('user_id', profileData.user_id);
+
+  if (userEpipenInstructionsError) {
+    throw new Error(`Failed to fetch user epipen instructions: ${userEpipenInstructionsError.message}`);
+  }
+
+  // Create a map of instruction_key -> user modification for quick lookup
+  const userEpipenInstructionsMap = new Map((userEpipenInstructionsRaw || []).map(ui => [ui.instruction_key, ui]));
+
+  // Merge: for each default instruction, check if user has modified/deleted it
+  const mergedDefaultEpipenInstructions: UserEpipenInstructionWithDetails[] = (allDefaultEpipenInstructions || [])
+    .map((defaultInstruction) => {
+      const userModification = userEpipenInstructionsMap.get(defaultInstruction.instruction_key);
+
+      if (userModification) {
+        // User has modified this instruction
+        return {
+          id: userModification.id,
+          created_at: userModification.created_at,
+          user_id: userModification.user_id,
+          instruction_key: userModification.instruction_key,
+          instruction_text: userModification.instruction_text,
+          icon_type: userModification.icon_type,
+          sort_order: userModification.sort_order,
+          is_deleted: userModification.is_deleted,
+          epipen_instruction: defaultInstruction
+        };
+      } else {
+        // User hasn't modified this instruction, create a virtual user instruction with default values
+        return {
+          id: `default-${defaultInstruction.id}`,
+          created_at: defaultInstruction.created_at,
+          user_id: profileData.user_id,
+          instruction_key: defaultInstruction.instruction_key,
+          instruction_text: defaultInstruction.instruction_text,
+          icon_type: defaultInstruction.icon_type,
+          sort_order: defaultInstruction.sort_order,
+          is_deleted: false,
+          epipen_instruction: defaultInstruction
+        };
+      }
+    });
+
+  // Get custom instructions (instructions that don't have a corresponding default instruction)
+  const customEpipenInstructions: UserEpipenInstructionWithDetails[] = (userEpipenInstructionsRaw || [])
+    .filter(ui => ui.instruction_key.startsWith('custom-'))
+    .map((customInstruction) => ({
+      id: customInstruction.id,
+      created_at: customInstruction.created_at,
+      user_id: customInstruction.user_id,
+      instruction_key: customInstruction.instruction_key,
+      instruction_text: customInstruction.instruction_text,
+      icon_type: customInstruction.icon_type,
+      sort_order: customInstruction.sort_order,
+      is_deleted: customInstruction.is_deleted,
+      epipen_instruction: null
+    }));
+
+  // Combine default instructions and custom instructions, then filter and sort
+  const epipenInstructionsData: UserEpipenInstructionWithDetails[] = [...mergedDefaultEpipenInstructions, ...customEpipenInstructions]
+    .filter(instruction => !instruction.is_deleted)  // Filter out deleted instructions
+    .sort((a, b) => a.sort_order - b.sort_order);  // Sort by user's order
+
   return {
     profile: profileData,
     selectedCards: selectedCardsData || [],
@@ -349,6 +443,8 @@ export async function getUserWebProfileBySlug(
     emergencyCard: emergencyCardData,
     emergencyContacts: emergencyContactsData,
     emergencyDoctors: emergencyDoctorsData,
-    emergencyHospitals: emergencyHospitalsData
+    emergencyHospitals: emergencyHospitalsData,
+    epipenCard: epipenCardData,
+    epipenInstructions: epipenInstructionsData
   };
 }

@@ -165,6 +165,58 @@ export interface UserSafetyRuleWithDetails extends UserSafetyRule {
   safety_rule?: SafetyRule | null;
 }
 
+// Epipen schema types
+export type EpipenCarryOptions = 'yes-carry' | 'yes-no-yet' | 'no-should-get' | 'no-dont-need';
+export type EpipenInstructionType = 'our-instructions' | 'add-my-own';
+export type RuleIconType = 'check' | 'cross';
+
+export interface EpipenInstruction {
+  id: string;
+  created_at: string;
+  instruction_key: string;
+  instruction_text: string;
+  icon_type: RuleIconType;
+  sort_order: number;
+}
+
+export interface UserEpipenCard {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  card_id: string;
+  user_id: string;
+  carries_epipen: EpipenCarryOptions;
+  brand_type: string | null;
+  custom_brand: string | null;
+  dosage: string | null;
+  primary_location: string | null;
+  custom_primary_location: string | null;
+  primary_photo_url: string | null;
+  primary_expiration_date: string | null;
+  secondary_location: string | null;
+  custom_secondary_location: string | null;
+  secondary_photo_url: string | null;
+  secondary_expiration_date: string | null;
+  reminder_options: any; // JSONB
+  instruction_type: EpipenInstructionType;
+}
+
+export interface UserEpipenInstruction {
+  id: string;
+  created_at: string;
+  user_id: string;
+  instruction_key: string;
+  instruction_text: string;
+  icon_type: RuleIconType;
+  sort_order: number;
+  is_deleted: boolean;
+}
+
+// Merged type for user epipen instructions with default instruction details
+export interface UserEpipenInstructionWithDetails extends UserEpipenInstruction {
+  epipen_instruction?: EpipenInstruction | null;
+}
+
 // Emergency schema types
 export interface UserEmergencyCard {
   id: string;
@@ -316,6 +368,25 @@ export interface Database {
         Row: UserEmergencyCardHospital;
         Insert: Omit<UserEmergencyCardHospital, 'id' | 'created_at'>;
         Update: Partial<Omit<UserEmergencyCardHospital, 'id' | 'created_at'>>;
+      };
+    };
+  };
+  epipen: {
+    Tables: {
+      user_epipen_cards: {
+        Row: UserEpipenCard;
+        Insert: Omit<UserEpipenCard, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<UserEpipenCard, 'id' | 'created_at'>>;
+      };
+      epipen_instructions: {
+        Row: EpipenInstruction;
+        Insert: Omit<EpipenInstruction, 'id' | 'created_at'>;
+        Update: Partial<Omit<EpipenInstruction, 'id' | 'created_at'>>;
+      };
+      user_epipen_instructions: {
+        Row: UserEpipenInstruction;
+        Insert: Omit<UserEpipenInstruction, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserEpipenInstruction, 'id' | 'created_at'>>;
       };
     };
   };
