@@ -69,6 +69,44 @@ export interface UserWebProfileSelectedCard {
   is_deleted: boolean;
 }
 
+// Allergies schema types
+export type SeverityLevel = 'mild' | 'moderate' | 'severe';
+
+export interface Symptom {
+  id: string;
+  created_at: string;
+  display_name: string;
+  severity: SeverityLevel;
+  symptom_key: string;
+}
+
+export interface UserReactionProfile {
+  id: string;
+  created_at: string;
+  user_id: string;
+  has_reactions: boolean;
+  has_anaphylaxis: boolean;
+  first_symptom: string | null;
+  reaction_speed: string | null;
+  updated_at: string | null;
+}
+
+export interface UserReactionSymptom {
+  id: string;
+  created_at: string;
+  user_reaction_profile_id: string;
+  symptom_id: string | null;
+  custom_symptom: string | null;
+  is_custom: boolean;
+  user_id: string;
+  custom_symptom_severity: SeverityLevel | null;
+}
+
+// Merged type for user reaction symptoms with symptom details
+export interface UserReactionSymptomWithDetails extends UserReactionSymptom {
+  symptom?: Symptom | null;
+}
+
 // Example database structure:
 // You can adjust these based on your actual Supabase schema
 
@@ -103,6 +141,25 @@ export interface Database {
         Row: UserWebProfileUrl;
         Insert: Omit<UserWebProfileUrl, 'id' | 'created_at'>;
         Update: Partial<Omit<UserWebProfileUrl, 'id' | 'created_at'>>;
+      };
+    };
+  };
+  allergies: {
+    Tables: {
+      symptoms: {
+        Row: Symptom;
+        Insert: Omit<Symptom, 'id' | 'created_at'>;
+        Update: Partial<Omit<Symptom, 'id' | 'created_at'>>;
+      };
+      user_reaction_profiles: {
+        Row: UserReactionProfile;
+        Insert: Omit<UserReactionProfile, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserReactionProfile, 'id' | 'created_at'>>;
+      };
+      user_reaction_symptoms: {
+        Row: UserReactionSymptom;
+        Insert: Omit<UserReactionSymptom, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserReactionSymptom, 'id' | 'created_at'>>;
       };
     };
   };
