@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function ProfileLeftSection() {
   return (
-    <div className="flex flex-col items-start justify-between w-[25%] max-h-screen overflow-y-auto h-full">
+    <div className="flex flex-col items-start justify-between w-[25%] overflow-y-auto h-[86vh]">
       {/* Top Section Group */}
       <div className="flex flex-col w-full">
         {/* Profile Circle */}
@@ -45,8 +45,8 @@ export default function ProfileLeftSection() {
             className="text-sm font-merriweather leading-relaxed"
             style={{ color: COLORS.BLACK }}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
         </div>
 
@@ -80,7 +80,7 @@ export default function ProfileLeftSection() {
 
       {/* Download Dine Section */}
       <div
-        className="w-full px-5 py-4 rounded-2xl flex items-center justify-between"
+        className="w-full px-5 py-4 rounded-2xl flex items-center justify-between mb-3"
         style={{
           backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
           position: "relative",
@@ -113,11 +113,7 @@ export default function ProfileLeftSection() {
             zIndex: 2,
           }}
         >
-          <QRCode
-            value="https://dine-app.example.com"
-            size={80}
-            level="H"
-          />
+          <QRCode value="https://dine-app.example.com" size={80} level="H" />
         </div>
 
         {/* Corner Image */}
