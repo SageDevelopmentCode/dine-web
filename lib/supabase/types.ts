@@ -38,6 +38,27 @@ export interface InfoCard {
   updated_at: string;
 }
 
+export interface UserWebProfile {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+  about_me?: string;
+  privacy_type: string;
+  profile_password?: string;
+  display_emergency_contact: boolean;
+  display_epipen: boolean;
+  is_deleted: boolean;
+}
+
+export interface UserWebProfileUrl {
+  id: string;
+  created_at: string;
+  user_web_profile_id: string;
+  slug: string;
+  user_id: string;
+}
+
 // Example database structure:
 // You can adjust these based on your actual Supabase schema
 
@@ -58,6 +79,20 @@ export interface Database {
         Row: InfoCard;
         Insert: Omit<InfoCard, 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Omit<InfoCard, 'id' | 'created_at'>>;
+      };
+    };
+  };
+  web_profiles: {
+    Tables: {
+      user_web_profiles: {
+        Row: UserWebProfile;
+        Insert: Omit<UserWebProfile, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<UserWebProfile, 'id' | 'created_at'>>;
+      };
+      user_web_profile_urls: {
+        Row: UserWebProfileUrl;
+        Insert: Omit<UserWebProfileUrl, 'id' | 'created_at'>;
+        Update: Partial<Omit<UserWebProfileUrl, 'id' | 'created_at'>>;
       };
     };
   };
