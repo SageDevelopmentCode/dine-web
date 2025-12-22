@@ -9,44 +9,19 @@ import {
 } from '@/lib/supabase/types';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export async function GET(request: NextRequest) {
   try {
-    const { slug } = await params;
     const supabase = await createClient();
 
-    // Get user_id from slug
-    const { data: urlData, error: urlError } = await supabase
-      .schema('web_profiles')
-      .from('user_web_profile_urls')
-      .select('user_web_profile_id')
-      .eq('slug', slug)
-      .single();
+    // Get user_id from query parameter
+    const userId = request.nextUrl.searchParams.get('user_id');
 
-    if (urlError || !urlData) {
+    if (!userId) {
       return NextResponse.json(
-        { error: 'Profile not found' },
-        { status: 404 }
+        { error: 'user_id query parameter is required' },
+        { status: 400 }
       );
     }
-
-    const { data: profileData, error: profileError } = await supabase
-      .schema('web_profiles')
-      .from('user_web_profiles')
-      .select('user_id')
-      .eq('id', urlData.user_web_profile_id)
-      .single();
-
-    if (profileError || !profileData) {
-      return NextResponse.json(
-        { error: 'Profile not found' },
-        { status: 404 }
-      );
-    }
-
-    const userId = profileData.user_id;
 
     // Get user travel card
     const { data: travelCardData, error: travelCardError } = await supabase

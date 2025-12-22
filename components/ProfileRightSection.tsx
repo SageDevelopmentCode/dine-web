@@ -6,9 +6,10 @@ import ExpandableInfoCard from "./ExpandableInfoCard";
 
 interface ProfileRightSectionProps {
   slug: string;
+  userId: string;
 }
 
-export default function ProfileRightSection({ slug }: ProfileRightSectionProps) {
+export default function ProfileRightSection({ slug, userId }: ProfileRightSectionProps) {
   return (
     <div className="flex flex-col w-[35%] h-full overflow-y-auto">
       <h2
@@ -77,6 +78,7 @@ export default function ProfileRightSection({ slug }: ProfileRightSectionProps) 
           description="Includes food preferences, allergies, instructions"
           backgroundColor={COLORS.FOOD_ALLERGIES_BG}
           slug={slug}
+          userId={userId}
           cardType="food-allergies"
         />
 
@@ -86,6 +88,7 @@ export default function ProfileRightSection({ slug }: ProfileRightSectionProps) 
           description="If I'm unconscious or having a severe reaction"
           backgroundColor={COLORS.EMERGENCY_MEDICAL_BG}
           slug={slug}
+          userId={userId}
           cardType="emergency"
         />
 
@@ -95,6 +98,7 @@ export default function ProfileRightSection({ slug }: ProfileRightSectionProps) 
           description="How to help in an emergency"
           backgroundColor={COLORS.EPIPEN_COLOR}
           slug={slug}
+          userId={userId}
           cardType="epipen"
         />
 
@@ -104,6 +108,7 @@ export default function ProfileRightSection({ slug }: ProfileRightSectionProps) 
           description="For teachers, coworkers, daycare, camp, or caregivers"
           backgroundColor={COLORS.SCHOOL_WORK_EVENTS_BG}
           slug={slug}
+          userId={userId}
           cardType="swe"
         />
 
@@ -113,6 +118,7 @@ export default function ProfileRightSection({ slug }: ProfileRightSectionProps) 
           description="Multi-Language Allergy Information"
           backgroundColor={COLORS.TRAVEL_BG}
           slug={slug}
+          userId={userId}
           cardType="travel"
         />
       </div>

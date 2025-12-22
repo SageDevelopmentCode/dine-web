@@ -13,20 +13,10 @@ interface ProfilePageProps {
 export default async function ProfilePage({ params }: ProfilePageProps) {
   const { slug } = await params;
 
-  try {
-    const initialData = await getInitialProfileData(slug);
-    console.log("📊 Initial Profile Data Loaded:", {
-      profile: initialData.profile,
-      selectedCardsCount: initialData.selectedCards.length,
-      allergensCount: initialData.allergens.length,
-      emergencyContactsCount: initialData.emergencyContacts.length,
-    });
-    console.log("📋 Selected Cards:", initialData.selectedCards);
-    console.log("🌾 Allergens:", initialData.allergens);
-    console.log("📞 Emergency Contacts:", initialData.emergencyContacts);
-  } catch (error) {
-    console.error("❌ Error fetching initial profile data:", error);
-  }
+  const initialData = await getInitialProfileData(slug);
+
+  console.log("📊 Initial Profile Data Loaded:", initialData);
+  const userId = initialData.profile.user_id;
 
   return (
     <div
@@ -38,7 +28,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         <div className="max-w-[1400px] mx-auto h-full">
           <div className="flex gap-8 h-full justify-center">
             <ProfileLeftSection />
-            <ProfileRightSection slug={slug} />
+            <ProfileRightSection slug={slug} userId={userId} />
           </div>
         </div>
       </main>

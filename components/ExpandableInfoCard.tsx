@@ -30,6 +30,7 @@ interface ExpandableInfoCardProps {
   backgroundColor: string;
   children?: React.ReactNode;
   slug?: string;
+  userId?: string;
   cardType?: "food-allergies" | "emergency" | "epipen" | "swe" | "travel";
 }
 
@@ -68,6 +69,7 @@ export default function ExpandableInfoCard({
   backgroundColor,
   children,
   slug,
+  userId,
   cardType,
 }: ExpandableInfoCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -81,7 +83,11 @@ export default function ExpandableInfoCard({
         setIsLoading(true);
         try {
           console.log(`🔄 Fetching ${cardType} data...`);
-          const response = await fetch(`/api/profile/${slug}/${cardType}`);
+          // Include userId as query parameter if available
+          const url = userId
+            ? `/api/profile/${slug}/${cardType}?user_id=${userId}`
+            : `/api/profile/${slug}/${cardType}`;
+          const response = await fetch(url);
 
           if (!response.ok) {
             throw new Error(`Failed to fetch ${cardType} data`);
@@ -99,7 +105,7 @@ export default function ExpandableInfoCard({
 
       fetchCardData();
     }
-  }, [isExpanded, cardType, slug, cardData, isLoading]);
+  }, [isExpanded, cardType, slug, userId, cardData, isLoading]);
 
   return (
     <div
