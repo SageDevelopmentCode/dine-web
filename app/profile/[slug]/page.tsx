@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import { COLORS } from "@/constants/colors";
 import ProfileLeftSection from "@/components/ProfileLeftSection";
 import ProfileRightSection from "@/components/ProfileRightSection";
+import { getUserWebProfileBySlug } from "@/lib/supabase/web_profiles/user_web_profile_urls";
 // Supabase imports - uncomment when ready to use
 // import { getProfileBySlug } from "@/lib/supabase/queries/profiles";
 // import { getAllergensGroupedBySeverity } from "@/lib/supabase/queries/allergens";
@@ -16,23 +17,12 @@ interface ProfilePageProps {
 export default async function ProfilePage({ params }: ProfilePageProps) {
   const { slug } = await params;
 
-  // Example: Fetch data from Supabase (uncomment when your .env.local is configured)
-  // const profile = await getProfileBySlug(slug);
-  //
-  // if (!profile) {
-  //   return (
-  //     <div className="h-screen flex items-center justify-center">
-  //       <p>Profile not found</p>
-  //     </div>
-  //   );
-  // }
-  //
-  // const allergens = await getAllergensGroupedBySeverity(profile.id);
-  // const infoCards = await getInfoCardsByUserId(profile.id);
-  //
-  // Pass this data to your components as props:
-  // <ProfileLeftSection profile={profile} />
-  // <ProfileRightSection allergens={allergens} infoCards={infoCards} />
+  try {
+    const profile = await getUserWebProfileBySlug(slug);
+    console.log("Profile data:", profile);
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+  }
 
   return (
     <div
