@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { getEpipenCardData } from '@/lib/supabase/epipen/get_epipen_card_data';
 import {
   UserWebProfile,
   UserWebProfileSelectedCard,
@@ -355,96 +356,28 @@ export async function getUserWebProfileBySlug(
     emergencyHospitalsData = hospitalsData || [];
   }
 
-  // Get user epipen card from epipen schema
-  const { data: epipenCardData, error: epipenCardError } = await supabase
+  // Get user epipen card and instructions using RPC
+  let epipenCardData: UserEpipenCard | null = null;
+  let epipenInstructionsData: UserEpipenInstructionWithDetails[] = [];
+
+  // First, get the card_id for this user
+  const { data: epipenCardLookup, error: epipenLookupError } = await supabase
     .schema('epipen')
     .from('user_epipen_cards')
-    .select('*')
+    .select('card_id')
     .eq('user_id', profileData.user_id)
     .maybeSingle();
 
-  if (epipenCardError) {
-    throw new Error(`Failed to fetch epipen card: ${epipenCardError.message}`);
+  if (epipenLookupError) {
+    throw new Error(`Failed to lookup epipen card: ${epipenLookupError.message}`);
   }
 
-  // Get all default epipen instructions
-  const { data: allDefaultEpipenInstructions, error: defaultEpipenInstructionsError } = await supabase
-    .schema('epipen')
-    .from('epipen_instructions')
-    .select('*')
-    .order('sort_order');
-
-  if (defaultEpipenInstructionsError) {
-    throw new Error(`Failed to fetch default epipen instructions: ${defaultEpipenInstructionsError.message}`);
+  // If card exists, fetch all data via RPC
+  if (epipenCardLookup) {
+    const { card, instructions } = await getEpipenCardData(epipenCardLookup.card_id);
+    epipenCardData = card;
+    epipenInstructionsData = instructions;
   }
-
-  // Get user's modified/deleted epipen instructions
-  const { data: userEpipenInstructionsRaw, error: userEpipenInstructionsError } = await supabase
-    .schema('epipen')
-    .from('user_epipen_instructions')
-    .select('*')
-    .eq('user_id', profileData.user_id);
-
-  if (userEpipenInstructionsError) {
-    throw new Error(`Failed to fetch user epipen instructions: ${userEpipenInstructionsError.message}`);
-  }
-
-  // Create a map of instruction_key -> user modification for quick lookup
-  const userEpipenInstructionsMap = new Map((userEpipenInstructionsRaw || []).map(ui => [ui.instruction_key, ui]));
-
-  // Merge: for each default instruction, check if user has modified/deleted it
-  const mergedDefaultEpipenInstructions: UserEpipenInstructionWithDetails[] = (allDefaultEpipenInstructions || [])
-    .map((defaultInstruction) => {
-      const userModification = userEpipenInstructionsMap.get(defaultInstruction.instruction_key);
-
-      if (userModification) {
-        // User has modified this instruction
-        return {
-          id: userModification.id,
-          created_at: userModification.created_at,
-          user_id: userModification.user_id,
-          instruction_key: userModification.instruction_key,
-          instruction_text: userModification.instruction_text,
-          icon_type: userModification.icon_type,
-          sort_order: userModification.sort_order,
-          is_deleted: userModification.is_deleted,
-          epipen_instruction: defaultInstruction
-        };
-      } else {
-        // User hasn't modified this instruction, create a virtual user instruction with default values
-        return {
-          id: `default-${defaultInstruction.id}`,
-          created_at: defaultInstruction.created_at,
-          user_id: profileData.user_id,
-          instruction_key: defaultInstruction.instruction_key,
-          instruction_text: defaultInstruction.instruction_text,
-          icon_type: defaultInstruction.icon_type,
-          sort_order: defaultInstruction.sort_order,
-          is_deleted: false,
-          epipen_instruction: defaultInstruction
-        };
-      }
-    });
-
-  // Get custom instructions (instructions that don't have a corresponding default instruction)
-  const customEpipenInstructions: UserEpipenInstructionWithDetails[] = (userEpipenInstructionsRaw || [])
-    .filter(ui => ui.instruction_key.startsWith('custom-'))
-    .map((customInstruction) => ({
-      id: customInstruction.id,
-      created_at: customInstruction.created_at,
-      user_id: customInstruction.user_id,
-      instruction_key: customInstruction.instruction_key,
-      instruction_text: customInstruction.instruction_text,
-      icon_type: customInstruction.icon_type,
-      sort_order: customInstruction.sort_order,
-      is_deleted: customInstruction.is_deleted,
-      epipen_instruction: null
-    }));
-
-  // Combine default instructions and custom instructions, then filter and sort
-  const epipenInstructionsData: UserEpipenInstructionWithDetails[] = [...mergedDefaultEpipenInstructions, ...customEpipenInstructions]
-    .filter(instruction => !instruction.is_deleted)  // Filter out deleted instructions
-    .sort((a, b) => a.sort_order - b.sort_order);  // Sort by user's order
 
   // Get user SWE card from swe schema
   const { data: sweCardData, error: sweCardError } = await supabase
