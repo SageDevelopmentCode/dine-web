@@ -1,0 +1,40 @@
+// Language code to display name mapping (ISO 639-1 codes)
+export const LANGUAGE_NAMES: Record<string, string> = {
+  en: "English",
+  es: "Spanish",
+  fr: "French",
+  de: "German",
+  it: "Italian",
+  pt: "Portuguese",
+  ru: "Russian",
+  ja: "Japanese",
+  ko: "Korean",
+  zh: "Chinese",
+  ar: "Arabic",
+  hi: "Hindi",
+  nl: "Dutch",
+  pl: "Polish",
+  tr: "Turkish",
+  sv: "Swedish",
+  no: "Norwegian",
+  da: "Danish",
+  fi: "Finnish",
+  el: "Greek",
+  he: "Hebrew",
+  th: "Thai",
+  vi: "Vietnamese",
+  id: "Indonesian",
+  cs: "Czech",
+  hu: "Hungarian",
+  ro: "Romanian",
+  uk: "Ukrainian",
+  bg: "Bulgarian",
+  hr: "Croatian",
+  sr: "Serbian",
+  sk: "Slovak",
+  sl: "Slovenian",
+};
+
+export const getLanguageName = (code: string): string => {
+  return LANGUAGE_NAMES[code] || code.toUpperCase();
+};

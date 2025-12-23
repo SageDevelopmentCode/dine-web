@@ -8,6 +8,7 @@ import FoodAllergiesContent from "./FoodAllergiesContent";
 import EmergencyCardContent from "./EmergencyCardContent";
 import EpipenCardContent from "./EpipenCardContent";
 import SweCardContent from "./SweCardContent";
+import TravelCardContent from "./TravelCardContent";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
@@ -208,6 +209,15 @@ export default function ExpandableInfoCard({
               sweCategories={cardData.sweCategories}
               sweMeasures={cardData.sweMeasures}
               firstName={firstName}
+            />
+          ) : cardData &&
+            cardType === "travel" &&
+            "travelCard" in cardData ? (
+            <TravelCardContent
+              travelCard={cardData.travelCard}
+              travelLanguages={cardData.travelLanguages}
+              travelPhrases={cardData.travelPhrases}
+              travelCategories={cardData.travelCategories}
             />
           ) : (
             children || (
