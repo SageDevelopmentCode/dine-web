@@ -3,8 +3,30 @@ import { User } from "lucide-react";
 import { Twemoji } from "@/utils/twemoji";
 import QRCode from "react-qr-code";
 import Image from "next/image";
+import { UserWebProfile, UserEmergencyCardContact } from "@/lib/supabase/types";
+import { formatTimestamp, formatPhoneNumber } from "@/utils/formatters";
 
-export default function ProfileLeftSection() {
+interface ProfileLeftSectionProps {
+  profile: UserWebProfile;
+  emergencyContacts: UserEmergencyCardContact[];
+}
+
+export default function ProfileLeftSection({
+  profile,
+  emergencyContacts,
+}: ProfileLeftSectionProps) {
+  // Get priority 1 emergency contact
+  const primaryContact = emergencyContacts.find(
+    (contact) => contact.priority === 1
+  );
+
+  // Format the name
+  const displayName = [profile.first_name, profile.last_name]
+    .filter(Boolean)
+    .join(" ") || "Anonymous User";
+
+  // Format last updated time
+  const lastUpdated = formatTimestamp(profile.updated_at, profile.created_at);
   return (
     <div className="flex flex-col items-start justify-between w-[25%] overflow-y-auto h-[86vh]">
       {/* Top Section Group */}
@@ -18,14 +40,14 @@ export default function ProfileLeftSection() {
           className="text-xl font-merriweather font-bold mb-1"
           style={{ color: COLORS.BLACK }}
         >
-          John Smith
+          {displayName}
         </h2>
         {/* Last Updated */}
         <p
           className="text-xs font-merriweather"
           style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
         >
-          Last updated: 3 days ago
+          Last updated: {lastUpdated}
         </p>
 
         {/* About Me Section */}
@@ -45,37 +67,41 @@ export default function ProfileLeftSection() {
             className="text-sm font-merriweather leading-relaxed"
             style={{ color: COLORS.BLACK }}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            {profile.about_me || "No description provided."}
           </p>
         </div>
 
-        {/* Emergency Contact Section */}
-        <div
-          className="w-full mt-3 p-3 rounded-lg flex items-center gap-3"
-          style={{ backgroundColor: COLORS.HEADER_BACKGROUND }}
-        >
-          <Twemoji hex="1f4de" size={20} alt="telephone emoji" />
-          <p
-            className="text-sm font-merriweather"
-            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+        {/* Emergency Contact Section - Only show if display_emergency_contact is true */}
+        {profile.display_emergency_contact && primaryContact && (
+          <div
+            className="w-full mt-3 p-3 rounded-lg flex items-center gap-3"
+            style={{ backgroundColor: COLORS.HEADER_BACKGROUND }}
           >
-            Emergencies: John • 562-332-4687
-          </p>
-        </div>
-        {/* Emergency Contact Section */}
-        <div
-          className="w-full mt-3 p-3 rounded-lg flex items-center gap-3"
-          style={{ backgroundColor: COLORS.EPIPEN_COLOR }}
-        >
-          <Twemoji hex="2705" size={20} alt="checkmark emoji" />
-          <p
-            className="text-sm font-merriweather"
-            style={{ color: COLORS.WHITE }}
+            <Twemoji hex="1f4de" size={20} alt="telephone emoji" />
+            <p
+              className="text-sm font-merriweather"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+            >
+              Emergencies: {primaryContact.full_name} •{" "}
+              {formatPhoneNumber(primaryContact.phone_number)}
+            </p>
+          </div>
+        )}
+        {/* EpiPen Section - Only show if display_epipen is true */}
+        {profile.display_epipen && (
+          <div
+            className="w-full mt-3 p-3 rounded-lg flex items-center gap-3"
+            style={{ backgroundColor: COLORS.EPIPEN_COLOR }}
           >
-            Carries an EpiPen: Yes
-          </p>
-        </div>
+            <Twemoji hex="2705" size={20} alt="checkmark emoji" />
+            <p
+              className="text-sm font-merriweather"
+              style={{ color: COLORS.WHITE }}
+            >
+              Carries an EpiPen: Yes
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Download Dine Section */}

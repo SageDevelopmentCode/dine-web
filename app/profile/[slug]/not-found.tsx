@@ -11,17 +11,24 @@ export default function ProfileNotFound() {
       <Header />
       <main className="flex-1 px-6 py-8 md:px-12 flex items-center justify-center">
         <div className="max-w-md text-center">
-          <h1 className="text-4xl font-bold mb-4" style={{ color: COLORS.TEXT }}>
+          <h1
+            className="text-4xl font-bold mb-4"
+            style={{ color: COLORS.BLACK }}
+          >
             Profile Not Found
           </h1>
-          <p className="text-lg mb-8" style={{ color: COLORS.TEXT_SECONDARY }}>
-            The profile you're looking for doesn't exist or may have been removed.
+          <p
+            className="text-lg mb-8"
+            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+          >
+            The profile you&apos;re looking for doesn&apos;t exist or may have
+            been removed.
           </p>
           <Link
             href="/"
             className="inline-block px-6 py-3 rounded-lg font-medium transition-colors"
             style={{
-              backgroundColor: COLORS.PRIMARY,
+              backgroundColor: COLORS.EPIPEN_COLOR,
               color: COLORS.WHITE,
             }}
           >

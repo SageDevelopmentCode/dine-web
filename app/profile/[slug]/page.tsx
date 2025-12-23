@@ -38,7 +38,10 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       <main className="flex-1 px-6 py-8 md:px-12">
         <div className="max-w-[1400px] mx-auto h-full">
           <div className="flex gap-8 h-full justify-center">
-            <ProfileLeftSection />
+            <ProfileLeftSection
+              profile={initialData.profile}
+              emergencyContacts={initialData.emergencyContacts}
+            />
             <ProfileRightSection slug={slug} userId={userId} />
           </div>
         </div>
