@@ -49,6 +49,9 @@ export interface UserWebProfile {
   display_emergency_contact: boolean;
   display_epipen: boolean;
   is_deleted: boolean;
+  first_name?: string;
+  last_name?: string;
+  account_type?: string;
 }
 
 export interface UserWebProfileUrl {

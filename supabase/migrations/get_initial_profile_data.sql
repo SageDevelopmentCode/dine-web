@@ -36,8 +36,23 @@ BEGIN
   -- This runs all subqueries in parallel on the database server
   SELECT json_build_object(
     'profile', (
-      SELECT row_to_json(p.*)
+      SELECT json_build_object(
+        'id', p.id,
+        'created_at', p.created_at,
+        'updated_at', p.updated_at,
+        'user_id', p.user_id,
+        'about_me', p.about_me,
+        'privacy_type', p.privacy_type,
+        'profile_password', p.profile_password,
+        'display_emergency_contact', p.display_emergency_contact,
+        'display_epipen', p.display_epipen,
+        'is_deleted', p.is_deleted,
+        'first_name', up.first_name,
+        'last_name', up.last_name,
+        'account_type', up.account_type
+      )
       FROM web_profiles.user_web_profiles p
+      LEFT JOIN core.user_profiles up ON up.user_id = p.user_id
       WHERE p.id = v_profile_id
     ),
     'selectedCards', (
