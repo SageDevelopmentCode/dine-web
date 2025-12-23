@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Header() {
   return (
     <header className="bg-white w-full">
-      <div className="flex items-center justify-between px-6 py-4 md:px-12">
+      <div className="flex items-center justify-between px-2 py-4 sm:px-4 md:px-8 lg:px-12">
         {/* Logo on the left */}
         <div className="flex-shrink-0">
           <Image
@@ -17,7 +17,7 @@ export default function Header() {
         </div>
 
         {/* App store buttons on the right */}
-        <div className="flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-3">
           <button
             type="button"
             className="transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"

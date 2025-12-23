@@ -160,7 +160,7 @@ export default function ExpandableInfoCard({
           isExpanded ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-6 pb-6 overflow-y-auto max-h-[550px]">
+        <div className="px-4 pb-6 overflow-y-auto max-h-[550px]">
           {isLoading ? (
             <p
               className="text-sm font-merriweather"
@@ -168,7 +168,9 @@ export default function ExpandableInfoCard({
             >
               Loading...
             </p>
-          ) : cardData && cardType === "food-allergies" && "reactionProfile" in cardData ? (
+          ) : cardData &&
+            cardType === "food-allergies" &&
+            "reactionProfile" in cardData ? (
             <FoodAllergiesContent
               reactionProfile={cardData.reactionProfile}
               reactionSymptoms={cardData.reactionSymptoms}

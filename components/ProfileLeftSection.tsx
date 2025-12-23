@@ -28,23 +28,23 @@ export default function ProfileLeftSection({
   // Format last updated time
   const lastUpdated = formatTimestamp(profile.updated_at, profile.created_at);
   return (
-    <div className="flex flex-col items-start justify-between w-[25%] overflow-y-auto h-[86vh]">
+    <div className="flex flex-col items-start justify-between w-full md:w-[25%] overflow-y-visible md:overflow-y-auto h-auto md:h-[86vh]">
       {/* Top Section Group */}
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full items-center md:items-start">
         {/* Profile Circle */}
         <div className="w-28 h-28 rounded-full bg-gray-200 flex items-center justify-center mb-4">
           <User size={64} className="text-gray-400" />
         </div>
         {/* Name */}
         <h2
-          className="text-xl font-merriweather font-bold mb-1"
+          className="text-xl font-merriweather font-bold mb-1 text-center md:text-left"
           style={{ color: COLORS.BLACK }}
         >
           {displayName}
         </h2>
         {/* Last Updated */}
         <p
-          className="text-xs font-merriweather"
+          className="text-xs font-merriweather text-center md:text-left"
           style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
         >
           Last updated: {lastUpdated}
@@ -106,10 +106,9 @@ export default function ProfileLeftSection({
 
       {/* Download Dine Section */}
       <div
-        className="w-full px-5 py-4 rounded-2xl flex items-center justify-between mb-3"
+        className="w-full px-5 py-4 rounded-t-2xl md:rounded-2xl flex items-center justify-center md:justify-between mb-0 md:mb-3 fixed md:relative bottom-0 left-0 right-0 md:bottom-auto md:left-auto md:right-auto z-50 md:z-auto"
         style={{
           backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
-          position: "relative",
           overflow: "hidden",
         }}
       >
@@ -131,7 +130,7 @@ export default function ProfileLeftSection({
 
         {/* Right Side - QR Code */}
         <div
-          className="rounded-lg flex items-center justify-center p-2"
+          className="rounded-lg hidden md:flex items-center justify-center p-2"
           style={{
             backgroundColor: COLORS.WHITE,
             border: `5px solid ${COLORS.DOWNLOAD_QR_BORDER}`,

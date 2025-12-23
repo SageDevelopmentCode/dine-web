@@ -35,9 +35,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
-      <main className="flex-1 px-6 py-8 md:px-12">
+      <main className="flex-1 px-2 py-8 sm:px-4 md:px-8 lg:px-12">
         <div className="max-w-[1400px] mx-auto h-full">
-          <div className="flex gap-8 h-full justify-center">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-8 h-full justify-center">
             <ProfileLeftSection
               profile={initialData.profile}
               emergencyContacts={initialData.emergencyContacts}

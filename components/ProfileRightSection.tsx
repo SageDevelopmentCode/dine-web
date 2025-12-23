@@ -33,7 +33,7 @@ export default function ProfileRightSection({ slug, userId, allergens }: Profile
   };
 
   return (
-    <div className="flex flex-col w-[35%] h-full overflow-y-auto">
+    <div className="flex flex-col w-full md:w-[35%] h-full overflow-y-auto pb-20 md:pb-0">
       <h2
         className="text-xl font-merriweather font-regular mb-4"
         style={{ color: COLORS.BLACK }}
