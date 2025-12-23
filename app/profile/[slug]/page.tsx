@@ -42,7 +42,11 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               profile={initialData.profile}
               emergencyContacts={initialData.emergencyContacts}
             />
-            <ProfileRightSection slug={slug} userId={userId} />
+            <ProfileRightSection
+              slug={slug}
+              userId={userId}
+              allergens={initialData.allergens}
+            />
           </div>
         </div>
       </main>

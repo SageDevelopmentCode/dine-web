@@ -1,15 +1,37 @@
 "use client";
 
+import { useState } from "react";
 import { COLORS } from "@/constants/colors";
 import AllergenCard from "./AllergenCard";
 import ExpandableInfoCard from "./ExpandableInfoCard";
+import AllergenDetailModal from "./AllergenDetailModal";
+import { UserAllergen } from "@/lib/supabase/types";
 
 interface ProfileRightSectionProps {
   slug: string;
   userId: string;
+  allergens: UserAllergen[];
 }
 
-export default function ProfileRightSection({ slug, userId }: ProfileRightSectionProps) {
+export default function ProfileRightSection({ slug, userId, allergens }: ProfileRightSectionProps) {
+  const [selectedAllergen, setSelectedAllergen] = useState<UserAllergen | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Filter allergens by severity
+  const severeAllergens = allergens.filter(a => a.severity === 'severe');
+  const moderateAllergens = allergens.filter(a => a.severity === 'moderate');
+  const mildAllergens = allergens.filter(a => a.severity === 'mild');
+
+  const handleAllergenClick = (allergen: UserAllergen) => {
+    setSelectedAllergen(allergen);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedAllergen(null);
+  };
+
   return (
     <div className="flex flex-col w-[35%] h-full overflow-y-auto">
       <h2
@@ -20,48 +42,73 @@ export default function ProfileRightSection({ slug, userId }: ProfileRightSectio
       </h2>
 
       {/* Severe Section */}
-      <div className="mb-6">
-        <h3
-          className="text-sm font-merriweather mb-3"
-          style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-        >
-          Severe
-        </h3>
-        <div className="flex flex-wrap gap-3">
-          <AllergenCard emojiHex="1f9c4" label="Garlic" severity="severe" />
-          <AllergenCard emojiHex="1f95c" label="Peanuts" severity="severe" />
-          <AllergenCard emojiHex="1f330" label="Tree Nuts" severity="severe" />
-          <AllergenCard emojiHex="1f33d" label="Corn" severity="severe" />
+      {severeAllergens.length > 0 && (
+        <div className="mb-6">
+          <h3
+            className="text-sm font-merriweather mb-3"
+            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+          >
+            Severe
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            {severeAllergens.map((allergen) => (
+              <AllergenCard
+                key={allergen.id}
+                emojiHex={allergen.twemoji}
+                label={allergen.allergen}
+                severity="severe"
+                onClick={() => handleAllergenClick(allergen)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Moderate Section */}
-      <div className="mb-6">
-        <h3
-          className="text-sm font-merriweather mb-3"
-          style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-        >
-          Moderate
-        </h3>
-        <div className="flex flex-wrap gap-3">
-          <AllergenCard emojiHex="1f965" label="Coconut" severity="moderate" />
-          <AllergenCard emojiHex="1f34a" label="Citrus" severity="moderate" />
+      {moderateAllergens.length > 0 && (
+        <div className="mb-6">
+          <h3
+            className="text-sm font-merriweather mb-3"
+            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+          >
+            Moderate
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            {moderateAllergens.map((allergen) => (
+              <AllergenCard
+                key={allergen.id}
+                emojiHex={allergen.twemoji}
+                label={allergen.allergen}
+                severity="moderate"
+                onClick={() => handleAllergenClick(allergen)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Mild Section */}
-      <div className="mb-6">
-        <h3
-          className="text-sm font-merriweather mb-3"
-          style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-        >
-          Mild
-        </h3>
-        <div className="flex flex-wrap gap-3">
-          <AllergenCard emojiHex="1f345" label="Tomato" severity="mild" />
-          <AllergenCard emojiHex="1f353" label="Strawberry" severity="mild" />
+      {mildAllergens.length > 0 && (
+        <div className="mb-6">
+          <h3
+            className="text-sm font-merriweather mb-3"
+            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+          >
+            Mild
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            {mildAllergens.map((allergen) => (
+              <AllergenCard
+                key={allergen.id}
+                emojiHex={allergen.twemoji}
+                label={allergen.allergen}
+                severity="mild"
+                onClick={() => handleAllergenClick(allergen)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Info Cards Section */}
       <div className="mt-8">
@@ -122,6 +169,13 @@ export default function ProfileRightSection({ slug, userId }: ProfileRightSectio
           cardType="travel"
         />
       </div>
+
+      {/* Allergen Detail Modal */}
+      <AllergenDetailModal
+        allergen={selectedAllergen}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }
