@@ -6,6 +6,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { COLORS } from "@/constants/colors";
 import FoodAllergiesContent from "./FoodAllergiesContent";
 import EmergencyCardContent from "./EmergencyCardContent";
+import EpipenCardContent from "./EpipenCardContent";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
@@ -188,6 +189,13 @@ export default function ExpandableInfoCard({
               emergencyContacts={cardData.emergencyContacts}
               emergencyDoctors={cardData.emergencyDoctors}
               emergencyHospitals={cardData.emergencyHospitals}
+            />
+          ) : cardData &&
+            cardType === "epipen" &&
+            "epipenCard" in cardData ? (
+            <EpipenCardContent
+              epipenCard={cardData.epipenCard}
+              epipenInstructions={cardData.epipenInstructions}
             />
           ) : (
             children || (
