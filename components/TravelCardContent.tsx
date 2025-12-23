@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { COLORS } from "@/constants/colors";
-import { getLanguageName } from "@/constants/languages";
+import { getLanguageName, getLanguageFlag } from "@/constants/languages";
 import { Twemoji } from "@/utils/twemoji";
 import type {
   UserTravelCard,
@@ -83,25 +83,35 @@ export default function TravelCardContent({
     <div className="space-y-4">
       {/* Language Tabs */}
       <div className="flex flex-wrap gap-2 mb-4">
-        {travelLanguages.map((language) => (
-          <button
-            key={language.id}
-            onClick={() => setSelectedLanguage(language.language_code)}
-            className="px-4 py-2 rounded-lg text-xs font-merriweather font-semibold transition-all"
-            style={{
-              backgroundColor:
-                selectedLanguage === language.language_code
-                  ? COLORS.WHITE
-                  : "rgba(255, 255, 255, 0.2)",
-              color:
-                selectedLanguage === language.language_code
-                  ? "#3E8C90"
-                  : COLORS.WHITE,
-            }}
-          >
-            {getLanguageName(language.language_code)}
-          </button>
-        ))}
+        {travelLanguages.map((language) => {
+          const flagHex = getLanguageFlag(language.language_code);
+          return (
+            <button
+              key={language.id}
+              onClick={() => setSelectedLanguage(language.language_code)}
+              className="px-4 py-2 rounded-lg text-xs font-merriweather font-semibold transition-all flex items-center gap-2"
+              style={{
+                backgroundColor:
+                  selectedLanguage === language.language_code
+                    ? COLORS.WHITE
+                    : "rgba(255, 255, 255, 0.2)",
+                color:
+                  selectedLanguage === language.language_code
+                    ? "#3E8C90"
+                    : COLORS.WHITE,
+              }}
+            >
+              {flagHex && (
+                <Twemoji
+                  hex={flagHex}
+                  size={16}
+                  alt={`${getLanguageName(language.language_code)} flag`}
+                />
+              )}
+              {getLanguageName(language.language_code)}
+            </button>
+          );
+        })}
       </div>
 
       {/* Phrases grouped by category */}
