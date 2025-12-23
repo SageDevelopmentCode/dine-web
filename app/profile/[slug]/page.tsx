@@ -3,6 +3,7 @@ import { COLORS } from "@/constants/colors";
 import ProfileLeftSection from "@/components/ProfileLeftSection";
 import ProfileRightSection from "@/components/ProfileRightSection";
 import { getInitialProfileData } from "@/lib/supabase/web_profiles/get_initial_profile_data";
+import { notFound } from "next/navigation";
 
 interface ProfilePageProps {
   params: Promise<{
@@ -13,7 +14,17 @@ interface ProfilePageProps {
 export default async function ProfilePage({ params }: ProfilePageProps) {
   const { slug } = await params;
 
-  const initialData = await getInitialProfileData(slug);
+  let initialData;
+  try {
+    initialData = await getInitialProfileData(slug);
+  } catch (error) {
+    // If profile not found, show the not-found page
+    if (error instanceof Error && error.message.includes("No profile found")) {
+      notFound();
+    }
+    // Re-throw other errors to be handled by error boundary
+    throw error;
+  }
 
   console.log("📊 Initial Profile Data Loaded:", initialData);
   const userId = initialData.profile.user_id;
