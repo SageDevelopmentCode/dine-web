@@ -5,12 +5,14 @@ import Image from "next/image";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { COLORS } from "@/constants/colors";
 import FoodAllergiesContent from "./FoodAllergiesContent";
+import EmergencyCardContent from "./EmergencyCardContent";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
   UserSafetyLevelWithDetails,
   UserSafetyRuleWithDetails,
   UserEmergencyCard,
+  UserEmergencyCardContact,
   UserEmergencyCardDoctor,
   UserEmergencyCardHospital,
   UserEpipenCard,
@@ -44,6 +46,7 @@ type CardDataType =
     }
   | {
       emergencyCard: UserEmergencyCard | null;
+      emergencyContacts: UserEmergencyCardContact[];
       emergencyDoctors: UserEmergencyCardDoctor[];
       emergencyHospitals: UserEmergencyCardHospital[];
     }
@@ -176,6 +179,15 @@ export default function ExpandableInfoCard({
               reactionSymptoms={cardData.reactionSymptoms}
               safetyLevels={cardData.safetyLevels}
               safetyRules={cardData.safetyRules}
+            />
+          ) : cardData &&
+            cardType === "emergency" &&
+            "emergencyCard" in cardData ? (
+            <EmergencyCardContent
+              emergencyCard={cardData.emergencyCard}
+              emergencyContacts={cardData.emergencyContacts}
+              emergencyDoctors={cardData.emergencyDoctors}
+              emergencyHospitals={cardData.emergencyHospitals}
             />
           ) : (
             children || (
