@@ -11,9 +11,10 @@ interface ProfileRightSectionProps {
   slug: string;
   userId: string;
   allergens: UserAllergen[];
+  firstName?: string;
 }
 
-export default function ProfileRightSection({ slug, userId, allergens }: ProfileRightSectionProps) {
+export default function ProfileRightSection({ slug, userId, allergens, firstName }: ProfileRightSectionProps) {
   const [selectedAllergen, setSelectedAllergen] = useState<UserAllergen | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -157,6 +158,7 @@ export default function ProfileRightSection({ slug, userId, allergens }: Profile
           slug={slug}
           userId={userId}
           cardType="swe"
+          firstName={firstName}
         />
 
         <ExpandableInfoCard

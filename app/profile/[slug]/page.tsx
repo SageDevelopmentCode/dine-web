@@ -46,6 +46,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               slug={slug}
               userId={userId}
               allergens={initialData.allergens}
+              firstName={initialData.profile.first_name}
             />
           </div>
         </div>

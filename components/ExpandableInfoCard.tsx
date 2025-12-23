@@ -7,6 +7,7 @@ import { COLORS } from "@/constants/colors";
 import FoodAllergiesContent from "./FoodAllergiesContent";
 import EmergencyCardContent from "./EmergencyCardContent";
 import EpipenCardContent from "./EpipenCardContent";
+import SweCardContent from "./SweCardContent";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
@@ -36,6 +37,7 @@ interface ExpandableInfoCardProps {
   slug?: string;
   userId?: string;
   cardType?: "food-allergies" | "emergency" | "epipen" | "swe" | "travel";
+  firstName?: string;
 }
 
 type CardDataType =
@@ -76,6 +78,7 @@ export default function ExpandableInfoCard({
   slug,
   userId,
   cardType,
+  firstName,
 }: ExpandableInfoCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [cardData, setCardData] = useState<CardDataType | null>(null);
@@ -196,6 +199,15 @@ export default function ExpandableInfoCard({
             <EpipenCardContent
               epipenCard={cardData.epipenCard}
               epipenInstructions={cardData.epipenInstructions}
+            />
+          ) : cardData &&
+            cardType === "swe" &&
+            "sweCard" in cardData ? (
+            <SweCardContent
+              sweCard={cardData.sweCard}
+              sweCategories={cardData.sweCategories}
+              sweMeasures={cardData.sweMeasures}
+              firstName={firstName}
             />
           ) : (
             children || (
