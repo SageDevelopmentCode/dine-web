@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { COLORS } from "@/constants/colors";
+import FoodAllergiesContent from "./FoodAllergiesContent";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
@@ -156,10 +157,10 @@ export default function ExpandableInfoCard({
       {/* Expandable Content */}
       <div
         className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          isExpanded ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-6 pb-6">
+        <div className="px-6 pb-6 overflow-y-auto max-h-[550px]">
           {isLoading ? (
             <p
               className="text-sm font-merriweather"
@@ -167,15 +168,20 @@ export default function ExpandableInfoCard({
             >
               Loading...
             </p>
+          ) : cardData && cardType === "food-allergies" && "reactionProfile" in cardData ? (
+            <FoodAllergiesContent
+              reactionProfile={cardData.reactionProfile}
+              reactionSymptoms={cardData.reactionSymptoms}
+              safetyLevels={cardData.safetyLevels}
+              safetyRules={cardData.safetyRules}
+            />
           ) : (
             children || (
               <p
                 className="text-sm font-merriweather"
                 style={{ color: COLORS.WHITE }}
               >
-                {cardData
-                  ? "Data loaded! Check console."
-                  : "Content coming soon..."}
+                Content coming soon...
               </p>
             )
           )}
