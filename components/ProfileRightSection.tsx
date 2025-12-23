@@ -14,14 +14,21 @@ interface ProfileRightSectionProps {
   firstName?: string;
 }
 
-export default function ProfileRightSection({ slug, userId, allergens, firstName }: ProfileRightSectionProps) {
-  const [selectedAllergen, setSelectedAllergen] = useState<UserAllergen | null>(null);
+export default function ProfileRightSection({
+  slug,
+  userId,
+  allergens,
+  firstName,
+}: ProfileRightSectionProps) {
+  const [selectedAllergen, setSelectedAllergen] = useState<UserAllergen | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Filter allergens by severity
-  const severeAllergens = allergens.filter(a => a.severity === 'severe');
-  const moderateAllergens = allergens.filter(a => a.severity === 'moderate');
-  const mildAllergens = allergens.filter(a => a.severity === 'mild');
+  const severeAllergens = allergens.filter((a) => a.severity === "severe");
+  const moderateAllergens = allergens.filter((a) => a.severity === "moderate");
+  const mildAllergens = allergens.filter((a) => a.severity === "mild");
 
   const handleAllergenClick = (allergen: UserAllergen) => {
     setSelectedAllergen(allergen);
@@ -36,7 +43,7 @@ export default function ProfileRightSection({ slug, userId, allergens, firstName
   return (
     <div className="flex flex-col w-full md:w-[35%] h-full overflow-y-auto pb-20 md:pb-0">
       <h2
-        className="text-xl font-merriweather font-regular mb-4"
+        className="text-xl font-merriweather font-bold mb-4"
         style={{ color: COLORS.BLACK }}
       >
         My Allergies and Cards
@@ -113,13 +120,6 @@ export default function ProfileRightSection({ slug, userId, allergens, firstName
 
       {/* Info Cards Section */}
       <div className="mt-8">
-        <h2
-          className="text-xl font-merriweather font-regular mb-4"
-          style={{ color: COLORS.BLACK }}
-        >
-          My Cards
-        </h2>
-
         <ExpandableInfoCard
           icon="/assets/JustMe.png"
           title="Food Allergies"
