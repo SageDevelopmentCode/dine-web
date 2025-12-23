@@ -163,21 +163,6 @@ export default function ExpandableInfoCard({
             )}
           </div>
         </button>
-
-        {/* View Full Card Link - Only show if cardType and slug are available */}
-        {cardType && slug && (
-          <Link
-            href={`/profile/${slug}/${cardType}`}
-            className="absolute top-4 right-4 px-3 py-1.5 rounded-lg text-xs font-merriweather font-bold transition-opacity hover:opacity-80 z-10"
-            style={{
-              backgroundColor: COLORS.WHITE,
-              color: backgroundColor,
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            View Full Card
-          </Link>
-        )}
       </div>
 
       {/* Expandable Content */}
@@ -246,6 +231,20 @@ export default function ExpandableInfoCard({
                 Content coming soon...
               </p>
             )
+          )}
+
+          {/* View Full Card Button - Only show if cardType and slug are available */}
+          {cardType && slug && (
+            <Link
+              href={`/profile/${slug}/${cardType}`}
+              className="block w-full mt-4 px-4 py-3 rounded-lg text-sm font-merriweather font-bold text-center transition-opacity hover:opacity-80"
+              style={{
+                backgroundColor: COLORS.WHITE,
+                color: backgroundColor,
+              }}
+            >
+              View Full Card
+            </Link>
           )}
         </div>
       </div>
