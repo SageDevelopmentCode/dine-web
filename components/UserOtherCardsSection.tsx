@@ -24,10 +24,10 @@ export default function UserOtherCardsSection({
   );
 
   return (
-    <div className="w-full mt-8">
+    <div className="w-full md:w-[60%] mx-auto mt-20">
       {/* Section Title */}
       <h2
-        className="text-xl sm:text-2xl font-merriweather font-semibold mb-6"
+        className="text-sm sm:text-lg font-merriweather font-regular mb-3"
         style={{ color: COLORS.BLACK }}
       >
         User&apos;s Other Cards
@@ -35,7 +35,7 @@ export default function UserOtherCardsSection({
 
       {/* Cards Grid or Empty State */}
       {otherCards.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 justify-items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {otherCards.map((cardType) => (
             <OtherCardPreview
               key={cardType}

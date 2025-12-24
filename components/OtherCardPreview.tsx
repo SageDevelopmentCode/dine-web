@@ -24,35 +24,29 @@ export default function OtherCardPreview({
   return (
     <Link href={`/profile/${slug}/${cardType}`}>
       <div
-        className="w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer flex flex-col items-center justify-center p-4"
+        className="w-full h-[120px] rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer flex items-center gap-4 px-6 py-2 overflow-hidden"
         style={{ backgroundColor }}
       >
         {/* Icon */}
-        <div className="w-16 h-16 sm:w-20 sm:h-20 mb-2 sm:mb-3 flex-shrink-0">
+        <div className="flex-shrink-0 -ml-16 h-[110px]">
           <Image
             src={cardIcons[cardType]}
             alt={cardTitles[cardType]}
-            width={80}
-            height={80}
-            className="object-contain w-full h-full"
+            width={100}
+            height={100}
+            className="object-contain w-auto h-full"
           />
         </div>
 
-        {/* Title */}
-        <h3
-          className="text-sm sm:text-base font-merriweather font-semibold text-center mb-1"
-          style={{ color: COLORS.WHITE }}
-        >
-          {cardTitles[cardType]}
-        </h3>
-
-        {/* Description - truncated */}
-        <p
-          className="text-[10px] sm:text-xs font-merriweather font-light text-center line-clamp-2"
-          style={{ color: COLORS.WHITE }}
-        >
-          {cardDescriptions[cardType]}
-        </p>
+        {/* Text Content */}
+        <div className="flex-1 text-left pr-4">
+          <h3
+            className="text-base font-merriweather font-regular"
+            style={{ color: COLORS.WHITE }}
+          >
+            {cardTitles[cardType]}
+          </h3>
+        </div>
       </div>
     </Link>
   );
