@@ -1,6 +1,12 @@
 "use client";
 
 import { COLORS } from "@/constants/colors";
+import {
+  type ValidCardType,
+  cardTitles,
+  cardDescriptions,
+  cardIcons,
+} from "@/constants/card-config";
 import Image from "next/image";
 import FoodAllergiesContent from "./FoodAllergiesContent";
 import EmergencyCardContent from "./EmergencyCardContent";
@@ -28,7 +34,7 @@ import type {
 } from "@/lib/supabase/types";
 
 interface CardPageRightSectionProps {
-  cardType: "food-allergies" | "emergency" | "epipen" | "swe" | "travel";
+  cardType: ValidCardType;
   backgroundColor: string;
   cardData:
     | {
@@ -60,30 +66,6 @@ interface CardPageRightSectionProps {
       };
   firstName?: string;
 }
-
-const cardTitles = {
-  "food-allergies": "Food Allergies",
-  emergency: "Emergency Medical",
-  epipen: "Epipen Guide",
-  swe: "School/Work/Events",
-  travel: "Travel",
-};
-
-const cardDescriptions = {
-  "food-allergies": "Includes food preferences, allergies, instructions",
-  emergency: "If I'm unconscious or having a severe reaction",
-  epipen: "How to help in an emergency",
-  swe: "For teachers, coworkers, daycare, camp, or caregivers",
-  travel: "Multi-Language Allergy Information",
-};
-
-const cardIcons = {
-  "food-allergies": "/assets/JustMe.png",
-  emergency: "/assets/Emergency.png",
-  epipen: "/assets/Epipen.png",
-  swe: "/assets/SWE.png",
-  travel: "/assets/Travel.png",
-};
 
 export default function CardPageRightSection({
   cardType,

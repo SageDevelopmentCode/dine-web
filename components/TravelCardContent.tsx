@@ -96,7 +96,7 @@ export default function TravelCardContent({
                 backgroundColor:
                   selectedLanguage === language.language_code
                     ? COLORS.WHITE
-                    : "rgba(255, 255, 255, 0.2)",
+                    : "rgba(62, 140, 144, 0.7)",
                 color:
                   selectedLanguage === language.language_code
                     ? "#3E8C90"

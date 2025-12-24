@@ -2,13 +2,16 @@ import Header from "@/components/Header";
 import { COLORS } from "@/constants/colors";
 import ProfileLeftSectionCard from "@/components/ProfileLeftSectionCard";
 import CardPageRightSection from "@/components/CardPageRightSection";
+import UserOtherCardsSection from "@/components/UserOtherCardsSection";
 import { getInitialProfileData } from "@/lib/supabase/web_profiles/get_initial_profile_data";
 import { getFoodAllergiesData } from "@/lib/supabase/allergies/get_food_allergies_data";
 import { getEmergencyCardData } from "@/lib/supabase/emergency/get_emergency_card_data";
 import { getEpipenCardData } from "@/lib/supabase/epipen/get_epipen_card_data";
 import { getSweCardData } from "@/lib/supabase/swe/get_swe_card_data";
+import { getUserAvailableCards } from "@/lib/supabase/user_cards/get_user_available_cards";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { cardBackgroundColors, type ValidCardType } from "@/constants/card-config";
 
 interface CardPageProps {
   params: Promise<{
@@ -24,16 +27,6 @@ const VALID_CARD_TYPES = [
   "swe",
   "travel",
 ] as const;
-
-type ValidCardType = (typeof VALID_CARD_TYPES)[number];
-
-const cardBackgroundColors: Record<ValidCardType, string> = {
-  "food-allergies": COLORS.FOOD_ALLERGIES_BG,
-  emergency: COLORS.EMERGENCY_MEDICAL_BG,
-  epipen: COLORS.EPIPEN_COLOR,
-  swe: COLORS.SCHOOL_WORK_EVENTS_BG,
-  travel: COLORS.TRAVEL_BG,
-};
 
 export default async function CardPage({ params }: CardPageProps) {
   const { slug, "card-type": cardType } = await params;
@@ -57,6 +50,15 @@ export default async function CardPage({ params }: CardPageProps) {
   }
 
   const userId = initialData.profile.user_id;
+
+  // Fetch user's available cards for the "Other Cards" section
+  let availableCardTypes: ValidCardType[] = [];
+  try {
+    availableCardTypes = await getUserAvailableCards(userId);
+  } catch (error) {
+    console.error("Error fetching available cards:", error);
+    // Continue without the other cards section if this fails
+  }
 
   // Fetch card-specific data based on card type
   let cardData;
@@ -175,13 +177,13 @@ export default async function CardPage({ params }: CardPageProps) {
 
   return (
     <div
-      className="h-screen flex flex-col"
+      className="h-screen flex flex-col overflow-y-auto"
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
       <main className="flex-1 px-2 py-8 sm:px-4 md:px-8 lg:px-12">
-        <div className="max-w-[1400px] mx-auto h-full">
-          <div className="flex flex-col md:flex-row gap-4 md:gap-8 h-full justify-center">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row gap-4 md:gap-8 justify-center mb-8">
             <ProfileLeftSectionCard
               profile={initialData.profile}
               emergencyContacts={initialData.emergencyContacts}
@@ -194,6 +196,13 @@ export default async function CardPage({ params }: CardPageProps) {
               firstName={initialData.profile.first_name}
             />
           </div>
+
+          {/* User's Other Cards Section */}
+          <UserOtherCardsSection
+            availableCardTypes={availableCardTypes}
+            currentCardType={validCardType}
+            slug={slug}
+          />
         </div>
       </main>
     </div>

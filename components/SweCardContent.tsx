@@ -49,6 +49,51 @@ export default function SweCardContent({
 
   return (
     <div className="space-y-4">
+      {/* Categories and Measures */}
+      <div>
+        <h4
+          className="text-lg font-merriweather font-semibold mb-3"
+          style={{ color: textColor }}
+        >
+          Categories & Measures
+        </h4>
+
+        {categoriesWithMeasures.length > 0 ? (
+          categoriesWithMeasures.map(({ category, measures }) => (
+            <div key={category.id} className="mb-4">
+              <h4
+                className="text-sm font-merriweather font-semibold mb-2"
+                style={{ color: textColor }}
+              >
+                {category.custom_category_name ||
+                  category.swe_category?.category_name}
+              </h4>
+
+              <div className="space-y-2">
+                {measures.map((measure) => (
+                  <div
+                    key={measure.id}
+                    className="flex items-start gap-2 text-xs font-merriweather rounded-lg p-3"
+                    style={{
+                      backgroundColor: "#44276A",
+                      color: COLORS.WHITE,
+                    }}
+                  >
+                    <span className="flex-1">
+                      {replaceUserName(measure.instruction_text)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm font-merriweather" style={{ color: textColor }}>
+            No measures configured yet.
+          </p>
+        )}
+      </div>
+
       {/* Notes Section */}
       {sweCard?.notes && (
         <div className="rounded-lg p-4" style={{ backgroundColor: "#44276A" }}>
@@ -65,45 +110,6 @@ export default function SweCardContent({
             {sweCard.notes}
           </p>
         </div>
-      )}
-
-      {/* Categories and Measures */}
-      {categoriesWithMeasures.length > 0 ? (
-        categoriesWithMeasures.map(({ category, measures }) => (
-          <div key={category.id}>
-            <h4
-              className="text-sm font-merriweather font-semibold mb-2"
-              style={{ color: textColor }}
-            >
-              {category.custom_category_name ||
-                category.swe_category?.category_name}
-            </h4>
-
-            <div className="space-y-2">
-              {measures.map((measure) => (
-                <div
-                  key={measure.id}
-                  className="flex items-start gap-2 text-xs font-merriweather rounded-lg p-3"
-                  style={{
-                    backgroundColor: "#44276A",
-                    color: COLORS.WHITE,
-                  }}
-                >
-                  <span className="flex-1">
-                    {replaceUserName(measure.instruction_text)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))
-      ) : (
-        <p
-          className="text-sm font-merriweather"
-          style={{ color: textColor }}
-        >
-          No measures configured yet.
-        </p>
       )}
     </div>
   );
