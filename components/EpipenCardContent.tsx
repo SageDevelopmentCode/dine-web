@@ -11,12 +11,14 @@ interface EpipenCardContentProps {
   epipenCard: UserEpipenCard | null;
   epipenInstructions: UserEpipenInstructionWithDetails[];
   textColor?: string;
+  variant?: "expandable" | "dedicated";
 }
 
 export default function EpipenCardContent({
   epipenCard,
   epipenInstructions,
   textColor = COLORS.WHITE,
+  variant = "expandable",
 }: EpipenCardContentProps) {
   // Sort and filter instructions
   const activeInstructions = epipenInstructions
@@ -97,16 +99,16 @@ export default function EpipenCardContent({
     <div className="space-y-4">
       {/* Epipen Details Section */}
       {epipenCard && (
-        <div className="rounded-lg p-4" style={{ backgroundColor: "#61ADCF" }}>
+        <div className="rounded-lg p-4" style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#61ADCF" }}>
           <h4
             className="text-sm font-merriweather font-semibold mb-3"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             EpiPen Details
           </h4>
           <div
             className="space-y-2 text-xs font-merriweather"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             <p>
               <strong>Status:</strong>{" "}
@@ -132,11 +134,11 @@ export default function EpipenCardContent({
         (epipenCard.primary_location || epipenCard.secondary_location) && (
           <div
             className="rounded-lg p-4"
-            style={{ backgroundColor: "#61ADCF" }}
+            style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#61ADCF" }}
           >
             <h4
               className="text-sm font-merriweather font-semibold mb-3"
-              style={{ color: COLORS.WHITE }}
+              style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
             >
               Location Information
             </h4>
@@ -145,9 +147,11 @@ export default function EpipenCardContent({
                 <div
                   className="text-xs font-merriweather pb-3"
                   style={{
-                    color: COLORS.WHITE,
+                    color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE,
                     borderBottom: epipenCard.secondary_location
-                      ? `1px solid rgba(255, 255, 255, 0.2)`
+                      ? variant === "dedicated"
+                        ? `1px solid rgba(0, 0, 0, 0.1)`
+                        : `1px solid rgba(255, 255, 255, 0.2)`
                       : "none",
                   }}
                 >
@@ -169,7 +173,7 @@ export default function EpipenCardContent({
               {epipenCard.secondary_location && (
                 <div
                   className="text-xs font-merriweather"
-                  style={{ color: COLORS.WHITE }}
+                  style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
                 >
                   <p className="font-semibold mb-1">Secondary Location</p>
                   <p>
@@ -212,8 +216,8 @@ export default function EpipenCardContent({
                 key={instruction.id}
                 className="flex items-start gap-2 text-xs font-merriweather rounded-lg p-3"
                 style={{
-                  backgroundColor: "#61ADCF",
-                  color: COLORS.WHITE,
+                  backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#61ADCF",
+                  color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE,
                 }}
               >
                 <span className="flex-shrink-0 mt-0.5">

@@ -119,6 +119,7 @@ export default function CardPageRightSection({
             safetyLevels={cardData.safetyLevels}
             safetyRules={cardData.safetyRules}
             textColor={COLORS.BLACK}
+            variant="dedicated"
           />
         ) : cardType === "emergency" && "emergencyCard" in cardData ? (
           <EmergencyCardContent
@@ -127,12 +128,14 @@ export default function CardPageRightSection({
             emergencyDoctors={cardData.emergencyDoctors}
             emergencyHospitals={cardData.emergencyHospitals}
             textColor={COLORS.BLACK}
+            variant="dedicated"
           />
         ) : cardType === "epipen" && "epipenCard" in cardData ? (
           <EpipenCardContent
             epipenCard={cardData.epipenCard}
             epipenInstructions={cardData.epipenInstructions}
             textColor={COLORS.BLACK}
+            variant="dedicated"
           />
         ) : cardType === "swe" && "sweCard" in cardData ? (
           <SweCardContent
@@ -141,6 +144,7 @@ export default function CardPageRightSection({
             sweMeasures={cardData.sweMeasures}
             firstName={firstName}
             textColor={COLORS.BLACK}
+            variant="dedicated"
           />
         ) : cardType === "travel" && "travelCard" in cardData ? (
           <TravelCardContent
@@ -149,6 +153,7 @@ export default function CardPageRightSection({
             travelPhrases={cardData.travelPhrases}
             travelCategories={cardData.travelCategories}
             textColor={COLORS.BLACK}
+            variant="dedicated"
           />
         ) : (
           <p

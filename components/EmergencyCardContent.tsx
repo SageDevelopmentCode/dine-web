@@ -14,6 +14,7 @@ interface EmergencyCardContentProps {
   emergencyDoctors: UserEmergencyCardDoctor[];
   emergencyHospitals: UserEmergencyCardHospital[];
   textColor?: string;
+  variant?: "expandable" | "dedicated";
 }
 
 export default function EmergencyCardContent({
@@ -22,6 +23,7 @@ export default function EmergencyCardContent({
   emergencyDoctors,
   emergencyHospitals,
   textColor = COLORS.WHITE,
+  variant = "expandable",
 }: EmergencyCardContentProps) {
   // Sort contacts by priority
   const sortedContacts = [...emergencyContacts].sort(
@@ -86,16 +88,16 @@ export default function EmergencyCardContent({
     <div className="space-y-4">
       {/* Personal Information Section */}
       {emergencyCard && (
-        <div className="rounded-lg p-4" style={{ backgroundColor: "#692B47" }}>
+        <div className="rounded-lg p-4" style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#692B47" }}>
           <h4
             className="text-sm font-merriweather font-semibold mb-3"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             Personal Information
           </h4>
           <div
             className="space-y-2 text-xs font-merriweather"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             <p>
               <strong>Full Legal Name:</strong> {emergencyCard.full_legal_name}
@@ -127,10 +129,10 @@ export default function EmergencyCardContent({
 
       {/* Emergency Contacts Section */}
       {sortedContacts.length > 0 && (
-        <div className="rounded-lg p-4" style={{ backgroundColor: "#692B47" }}>
+        <div className="rounded-lg p-4" style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#692B47" }}>
           <h4
             className="text-sm font-merriweather font-semibold mb-3"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             Emergency Contacts
           </h4>
@@ -140,10 +142,12 @@ export default function EmergencyCardContent({
                 key={contact.id}
                 className="text-xs font-merriweather pb-3"
                 style={{
-                  color: COLORS.WHITE,
+                  color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE,
                   borderBottom:
                     index < sortedContacts.length - 1
-                      ? `1px solid rgba(255, 255, 255, 0.2)`
+                      ? variant === "dedicated"
+                        ? `1px solid rgba(0, 0, 0, 0.1)`
+                        : `1px solid rgba(255, 255, 255, 0.2)`
                       : "none",
                 }}
               >
@@ -165,10 +169,10 @@ export default function EmergencyCardContent({
 
       {/* Doctors Section */}
       {emergencyDoctors.length > 0 && (
-        <div className="rounded-lg p-4" style={{ backgroundColor: "#692B47" }}>
+        <div className="rounded-lg p-4" style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#692B47" }}>
           <h4
             className="text-sm font-merriweather font-semibold mb-3"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             Medical Providers
           </h4>
@@ -177,10 +181,12 @@ export default function EmergencyCardContent({
               <div
                 className="text-xs font-merriweather pb-3"
                 style={{
-                  color: COLORS.WHITE,
+                  color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE,
                   borderBottom:
                     allergySpecialist || otherDoctors.length > 0
-                      ? `1px solid rgba(255, 255, 255, 0.2)`
+                      ? variant === "dedicated"
+                        ? `1px solid rgba(0, 0, 0, 0.1)`
+                        : `1px solid rgba(255, 255, 255, 0.2)`
                       : "none",
                 }}
               >
@@ -203,10 +209,12 @@ export default function EmergencyCardContent({
               <div
                 className="text-xs font-merriweather pb-3"
                 style={{
-                  color: COLORS.WHITE,
+                  color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE,
                   borderBottom:
                     otherDoctors.length > 0
-                      ? `1px solid rgba(255, 255, 255, 0.2)`
+                      ? variant === "dedicated"
+                        ? `1px solid rgba(0, 0, 0, 0.1)`
+                        : `1px solid rgba(255, 255, 255, 0.2)`
                       : "none",
                 }}
               >
@@ -230,10 +238,12 @@ export default function EmergencyCardContent({
                 key={doctor.id}
                 className="text-xs font-merriweather pb-3"
                 style={{
-                  color: COLORS.WHITE,
+                  color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE,
                   borderBottom:
                     index < otherDoctors.length - 1
-                      ? `1px solid rgba(255, 255, 255, 0.2)`
+                      ? variant === "dedicated"
+                        ? `1px solid rgba(0, 0, 0, 0.1)`
+                        : `1px solid rgba(255, 255, 255, 0.2)`
                       : "none",
                 }}
               >
@@ -255,10 +265,10 @@ export default function EmergencyCardContent({
 
       {/* Hospitals Section */}
       {sortedHospitals.length > 0 && (
-        <div className="rounded-lg p-4" style={{ backgroundColor: "#692B47" }}>
+        <div className="rounded-lg p-4" style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#692B47" }}>
           <h4
             className="text-sm font-merriweather font-semibold mb-3"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             Preferred Hospitals
           </h4>
@@ -268,10 +278,12 @@ export default function EmergencyCardContent({
                 key={hospital.id}
                 className="text-xs font-merriweather pb-3"
                 style={{
-                  color: COLORS.WHITE,
+                  color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE,
                   borderBottom:
                     index < sortedHospitals.length - 1
-                      ? `1px solid rgba(255, 255, 255, 0.2)`
+                      ? variant === "dedicated"
+                        ? `1px solid rgba(0, 0, 0, 0.1)`
+                        : `1px solid rgba(255, 255, 255, 0.2)`
                       : "none",
                 }}
               >

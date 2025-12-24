@@ -17,6 +17,7 @@ interface TravelCardContentProps {
   travelPhrases: UserTravelPhraseWithDetails[];
   travelCategories: TravelPhraseCategory[];
   textColor?: string;
+  variant?: "expandable" | "dedicated";
 }
 
 export default function TravelCardContent({
@@ -25,6 +26,7 @@ export default function TravelCardContent({
   travelPhrases,
   travelCategories,
   textColor = COLORS.WHITE,
+  variant = "expandable",
 }: TravelCardContentProps) {
   // Set first language as default, or empty string if no languages
   const [selectedLanguage, setSelectedLanguage] = useState(
@@ -132,11 +134,11 @@ export default function TravelCardContent({
                   <div
                     key={phrase.id}
                     className="rounded-lg p-3"
-                    style={{ backgroundColor: "#3E8C90" }}
+                    style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#3E8C90" }}
                   >
                     <p
                       className="text-xs font-merriweather mb-2"
-                      style={{ color: COLORS.WHITE }}
+                      style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
                     >
                       {renderPhraseText(phrase)}
                     </p>
@@ -149,7 +151,7 @@ export default function TravelCardContent({
                             key={allergen.id}
                             className="px-2 py-1 rounded-full text-xs font-merriweather flex items-center gap-1"
                             style={{
-                              backgroundColor: COLORS.WHITE,
+                              backgroundColor: variant === "dedicated" ? COLORS.PAGE_BACKGROUND : COLORS.WHITE,
                               color: "#3E8C90",
                             }}
                           >
@@ -171,7 +173,7 @@ export default function TravelCardContent({
                           <div
                             key={contact.id}
                             className="text-xs font-merriweather"
-                            style={{ color: COLORS.WHITE, opacity: 0.9 }}
+                            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE, opacity: 0.9 }}
                           >
                             <strong>{contact.full_name}</strong> (
                             {contact.relationship}): {contact.phone_number}

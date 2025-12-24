@@ -15,6 +15,7 @@ interface FoodAllergiesContentProps {
   safetyLevels: UserSafetyLevelWithDetails[];
   safetyRules: UserSafetyRuleWithDetails[];
   textColor?: string;
+  variant?: "expandable" | "dedicated";
 }
 
 export default function FoodAllergiesContent({
@@ -23,6 +24,7 @@ export default function FoodAllergiesContent({
   safetyLevels,
   safetyRules,
   textColor = COLORS.WHITE,
+  variant = "expandable",
 }: FoodAllergiesContentProps) {
   // Group symptoms by severity
   const severeSymptoms = reactionSymptoms.filter(
@@ -64,12 +66,12 @@ export default function FoodAllergiesContent({
       {reactionProfile && (
         <div
           className="rounded-lg p-4"
-          style={{ backgroundColor: "#5C827C" }}
+          style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#5C827C" }}
         >
-          <h4 className="text-sm font-merriweather font-semibold mb-3" style={{ color: COLORS.WHITE }}>
+          <h4 className="text-sm font-merriweather font-semibold mb-3" style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}>
             Reaction Profile
           </h4>
-          <div className="space-y-2 text-xs font-merriweather" style={{ color: COLORS.WHITE }}>
+          <div className="space-y-2 text-xs font-merriweather" style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}>
             {reactionProfile.has_anaphylaxis && (
               <p>⚠️ Has history of anaphylaxis</p>
             )}
@@ -87,16 +89,16 @@ export default function FoodAllergiesContent({
       {reactionSymptoms.length > 0 && (
         <div
           className="rounded-lg p-4"
-          style={{ backgroundColor: "#5C827C" }}
+          style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#5C827C" }}
         >
-          <h4 className="text-sm font-merriweather font-semibold mb-3" style={{ color: COLORS.WHITE }}>
+          <h4 className="text-sm font-merriweather font-semibold mb-3" style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}>
             My Symptoms
           </h4>
 
           {/* Severe Symptoms */}
           {severeSymptoms.length > 0 && (
             <div className="mb-3">
-              <p className="text-xs font-merriweather mb-2" style={{ color: COLORS.WHITE, opacity: 0.9 }}>
+              <p className="text-xs font-merriweather mb-2" style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE, opacity: 0.9 }}>
                 Severe
               </p>
               <div className="flex flex-wrap gap-2">
@@ -120,7 +122,7 @@ export default function FoodAllergiesContent({
           {/* Moderate Symptoms */}
           {moderateSymptoms.length > 0 && (
             <div className="mb-3">
-              <p className="text-xs font-merriweather mb-2" style={{ color: COLORS.WHITE, opacity: 0.9 }}>
+              <p className="text-xs font-merriweather mb-2" style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE, opacity: 0.9 }}>
                 Moderate
               </p>
               <div className="flex flex-wrap gap-2">
@@ -144,7 +146,7 @@ export default function FoodAllergiesContent({
           {/* Mild Symptoms */}
           {mildSymptoms.length > 0 && (
             <div>
-              <p className="text-xs font-merriweather mb-2" style={{ color: COLORS.WHITE, opacity: 0.9 }}>
+              <p className="text-xs font-merriweather mb-2" style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE, opacity: 0.9 }}>
                 Mild
               </p>
               <div className="flex flex-wrap gap-2">
@@ -183,8 +185,8 @@ export default function FoodAllergiesContent({
                 key={rule.id}
                 className="flex items-start gap-2 text-xs font-merriweather rounded-lg p-3"
                 style={{
-                  backgroundColor: "#5C827C",
-                  color: COLORS.WHITE
+                  backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#5C827C",
+                  color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE
                 }}
               >
                 <span className="flex-shrink-0 mt-0.5">

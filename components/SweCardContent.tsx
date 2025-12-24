@@ -13,6 +13,7 @@ interface SweCardContentProps {
   sweMeasures: UserSweMeasureWithDetails[];
   firstName?: string;
   textColor?: string;
+  variant?: "expandable" | "dedicated";
 }
 
 export default function SweCardContent({
@@ -21,6 +22,7 @@ export default function SweCardContent({
   sweMeasures,
   firstName,
   textColor = COLORS.WHITE,
+  variant = "expandable",
 }: SweCardContentProps) {
   // Helper function to replace {userName} with actual first name
   const replaceUserName = (text: string): string => {
@@ -49,13 +51,13 @@ export default function SweCardContent({
 
   return (
     <div className="space-y-4">
-      {/* Categories and Measures */}
+      {/* Accommodations Required */}
       <div>
         <h4
           className="text-lg font-merriweather font-semibold mb-3"
           style={{ color: textColor }}
         >
-          Categories & Measures
+          Accommodations Required
         </h4>
 
         {categoriesWithMeasures.length > 0 ? (
@@ -75,8 +77,8 @@ export default function SweCardContent({
                     key={measure.id}
                     className="flex items-start gap-2 text-xs font-merriweather rounded-lg p-3"
                     style={{
-                      backgroundColor: "#44276A",
-                      color: COLORS.WHITE,
+                      backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#44276A",
+                      color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE,
                     }}
                   >
                     <span className="flex-1">
@@ -96,16 +98,16 @@ export default function SweCardContent({
 
       {/* Notes Section */}
       {sweCard?.notes && (
-        <div className="rounded-lg p-4" style={{ backgroundColor: "#44276A" }}>
+        <div className="rounded-lg p-4" style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#44276A" }}>
           <h4
             className="text-sm font-merriweather font-semibold mb-3"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             Notes
           </h4>
           <p
             className="text-xs font-merriweather"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
           >
             {sweCard.notes}
           </p>
