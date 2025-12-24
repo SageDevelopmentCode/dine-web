@@ -13,6 +13,7 @@ interface EmergencyCardContentProps {
   emergencyContacts: UserEmergencyCardContact[];
   emergencyDoctors: UserEmergencyCardDoctor[];
   emergencyHospitals: UserEmergencyCardHospital[];
+  textColor?: string;
 }
 
 export default function EmergencyCardContent({
@@ -20,6 +21,7 @@ export default function EmergencyCardContent({
   emergencyContacts,
   emergencyDoctors,
   emergencyHospitals,
+  textColor = COLORS.WHITE,
 }: EmergencyCardContentProps) {
   // Sort contacts by priority
   const sortedContacts = [...emergencyContacts].sort(

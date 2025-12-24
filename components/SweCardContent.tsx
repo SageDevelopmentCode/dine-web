@@ -12,6 +12,7 @@ interface SweCardContentProps {
   sweCategories: UserSweCategoryWithDetails[];
   sweMeasures: UserSweMeasureWithDetails[];
   firstName?: string;
+  textColor?: string;
 }
 
 export default function SweCardContent({
@@ -19,6 +20,7 @@ export default function SweCardContent({
   sweCategories,
   sweMeasures,
   firstName,
+  textColor = COLORS.WHITE,
 }: SweCardContentProps) {
   // Helper function to replace {userName} with actual first name
   const replaceUserName = (text: string): string => {
@@ -71,7 +73,7 @@ export default function SweCardContent({
           <div key={category.id}>
             <h4
               className="text-sm font-merriweather font-semibold mb-2"
-              style={{ color: COLORS.WHITE }}
+              style={{ color: textColor }}
             >
               {category.custom_category_name ||
                 category.swe_category?.category_name}
@@ -98,7 +100,7 @@ export default function SweCardContent({
       ) : (
         <p
           className="text-sm font-merriweather"
-          style={{ color: COLORS.WHITE }}
+          style={{ color: textColor }}
         >
           No measures configured yet.
         </p>

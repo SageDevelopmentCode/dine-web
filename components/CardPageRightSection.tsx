@@ -136,6 +136,7 @@ export default function CardPageRightSection({
             reactionSymptoms={cardData.reactionSymptoms}
             safetyLevels={cardData.safetyLevels}
             safetyRules={cardData.safetyRules}
+            textColor={COLORS.BLACK}
           />
         ) : cardType === "emergency" && "emergencyCard" in cardData ? (
           <EmergencyCardContent
@@ -143,11 +144,13 @@ export default function CardPageRightSection({
             emergencyContacts={cardData.emergencyContacts}
             emergencyDoctors={cardData.emergencyDoctors}
             emergencyHospitals={cardData.emergencyHospitals}
+            textColor={COLORS.BLACK}
           />
         ) : cardType === "epipen" && "epipenCard" in cardData ? (
           <EpipenCardContent
             epipenCard={cardData.epipenCard}
             epipenInstructions={cardData.epipenInstructions}
+            textColor={COLORS.BLACK}
           />
         ) : cardType === "swe" && "sweCard" in cardData ? (
           <SweCardContent
@@ -155,6 +158,7 @@ export default function CardPageRightSection({
             sweCategories={cardData.sweCategories}
             sweMeasures={cardData.sweMeasures}
             firstName={firstName}
+            textColor={COLORS.BLACK}
           />
         ) : cardType === "travel" && "travelCard" in cardData ? (
           <TravelCardContent
@@ -162,11 +166,12 @@ export default function CardPageRightSection({
             travelLanguages={cardData.travelLanguages}
             travelPhrases={cardData.travelPhrases}
             travelCategories={cardData.travelCategories}
+            textColor={COLORS.BLACK}
           />
         ) : (
           <p
             className="text-sm font-merriweather"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: COLORS.BLACK }}
           >
             No data available.
           </p>

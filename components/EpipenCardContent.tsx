@@ -10,11 +10,13 @@ import type {
 interface EpipenCardContentProps {
   epipenCard: UserEpipenCard | null;
   epipenInstructions: UserEpipenInstructionWithDetails[];
+  textColor?: string;
 }
 
 export default function EpipenCardContent({
   epipenCard,
   epipenInstructions,
+  textColor = COLORS.WHITE,
 }: EpipenCardContentProps) {
   // Sort and filter instructions
   const activeInstructions = epipenInstructions
@@ -193,13 +195,13 @@ export default function EpipenCardContent({
         <div>
           <h4
             className="text-sm font-merriweather font-semibold mb-2"
-            style={{ color: COLORS.WHITE }}
+            style={{ color: textColor }}
           >
             How to Use EpiPen
           </h4>
           <p
             className="text-xs font-merriweather mb-3"
-            style={{ color: COLORS.WHITE, opacity: 0.8 }}
+            style={{ color: textColor, opacity: 0.8 }}
           >
             Follow these steps in order during an emergency
           </p>

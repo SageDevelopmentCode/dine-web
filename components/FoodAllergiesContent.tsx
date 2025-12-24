@@ -14,6 +14,7 @@ interface FoodAllergiesContentProps {
   reactionSymptoms: UserReactionSymptomWithDetails[];
   safetyLevels: UserSafetyLevelWithDetails[];
   safetyRules: UserSafetyRuleWithDetails[];
+  textColor?: string;
 }
 
 export default function FoodAllergiesContent({
@@ -21,6 +22,7 @@ export default function FoodAllergiesContent({
   reactionSymptoms,
   safetyLevels,
   safetyRules,
+  textColor = COLORS.WHITE,
 }: FoodAllergiesContentProps) {
   // Group symptoms by severity
   const severeSymptoms = reactionSymptoms.filter(
@@ -168,10 +170,10 @@ export default function FoodAllergiesContent({
       {/* Safety Rules Section */}
       {activeSafetyRules.length > 0 && (
         <div>
-          <h4 className="text-sm font-merriweather font-semibold mb-2" style={{ color: COLORS.WHITE }}>
+          <h4 className="text-sm font-merriweather font-semibold mb-2" style={{ color: textColor }}>
             Safety Instructions
           </h4>
-          <p className="text-xs font-merriweather mb-3" style={{ color: COLORS.WHITE, opacity: 0.8 }}>
+          <p className="text-xs font-merriweather mb-3" style={{ color: textColor, opacity: 0.8 }}>
             Safety Level: <span className="capitalize font-semibold">{safetyLevelName}</span>
           </p>
 

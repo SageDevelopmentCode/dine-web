@@ -16,6 +16,7 @@ interface TravelCardContentProps {
   travelLanguages: UserTravelLanguage[];
   travelPhrases: UserTravelPhraseWithDetails[];
   travelCategories: TravelPhraseCategory[];
+  textColor?: string;
 }
 
 export default function TravelCardContent({
@@ -23,6 +24,7 @@ export default function TravelCardContent({
   travelLanguages,
   travelPhrases,
   travelCategories,
+  textColor = COLORS.WHITE,
 }: TravelCardContentProps) {
   // Set first language as default, or empty string if no languages
   const [selectedLanguage, setSelectedLanguage] = useState(
@@ -121,7 +123,7 @@ export default function TravelCardContent({
             <div key={category.id}>
               <h4
                 className="text-sm font-merriweather font-semibold mb-3"
-                style={{ color: COLORS.WHITE }}
+                style={{ color: textColor }}
               >
                 {category.category_name}
               </h4>
