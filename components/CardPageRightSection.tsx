@@ -78,18 +78,17 @@ export default function CardPageRightSection({
   return (
     <div className="flex flex-col w-full md:w-[35%] h-full overflow-y-auto pb-20 md:pb-0">
       {/* Banner Header */}
-      <div
-        className="w-full mb-6 rounded-2xl"
-        style={{ backgroundColor }}
-      >
+      <div className="w-full mb-6 rounded-2xl" style={{ backgroundColor }}>
         <div className="px-6 py-2 flex items-center gap-4 min-h-[120px]">
           {/* Icon */}
           <div className="flex-shrink-0 -ml-8 h-[110px]">
             <Image
               src={cardIcons[cardType]}
               alt={cardTitles[cardType]}
-              width={100}
-              height={100}
+              width={110}
+              height={110}
+              quality={100}
+              unoptimized={true}
               className="object-contain w-auto h-full"
             />
           </div>

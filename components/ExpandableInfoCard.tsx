@@ -132,8 +132,10 @@ export default function ExpandableInfoCard({
             <Image
               src={icon}
               alt={title}
-              width={100}
-              height={100}
+              width={110}
+              height={110}
+              quality={100}
+              unoptimized={true}
               className="object-contain w-auto h-full"
             />
           </div>
