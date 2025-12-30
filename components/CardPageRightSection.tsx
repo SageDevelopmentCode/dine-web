@@ -31,6 +31,7 @@ import type {
   UserTravelLanguage,
   UserTravelPhraseWithDetails,
   TravelPhraseCategory,
+  UserAllergen,
 } from "@/lib/supabase/types";
 
 interface CardPageRightSectionProps {
@@ -42,6 +43,7 @@ interface CardPageRightSectionProps {
         reactionSymptoms: UserReactionSymptomWithDetails[];
         safetyLevels: UserSafetyLevelWithDetails[];
         safetyRules: UserSafetyRuleWithDetails[];
+        allergens?: UserAllergen[];
       }
     | {
         emergencyCard: UserEmergencyCard | null;
@@ -118,6 +120,7 @@ export default function CardPageRightSection({
             reactionSymptoms={cardData.reactionSymptoms}
             safetyLevels={cardData.safetyLevels}
             safetyRules={cardData.safetyRules}
+            allergens={cardData.allergens}
             textColor={COLORS.BLACK}
             variant="dedicated"
           />

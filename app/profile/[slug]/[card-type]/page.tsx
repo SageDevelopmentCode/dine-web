@@ -65,7 +65,10 @@ export default async function CardPage({ params }: CardPageProps) {
   try {
     switch (validCardType) {
       case "food-allergies":
-        cardData = await getFoodAllergiesData(slug);
+        cardData = {
+          ...(await getFoodAllergiesData(slug)),
+          allergens: initialData.allergens,
+        };
         break;
 
       case "emergency": {

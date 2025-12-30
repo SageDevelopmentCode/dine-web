@@ -2,11 +2,13 @@
 
 import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
+import AllergenCard from "./AllergenCard";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
   UserSafetyLevelWithDetails,
   UserSafetyRuleWithDetails,
+  UserAllergen,
 } from "@/lib/supabase/types";
 
 interface FoodAllergiesContentProps {
@@ -14,6 +16,7 @@ interface FoodAllergiesContentProps {
   reactionSymptoms: UserReactionSymptomWithDetails[];
   safetyLevels: UserSafetyLevelWithDetails[];
   safetyRules: UserSafetyRuleWithDetails[];
+  allergens?: UserAllergen[];
   textColor?: string;
   variant?: "expandable" | "dedicated";
 }
@@ -23,6 +26,7 @@ export default function FoodAllergiesContent({
   reactionSymptoms,
   safetyLevels,
   safetyRules,
+  allergens,
   textColor = COLORS.WHITE,
   variant = "expandable",
 }: FoodAllergiesContentProps) {
@@ -36,6 +40,11 @@ export default function FoodAllergiesContent({
   const mildSymptoms = reactionSymptoms.filter(
     (s) => s.symptom?.severity === "mild" || s.custom_symptom_severity === "mild"
   );
+
+  // Group allergens by severity
+  const severeAllergens = allergens?.filter((a) => a.severity === "severe") || [];
+  const moderateAllergens = allergens?.filter((a) => a.severity === "moderate") || [];
+  const mildAllergens = allergens?.filter((a) => a.severity === "mild") || [];
 
   // Get safety level name
   const safetyLevelName = safetyLevels.length > 0
@@ -62,6 +71,85 @@ export default function FoodAllergiesContent({
 
   return (
     <div className="space-y-4">
+      {/* Allergens Section - Only for dedicated variant */}
+      {variant === "dedicated" && allergens && allergens.length > 0 && (
+        <div className="mb-6">
+          {/* Heading */}
+          <h2
+            className="text-xl font-merriweather font-bold mb-6"
+            style={{ color: COLORS.BLACK }}
+          >
+            Hi! I have food allergies. Please read carefully:
+          </h2>
+
+          {/* Severe Allergens */}
+          {severeAllergens.length > 0 && (
+            <div className="mb-6">
+              <h3
+                className="text-sm font-merriweather mb-3"
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+              >
+                Severe
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {severeAllergens.map((allergen) => (
+                  <AllergenCard
+                    key={allergen.id}
+                    emojiHex={allergen.twemoji}
+                    label={allergen.allergen}
+                    severity="severe"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Moderate Allergens */}
+          {moderateAllergens.length > 0 && (
+            <div className="mb-6">
+              <h3
+                className="text-sm font-merriweather mb-3"
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+              >
+                Moderate
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {moderateAllergens.map((allergen) => (
+                  <AllergenCard
+                    key={allergen.id}
+                    emojiHex={allergen.twemoji}
+                    label={allergen.allergen}
+                    severity="moderate"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Mild Allergens */}
+          {mildAllergens.length > 0 && (
+            <div className="mb-6">
+              <h3
+                className="text-sm font-merriweather mb-3"
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+              >
+                Mild
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {mildAllergens.map((allergen) => (
+                  <AllergenCard
+                    key={allergen.id}
+                    emojiHex={allergen.twemoji}
+                    label={allergen.allergen}
+                    severity="mild"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Reaction Profile Section */}
       {reactionProfile && (
         <div
