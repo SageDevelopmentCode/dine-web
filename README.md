@@ -1,5 +1,7 @@
 # Dine Web
 
+<img width="918" height="520" alt="image" src="https://github.com/user-attachments/assets/3b0b0f5a-a103-46b8-91d4-77b09a38d764" />
+
 A web platform for managing and sharing food allergy profiles, enabling individuals, families, and restaurants to communicate critical dietary information safely and effectively.
 
 ## About
@@ -9,6 +11,10 @@ Dine Web is the public/private profile component of the Dine food allergy manage
 ### Key Features
 
 **For Individuals:**
+
+<img width="480" height="764" alt="p3" src="https://github.com/user-attachments/assets/2e8f87de-3a6c-405a-a5b1-978e9481ac19" />
+
+
 - Create and share personalized food allergy profiles
 - Generate shareable emergency cards with critical allergy information
 - Access travel phrases for communicating allergies in different languages
@@ -21,6 +27,10 @@ Dine Web is the public/private profile component of the Dine food allergy manage
 - Centralized management of multiple family members' allergies
 
 **For Restaurants:**
+
+<img width="480" height="270" alt="Restaurant Profile" src="https://github.com/user-attachments/assets/44fa5699-dd4c-4834-b51d-4cb0b90f74f6" />
+
+
 - Create detailed restaurant profiles showcasing allergy accommodations
 - Share menu information and dietary options
 - Document safety protocols and cross-contamination prevention measures
