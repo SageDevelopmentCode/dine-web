@@ -1,26 +1,37 @@
 import { createClient } from '@/lib/supabase/server';
-import {
-  RestaurantWebProfile,
-  RestaurantWebProfileUrl,
-  RestaurantWebProfileImage,
-  Restaurant,
-  RestaurantAddress,
-  RestaurantDietaryOption,
-  RestaurantKitchenProtocol,
-  RestaurantCuisineOption,
-  RestaurantAllergenHandled,
-  RestaurantHours,
-  RestaurantMenuItem,
-  RestaurantMenuCategory,
-  RestaurantMenuItemWithDetails,
-  RestaurantMenuItemAllergenModification,
-  RestaurantMenuItemAllergen,
-  RestaurantMenuItemDietaryOption,
-  RestaurantMenuItemImage,
-  RestaurantMenuItemModificationNote,
-  RestaurantMenuItemPreparationMethod,
-  RestaurantMenuItemProtocolOverride,
-} from '@/lib/supabase/types';
+import { Database } from '@/lib/supabase/types';
+
+// Type aliases for better readability
+type RestaurantWebProfile = Database['web_profiles']['Tables']['restaurant_web_profiles']['Row'];
+type RestaurantWebProfileUrl = Database['web_profiles']['Tables']['restaurant_web_profile_urls']['Row'];
+type RestaurantWebProfileImage = Database['web_profiles']['Tables']['restaurant_web_profile_images']['Row'];
+type Restaurant = Database['restaurant']['Tables']['restaurants']['Row'];
+type RestaurantAddress = Database['restaurant']['Tables']['restaurant_addresses']['Row'];
+type RestaurantDietaryOption = Database['restaurant']['Tables']['restaurant_dietary_options']['Row'];
+type RestaurantKitchenProtocol = Database['restaurant']['Tables']['restaurant_kitchen_protocols']['Row'];
+type RestaurantCuisineOption = Database['restaurant']['Tables']['restaurant_cuisine_options']['Row'];
+type RestaurantAllergenHandled = Database['restaurant']['Tables']['restaurant_allergens_handled']['Row'];
+type RestaurantHours = Database['restaurant']['Tables']['restaurant_hours']['Row'];
+type RestaurantMenuItem = Database['restaurant']['Tables']['restaurant_menu_items']['Row'];
+type RestaurantMenuCategory = Database['restaurant']['Tables']['restaurant_menu_categories']['Row'];
+type RestaurantMenuItemAllergenModification = Database['restaurant']['Tables']['restaurant_menu_item_allergen_modifications']['Row'];
+type RestaurantMenuItemAllergen = Database['restaurant']['Tables']['restaurant_menu_item_allergens']['Row'];
+type RestaurantMenuItemDietaryOption = Database['restaurant']['Tables']['restaurant_menu_item_dietary_options']['Row'];
+type RestaurantMenuItemImage = Database['restaurant']['Tables']['restaurant_menu_item_images']['Row'];
+type RestaurantMenuItemModificationNote = Database['restaurant']['Tables']['restaurant_menu_item_modification_notes']['Row'];
+type RestaurantMenuItemPreparationMethod = Database['restaurant']['Tables']['restaurant_menu_item_preparation_methods']['Row'];
+type RestaurantMenuItemProtocolOverride = Database['restaurant']['Tables']['restaurant_menu_item_protocol_overrides']['Row'];
+
+// Composite type for menu items with all related data
+type RestaurantMenuItemWithDetails = RestaurantMenuItem & {
+  allergen_modifications: RestaurantMenuItemAllergenModification[];
+  allergens: RestaurantMenuItemAllergen[];
+  dietary_options: RestaurantMenuItemDietaryOption[];
+  images: RestaurantMenuItemImage[];
+  modification_notes: RestaurantMenuItemModificationNote[];
+  preparation_methods: RestaurantMenuItemPreparationMethod[];
+  protocol_overrides: RestaurantMenuItemProtocolOverride[];
+};
 
 export async function getRestaurantProfileData(slug: string): Promise<{
   url: RestaurantWebProfileUrl;
@@ -91,7 +102,7 @@ export async function getRestaurantProfileData(slug: string): Promise<{
   }
 
   // Get restaurant_id from urlData to fetch restaurant schema data
-  const restaurantId = (urlData as any).restaurant_id;
+  const restaurantId = urlData.restaurant_id;
 
   if (!restaurantId) {
     throw new Error('No restaurant_id found in URL data');

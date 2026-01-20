@@ -1,9 +1,21 @@
 import { createClient } from '@/lib/supabase/server';
-import {
-  UserSweCard,
-  UserSweCategoryWithDetails,
-  UserSweMeasureWithDetails,
-} from '@/lib/supabase/types';
+import { Database } from '@/lib/supabase/types';
+
+// Type aliases for better readability
+type UserSweCard = Database['swe']['Tables']['user_swe_cards']['Row'];
+type UserSweCategory = Database['swe']['Tables']['user_swe_categories']['Row'];
+type SweCategory = Database['swe']['Tables']['swe_categories']['Row'];
+type UserSweMeasure = Database['swe']['Tables']['user_swe_measures']['Row'];
+type SweMeasure = Database['swe']['Tables']['swe_measures']['Row'];
+
+// Composite types with nested details
+type UserSweCategoryWithDetails = UserSweCategory & {
+  swe_category?: SweCategory | null;
+};
+
+type UserSweMeasureWithDetails = UserSweMeasure & {
+  swe_measure?: SweMeasure | null;
+};
 
 /**
  * Get comprehensive SWE card data using the RPC function

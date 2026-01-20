@@ -1,10 +1,27 @@
 import { createClient } from '@/lib/supabase/server';
-import {
-  UserReactionProfile,
-  UserReactionSymptomWithDetails,
-  UserSafetyLevelWithDetails,
-  UserSafetyRuleWithDetails,
-} from '@/lib/supabase/types';
+import { Database } from '@/lib/supabase/types';
+
+// Type aliases for better readability
+type UserReactionProfile = Database['allergies']['Tables']['user_reaction_profiles']['Row'];
+type UserReactionSymptom = Database['allergies']['Tables']['user_reaction_symptoms']['Row'];
+type Symptom = Database['allergies']['Tables']['symptoms']['Row'];
+type UserSafetyLevel = Database['allergies']['Tables']['user_safety_levels']['Row'];
+type SafetyLevel = Database['allergies']['Tables']['safety_levels']['Row'];
+type UserSafetyRule = Database['allergies']['Tables']['user_safety_rules']['Row'];
+type SafetyRule = Database['allergies']['Tables']['safety_rules']['Row'];
+
+// Composite types with nested details
+type UserReactionSymptomWithDetails = UserReactionSymptom & {
+  symptom?: Symptom | null;
+};
+
+type UserSafetyLevelWithDetails = UserSafetyLevel & {
+  safety_level?: SafetyLevel | null;
+};
+
+type UserSafetyRuleWithDetails = UserSafetyRule & {
+  safety_rule?: SafetyRule | null;
+};
 
 /**
  * Get comprehensive food allergies data for a user profile
