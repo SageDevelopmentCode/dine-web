@@ -606,3 +606,162 @@ export interface RestaurantWebProfileImage {
   sort_order: number;
   restaurant_id: string;
 }
+
+// Restaurant core types
+export interface Restaurant {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  owner_id: string;
+  name: string;
+  website?: string;
+  phone?: string;
+  restaurant_type?: string;
+  is_deleted: boolean;
+  is_verified: boolean;
+}
+
+export interface RestaurantAddress {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  restaurant_id: string;
+  is_deleted: boolean;
+  line1?: string;
+  line2?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+}
+
+export interface RestaurantDietaryOption {
+  id: string;
+  created_at: string;
+  restaurant_id: string;
+  dietary_id: string;
+  label?: string;
+  is_custom: boolean;
+  is_deleted: boolean;
+}
+
+export interface RestaurantKitchenProtocol {
+  id: string;
+  created_at: string;
+  restaurant_id: string;
+  protocol_id: string;
+  label?: string;
+  is_custom: boolean;
+  is_deleted: boolean;
+}
+
+export interface RestaurantCuisineOption {
+  id: string;
+  created_at: string;
+  restaurant_id: string;
+  cuisine_id: string;
+  label?: string;
+  twemoji?: string;
+  is_deleted: boolean;
+}
+
+export interface RestaurantAllergenHandled {
+  id: string;
+  created_at: string;
+  restaurant_id: string;
+  allergen?: string;
+  twemoji?: string;
+  allergen_id?: string;
+  is_deleted: boolean;
+}
+
+export interface RestaurantHours {
+  id: string;
+  created_at: string;
+  restaurant_id: string;
+  weekday: number;
+  open_time?: string;
+  close_time?: string;
+  timezone?: string;
+}
+
+export interface RestaurantMenuItem {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  restaurant_id: string;
+  category_id?: string;
+  name: string;
+  description?: string;
+  price?: number;
+  is_active: boolean;
+  is_deleted: boolean;
+}
+
+export interface RestaurantMenuCategory {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  restaurant_id: string;
+  slug: string;
+  name: string;
+  description?: string;
+  sort_order: number;
+  is_active: boolean;
+  is_deleted: boolean;
+}
+
+// Menu item related types
+export interface RestaurantMenuItemAllergenModification {
+  menu_item_id: string;
+  allergen_id: string;
+  modification_note?: string;
+}
+
+export interface RestaurantMenuItemAllergen {
+  menu_item_id: string;
+  allergen_id: string;
+  allergen_name?: string;
+}
+
+export interface RestaurantMenuItemDietaryOption {
+  menu_item_id: string;
+  dietary_id: string;
+  dietary_label?: string;
+}
+
+export interface RestaurantMenuItemImage {
+  id: string;
+  menu_item_id: string;
+  image_url: string;
+  sort_order: number;
+}
+
+export interface RestaurantMenuItemModificationNote {
+  id: string;
+  menu_item_id: string;
+  note: string;
+  sort_order: number;
+}
+
+export interface RestaurantMenuItemPreparationMethod {
+  menu_item_id: string;
+  method_id: string;
+  method_label?: string;
+}
+
+export interface RestaurantMenuItemProtocolOverride {
+  menu_item_id: string;
+  protocol_id: string;
+  override_note?: string;
+}
+
+// Menu item with nested data
+export interface RestaurantMenuItemWithDetails extends RestaurantMenuItem {
+  allergen_modifications: RestaurantMenuItemAllergenModification[];
+  allergens: RestaurantMenuItemAllergen[];
+  dietary_options: RestaurantMenuItemDietaryOption[];
+  images: RestaurantMenuItemImage[];
+  modification_notes: RestaurantMenuItemModificationNote[];
+  preparation_methods: RestaurantMenuItemPreparationMethod[];
+  protocol_overrides: RestaurantMenuItemProtocolOverride[];
+}

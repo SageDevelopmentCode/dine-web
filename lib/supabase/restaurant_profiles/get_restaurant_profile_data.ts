@@ -3,12 +3,38 @@ import {
   RestaurantWebProfile,
   RestaurantWebProfileUrl,
   RestaurantWebProfileImage,
+  Restaurant,
+  RestaurantAddress,
+  RestaurantDietaryOption,
+  RestaurantKitchenProtocol,
+  RestaurantCuisineOption,
+  RestaurantAllergenHandled,
+  RestaurantHours,
+  RestaurantMenuItem,
+  RestaurantMenuCategory,
+  RestaurantMenuItemWithDetails,
+  RestaurantMenuItemAllergenModification,
+  RestaurantMenuItemAllergen,
+  RestaurantMenuItemDietaryOption,
+  RestaurantMenuItemImage,
+  RestaurantMenuItemModificationNote,
+  RestaurantMenuItemPreparationMethod,
+  RestaurantMenuItemProtocolOverride,
 } from '@/lib/supabase/types';
 
 export async function getRestaurantProfileData(slug: string): Promise<{
   url: RestaurantWebProfileUrl;
   profile: RestaurantWebProfile;
   images: RestaurantWebProfileImage[];
+  restaurant: Restaurant;
+  address: RestaurantAddress | null;
+  dietaryOptions: RestaurantDietaryOption[];
+  kitchenProtocols: RestaurantKitchenProtocol[];
+  cuisineOptions: RestaurantCuisineOption[];
+  allergensHandled: RestaurantAllergenHandled[];
+  hours: RestaurantHours[];
+  menuItems: RestaurantMenuItemWithDetails[];
+  menuCategories: RestaurantMenuCategory[];
 }> {
   const supabase = await createClient();
 
@@ -64,9 +90,249 @@ export async function getRestaurantProfileData(slug: string): Promise<{
     );
   }
 
+  // Get restaurant_id from urlData to fetch restaurant schema data
+  const restaurantId = (urlData as any).restaurant_id;
+
+  if (!restaurantId) {
+    throw new Error('No restaurant_id found in URL data');
+  }
+
+  // Step 4: Get restaurant data from restaurant.restaurants table
+  const { data: restaurantData, error: restaurantError } = await supabase
+    .schema('restaurant')
+    .from('restaurants')
+    .select('*')
+    .eq('id', restaurantId)
+    .single();
+
+  if (restaurantError) {
+    throw new Error(
+      `Failed to fetch restaurant data: ${restaurantError.message}`
+    );
+  }
+
+  // Step 5: Get restaurant address
+  const { data: addressData, error: addressError } = await supabase
+    .schema('restaurant')
+    .from('restaurant_addresses')
+    .select('*')
+    .eq('restaurant_id', restaurantId)
+    .maybeSingle();
+
+  if (addressError) {
+    throw new Error(
+      `Failed to fetch restaurant address: ${addressError.message}`
+    );
+  }
+
+  // Step 6: Get dietary options
+  const { data: dietaryOptionsData, error: dietaryError } = await supabase
+    .schema('restaurant')
+    .from('restaurant_dietary_options')
+    .select('*')
+    .eq('restaurant_id', restaurantId);
+
+  if (dietaryError) {
+    throw new Error(
+      `Failed to fetch dietary options: ${dietaryError.message}`
+    );
+  }
+
+  // Step 7: Get kitchen protocols
+  const { data: kitchenProtocolsData, error: protocolsError } = await supabase
+    .schema('restaurant')
+    .from('restaurant_kitchen_protocols')
+    .select('*')
+    .eq('restaurant_id', restaurantId);
+
+  if (protocolsError) {
+    throw new Error(
+      `Failed to fetch kitchen protocols: ${protocolsError.message}`
+    );
+  }
+
+  // Step 8: Get cuisine options
+  const { data: cuisineOptionsData, error: cuisineError } = await supabase
+    .schema('restaurant')
+    .from('restaurant_cuisine_options')
+    .select('*')
+    .eq('restaurant_id', restaurantId);
+
+  if (cuisineError) {
+    throw new Error(
+      `Failed to fetch cuisine options: ${cuisineError.message}`
+    );
+  }
+
+  // Step 9: Get allergens handled
+  const { data: allergensHandledData, error: allergensError } = await supabase
+    .schema('restaurant')
+    .from('restaurant_allergens_handled')
+    .select('*')
+    .eq('restaurant_id', restaurantId);
+
+  if (allergensError) {
+    throw new Error(
+      `Failed to fetch allergens handled: ${allergensError.message}`
+    );
+  }
+
+  // Step 10: Get restaurant hours
+  const { data: hoursData, error: hoursError } = await supabase
+    .schema('restaurant')
+    .from('restaurant_hours')
+    .select('*')
+    .eq('restaurant_id', restaurantId)
+    .order('weekday', { ascending: true });
+
+  if (hoursError) {
+    throw new Error(`Failed to fetch restaurant hours: ${hoursError.message}`);
+  }
+
+  // Step 11: Get menu items
+  const { data: menuItemsData, error: menuItemsError } = await supabase
+    .schema('restaurant')
+    .from('restaurant_menu_items')
+    .select('*')
+    .eq('restaurant_id', restaurantId);
+
+  if (menuItemsError) {
+    throw new Error(`Failed to fetch menu items: ${menuItemsError.message}`);
+  }
+
+  // Step 12: Get menu categories
+  const { data: menuCategoriesData, error: categoriesError } = await supabase
+    .schema('restaurant')
+    .from('restaurant_menu_categories')
+    .select('*')
+    .eq('restaurant_id', restaurantId)
+    .order('sort_order', { ascending: true });
+
+  if (categoriesError) {
+    throw new Error(
+      `Failed to fetch menu categories: ${categoriesError.message}`
+    );
+  }
+
+  // Step 13: For each menu item, fetch related data
+  const menuItemsWithDetails: RestaurantMenuItemWithDetails[] = await Promise.all(
+    (menuItemsData || []).map(async (menuItem) => {
+      const menuItemId = menuItem.id;
+
+      // Fetch all menu item related data in parallel
+      const [
+        allergenModifications,
+        allergens,
+        dietaryOptions,
+        images,
+        modificationNotes,
+        preparationMethods,
+        protocolOverrides,
+      ] = await Promise.all([
+        // Allergen modifications
+        supabase
+          .schema('restaurant')
+          .from('restaurant_menu_item_allergen_modifications')
+          .select('*')
+          .eq('menu_item_id', menuItemId)
+          .then(({ data, error }) => {
+            if (error) throw error;
+            return (data || []) as RestaurantMenuItemAllergenModification[];
+          }),
+
+        // Allergens
+        supabase
+          .schema('restaurant')
+          .from('restaurant_menu_item_allergens')
+          .select('*')
+          .eq('menu_item_id', menuItemId)
+          .then(({ data, error }) => {
+            if (error) throw error;
+            return (data || []) as RestaurantMenuItemAllergen[];
+          }),
+
+        // Dietary options
+        supabase
+          .schema('restaurant')
+          .from('restaurant_menu_item_dietary_options')
+          .select('*')
+          .eq('menu_item_id', menuItemId)
+          .then(({ data, error }) => {
+            if (error) throw error;
+            return (data || []) as RestaurantMenuItemDietaryOption[];
+          }),
+
+        // Images
+        supabase
+          .schema('restaurant')
+          .from('restaurant_menu_item_images')
+          .select('*')
+          .eq('menu_item_id', menuItemId)
+          .order('sort_order', { ascending: true })
+          .then(({ data, error }) => {
+            if (error) throw error;
+            return (data || []) as RestaurantMenuItemImage[];
+          }),
+
+        // Modification notes
+        supabase
+          .schema('restaurant')
+          .from('restaurant_menu_item_modification_notes')
+          .select('*')
+          .eq('menu_item_id', menuItemId)
+          .then(({ data, error }) => {
+            if (error) throw error;
+            return (data || []) as RestaurantMenuItemModificationNote[];
+          }),
+
+        // Preparation methods
+        supabase
+          .schema('restaurant')
+          .from('restaurant_menu_item_preparation_methods')
+          .select('*')
+          .eq('menu_item_id', menuItemId)
+          .then(({ data, error }) => {
+            if (error) throw error;
+            return (data || []) as RestaurantMenuItemPreparationMethod[];
+          }),
+
+        // Protocol overrides
+        supabase
+          .schema('restaurant')
+          .from('restaurant_menu_item_protocol_overrides')
+          .select('*')
+          .eq('menu_item_id', menuItemId)
+          .then(({ data, error }) => {
+            if (error) throw error;
+            return (data || []) as RestaurantMenuItemProtocolOverride[];
+          }),
+      ]);
+
+      return {
+        ...menuItem,
+        allergen_modifications: allergenModifications,
+        allergens,
+        dietary_options: dietaryOptions,
+        images,
+        modification_notes: modificationNotes,
+        preparation_methods: preparationMethods,
+        protocol_overrides: protocolOverrides,
+      } as RestaurantMenuItemWithDetails;
+    })
+  );
+
   return {
     url: urlData as RestaurantWebProfileUrl,
     profile: profileData as RestaurantWebProfile,
     images: (imagesData || []) as RestaurantWebProfileImage[],
+    restaurant: restaurantData as Restaurant,
+    address: addressData as RestaurantAddress | null,
+    dietaryOptions: (dietaryOptionsData || []) as RestaurantDietaryOption[],
+    kitchenProtocols: (kitchenProtocolsData || []) as RestaurantKitchenProtocol[],
+    cuisineOptions: (cuisineOptionsData || []) as RestaurantCuisineOption[],
+    allergensHandled: (allergensHandledData || []) as RestaurantAllergenHandled[],
+    hours: (hoursData || []) as RestaurantHours[],
+    menuItems: menuItemsWithDetails,
+    menuCategories: (menuCategoriesData || []) as RestaurantMenuCategory[],
   };
 }

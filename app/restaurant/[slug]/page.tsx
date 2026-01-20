@@ -17,10 +17,31 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
     restaurantData = await getRestaurantProfileData(slug);
 
     // Console.log the fetched data
-    console.log("Restaurant Data:", {
-      url: restaurantData.url,
-      profile: restaurantData.profile,
-      images: restaurantData.images,
+    console.log("=== RESTAURANT PROFILE DATA ===");
+    console.log("URL Data:", restaurantData.url);
+    console.log("Web Profile:", restaurantData.profile);
+    console.log("Web Profile Images:", restaurantData.images);
+    console.log("\n=== RESTAURANT DATA ===");
+    console.log("Restaurant:", restaurantData.restaurant);
+    console.log("Address:", restaurantData.address);
+    console.log("Dietary Options:", restaurantData.dietaryOptions);
+    console.log("Kitchen Protocols:", restaurantData.kitchenProtocols);
+    console.log("Cuisine Options:", restaurantData.cuisineOptions);
+    console.log("Allergens Handled:", restaurantData.allergensHandled);
+    console.log("Hours:", restaurantData.hours);
+    console.log("\n=== MENU DATA ===");
+    console.log("Menu Categories:", restaurantData.menuCategories);
+    console.log("Menu Items (with nested data):", restaurantData.menuItems);
+    console.log("\n=== MENU ITEM DETAILS ===");
+    restaurantData.menuItems.forEach((item, index) => {
+      console.log(`\nMenu Item ${index + 1}: ${item.name}`);
+      console.log("  - Allergen Modifications:", item.allergen_modifications);
+      console.log("  - Allergens:", item.allergens);
+      console.log("  - Dietary Options:", item.dietary_options);
+      console.log("  - Images:", item.images);
+      console.log("  - Modification Notes:", item.modification_notes);
+      console.log("  - Preparation Methods:", item.preparation_methods);
+      console.log("  - Protocol Overrides:", item.protocol_overrides);
     });
   } catch (error) {
     if (
