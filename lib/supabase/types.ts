@@ -568,3 +568,41 @@ export type FoodAllergiesData = {
   safetyLevels: UserSafetyLevelWithDetails[];
   safetyRules: UserSafetyRuleWithDetails[];
 };
+
+// Restaurant schema types
+export interface RestaurantWebProfile {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  show_about_us: boolean;
+  show_restaurant_type: boolean;
+  show_cuisine_types: boolean;
+  show_website: boolean;
+  show_phone_number: boolean;
+  show_address: boolean;
+  show_business_hours: boolean;
+  show_allergy_accommodations: boolean;
+  show_dietary_options: boolean;
+  show_food_allergens: boolean;
+  show_safety_protocols: boolean;
+  restaurant_name: string;
+  user_id: string;
+  is_deleted: boolean;
+}
+
+export interface RestaurantWebProfileUrl {
+  id: string;
+  created_at: string;
+  restaurant_web_profile_id: string;
+  slug: string;
+  user_id: string;
+}
+
+export interface RestaurantWebProfileImage {
+  id: string;
+  created_at: string;
+  restaurant_web_profile_id: string;
+  image_url: string;
+  sort_order: number;
+  restaurant_id: string;
+}

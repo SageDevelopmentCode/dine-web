@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import { COLORS } from "@/constants/colors";
+import { getRestaurantProfileData } from "@/lib/supabase/restaurant_profiles/get_restaurant_profile_data";
+import { notFound } from "next/navigation";
 
 interface RestaurantPageProps {
   params: Promise<{
@@ -9,6 +11,26 @@ interface RestaurantPageProps {
 
 export default async function RestaurantPage({ params }: RestaurantPageProps) {
   const { slug } = await params;
+
+  let restaurantData;
+  try {
+    restaurantData = await getRestaurantProfileData(slug);
+
+    // Console.log the fetched data
+    console.log("Restaurant Data:", {
+      url: restaurantData.url,
+      profile: restaurantData.profile,
+      images: restaurantData.images,
+    });
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.includes("No restaurant profile found")
+    ) {
+      notFound();
+    }
+    throw error;
+  }
 
   return (
     <div
