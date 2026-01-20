@@ -822,6 +822,10 @@ export type Database = {
         Args: { profile_slug: string }
         Returns: Json
       }
+      get_restaurant_profile_data: {
+        Args: { restaurant_slug: string }
+        Returns: Json
+      }
       get_user_available_cards: {
         Args: { p_user_id: string }
         Returns: {
