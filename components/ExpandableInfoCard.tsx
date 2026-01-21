@@ -39,7 +39,7 @@ interface ExpandableInfoCardProps {
   slug?: string;
   userId?: string;
   cardType?: "food-allergies" | "emergency" | "epipen" | "swe" | "travel";
-  firstName?: string;
+  firstName?: string | null;
 }
 
 type CardDataType =

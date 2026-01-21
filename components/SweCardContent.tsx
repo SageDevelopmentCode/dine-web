@@ -11,7 +11,7 @@ interface SweCardContentProps {
   sweCard: UserSweCard | null;
   sweCategories: UserSweCategoryWithDetails[];
   sweMeasures: UserSweMeasureWithDetails[];
-  firstName?: string;
+  firstName?: string | null;
   textColor?: string;
   variant?: "expandable" | "dedicated";
 }

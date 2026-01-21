@@ -66,7 +66,7 @@ interface CardPageRightSectionProps {
         travelPhrases: UserTravelPhraseWithDetails[];
         travelCategories: TravelPhraseCategory[];
       };
-  firstName?: string;
+  firstName?: string | null;
 }
 
 export default function CardPageRightSection({

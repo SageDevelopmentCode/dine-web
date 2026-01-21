@@ -12,6 +12,12 @@ import { getUserAvailableCards } from "@/lib/supabase/user_cards/get_user_availa
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { cardBackgroundColors, type ValidCardType } from "@/constants/card-config";
+import type {
+  UserTravelCard,
+  UserTravelLanguage,
+  UserTravelPhraseWithDetails,
+  TravelPhraseCategory,
+} from "@/lib/supabase/types";
 
 interface CardPageProps {
   params: Promise<{
@@ -166,7 +172,12 @@ export default async function CardPage({ params }: CardPageProps) {
           throw new Error(`Failed to fetch travel data: ${error.message}`);
         }
 
-        cardData = data;
+        cardData = data as {
+          travelCard: UserTravelCard | null;
+          travelLanguages: UserTravelLanguage[];
+          travelPhrases: UserTravelPhraseWithDetails[];
+          travelCategories: TravelPhraseCategory[];
+        };
         break;
       }
 

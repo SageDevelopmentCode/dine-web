@@ -2880,7 +2880,7 @@ export type UserReactionSymptomWithDetails = Tables<{ schema: "allergies"; }, "u
   symptom?: {
     display_name: string;
     severity: Database["public"]["Enums"]["severity_level"];
-  };
+  } | null;
 };
 
 export type UserSafetyLevelWithDetails = Tables<{ schema: "allergies"; }, "user_safety_levels"> & {

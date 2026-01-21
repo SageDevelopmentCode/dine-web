@@ -11,7 +11,7 @@ interface ProfileRightSectionProps {
   slug: string;
   userId: string;
   allergens: UserAllergen[];
-  firstName?: string;
+  firstName?: string | null;
 }
 
 export default function ProfileRightSection({

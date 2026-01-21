@@ -1,11 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database } from '@/lib/supabase/types';
+import { Database, UserWebProfile, UserAllergen, UserEmergencyCardContact } from '@/lib/supabase/types';
 
 // Type aliases for better readability
-type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
 type UserWebProfileSelectedCard = Database['web_profiles']['Tables']['user_web_profiles_selected_cards']['Row'];
-type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
-type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
 
 /**
  * Get initial profile data for page load (Tier 1)
