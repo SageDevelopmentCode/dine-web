@@ -3,6 +3,7 @@ import { Twemoji } from "@/utils/twemoji";
 import { formatPhoneNumber, formatStateCode } from "@/utils/formatters";
 import DownloadDineSection from "./DownloadDineSection";
 import { Database } from "@/lib/supabase/types";
+import { Star } from "lucide-react";
 
 type Restaurant = Database["restaurant"]["Tables"]["restaurants"]["Row"];
 type RestaurantAddress =
@@ -55,6 +56,44 @@ export default function RestaurantLeftSection({
         >
           {restaurant.name}
         </h2>
+
+        {/* Star Rating Section */}
+        <div className="flex items-center gap-2 mb-4">
+          {/* Stars */}
+          <div className="flex items-center gap-1">
+            {/* 4 filled stars */}
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Star
+                key={i}
+                size={20}
+                fill={COLORS.STAR_RATING}
+                color={COLORS.STAR_RATING}
+              />
+            ))}
+            {/* 80% filled star */}
+            <div style={{ position: "relative", display: "inline-block" }}>
+              <Star size={20} fill="none" color={COLORS.STAR_RATING} />
+              <Star
+                size={20}
+                fill={COLORS.STAR_RATING}
+                color={COLORS.STAR_RATING}
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  clipPath: "inset(0 20% 0 0)",
+                }}
+              />
+            </div>
+          </div>
+          {/* Review count */}
+          <span
+            className="text-sm font-merriweather"
+            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+          >
+            (127)
+          </span>
+        </div>
 
         {/* Badges Section */}
         {(activeDietaryOptions.length > 0 ||

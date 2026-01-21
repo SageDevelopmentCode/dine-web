@@ -15,4 +15,5 @@ export const COLORS = {
   EMERGENCY_MEDICAL_BG: "#88365B",
   SCHOOL_WORK_EVENTS_BG: "#593688",
   TRAVEL_BG: "#55BEC1",
+  STAR_RATING: "#FFB800",
 } as const;
