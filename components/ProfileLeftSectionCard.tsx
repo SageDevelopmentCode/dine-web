@@ -46,7 +46,7 @@ export default function ProfileLeftSectionCard({
         </h2>
         {/* Last Updated */}
         <p
-          className="text-xs font-merriweather text-center md:text-left"
+          className="text-xs font-lato text-center md:text-left"
           style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
         >
           Last updated: {lastUpdated}
@@ -55,7 +55,7 @@ export default function ProfileLeftSectionCard({
         {/* View Full Profile Button */}
         <Link
           href={`/profile/${slug}`}
-          className="w-full mt-4 py-3 rounded-lg text-center font-merriweather font-bold text-sm transition-opacity hover:opacity-80"
+          className="w-full mt-4 py-3 rounded-lg text-center font-lato font-bold text-sm transition-opacity hover:opacity-80"
           style={{
             backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
             color: COLORS.WHITE,
@@ -71,14 +71,14 @@ export default function ProfileLeftSectionCard({
         >
           {/* About Me Label */}
           <h3
-            className="text-xs font-merriweather mb-2"
+            className="text-xs font-lato mb-2"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             About me
           </h3>
           {/* Description */}
           <p
-            className="text-sm font-merriweather leading-relaxed"
+            className="text-sm font-lato leading-relaxed"
             style={{ color: COLORS.BLACK }}
           >
             {profile.about_me || "No description provided."}
@@ -93,7 +93,7 @@ export default function ProfileLeftSectionCard({
           >
             <Twemoji hex="1f4de" size={20} alt="telephone emoji" />
             <p
-              className="text-sm font-merriweather"
+              className="text-sm font-lato"
               style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               Emergencies: {primaryContact.full_name} •{" "}
@@ -109,7 +109,7 @@ export default function ProfileLeftSectionCard({
           >
             <Twemoji hex="2705" size={20} alt="checkmark emoji" />
             <p
-              className="text-sm font-merriweather"
+              className="text-sm font-lato"
               style={{ color: COLORS.WHITE }}
             >
               Carries an EpiPen: Yes

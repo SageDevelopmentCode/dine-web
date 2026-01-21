@@ -53,7 +53,7 @@ export default function ProfileRightSection({
       {severeAllergens.length > 0 && (
         <div className="mb-6">
           <h3
-            className="text-sm font-merriweather mb-3"
+            className="text-sm font-lato mb-3"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             Severe
@@ -76,7 +76,7 @@ export default function ProfileRightSection({
       {moderateAllergens.length > 0 && (
         <div className="mb-6">
           <h3
-            className="text-sm font-merriweather mb-3"
+            className="text-sm font-lato mb-3"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             Moderate
@@ -99,7 +99,7 @@ export default function ProfileRightSection({
       {mildAllergens.length > 0 && (
         <div className="mb-6">
           <h3
-            className="text-sm font-merriweather mb-3"
+            className="text-sm font-lato mb-3"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             Mild

@@ -102,7 +102,7 @@ export default function CardPageRightSection({
               {cardTitles[cardType]}
             </h3>
             <p
-              className="text-xs font-merriweather font-light"
+              className="text-xs font-lato font-light"
               style={{ color: COLORS.WHITE }}
             >
               {cardDescriptions[cardType]}
@@ -159,7 +159,7 @@ export default function CardPageRightSection({
           />
         ) : (
           <p
-            className="text-sm font-merriweather"
+            className="text-sm font-lato"
             style={{ color: COLORS.BLACK }}
           >
             No data available.

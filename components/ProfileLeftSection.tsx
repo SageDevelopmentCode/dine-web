@@ -44,7 +44,7 @@ export default function ProfileLeftSection({
         </h2>
         {/* Last Updated */}
         <p
-          className="text-xs font-merriweather text-center md:text-left"
+          className="text-xs font-lato text-center md:text-left"
           style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
         >
           Last updated: {lastUpdated}
@@ -57,14 +57,14 @@ export default function ProfileLeftSection({
         >
           {/* About Me Label */}
           <h3
-            className="text-xs font-merriweather mb-2"
+            className="text-xs font-lato mb-2"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             About me
           </h3>
           {/* Description */}
           <p
-            className="text-sm font-merriweather leading-relaxed"
+            className="text-sm font-lato leading-relaxed"
             style={{ color: COLORS.BLACK }}
           >
             {profile.about_me || "No description provided."}
@@ -79,7 +79,7 @@ export default function ProfileLeftSection({
           >
             <Twemoji hex="1f4de" size={20} alt="telephone emoji" />
             <p
-              className="text-sm font-merriweather"
+              className="text-sm font-lato"
               style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               Emergencies: {primaryContact.full_name} •{" "}
@@ -95,7 +95,7 @@ export default function ProfileLeftSection({
           >
             <Twemoji hex="2705" size={20} alt="checkmark emoji" />
             <p
-              className="text-sm font-merriweather"
+              className="text-sm font-lato"
               style={{ color: COLORS.WHITE }}
             >
               Carries an EpiPen: Yes

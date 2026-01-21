@@ -51,7 +51,7 @@ export default function UserOtherCardsSection({
           style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
         >
           <p
-            className="text-sm sm:text-base font-merriweather"
+            className="text-sm sm:text-base font-lato"
             style={{ color: COLORS.BLACK }}
           >
             No other cards available

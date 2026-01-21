@@ -149,7 +149,7 @@ export default function ExpandableInfoCard({
               {title}
             </h3>
             <p
-              className="text-xs font-merriweather font-light"
+              className="text-xs font-lato font-light"
               style={{ color: COLORS.WHITE }}
             >
               {description}
@@ -176,7 +176,7 @@ export default function ExpandableInfoCard({
         <div className="px-4 pb-6 overflow-y-auto max-h-[550px]">
           {isLoading ? (
             <p
-              className="text-sm font-merriweather"
+              className="text-sm font-lato"
               style={{ color: COLORS.WHITE }}
             >
               Loading...
@@ -227,7 +227,7 @@ export default function ExpandableInfoCard({
           ) : (
             children || (
               <p
-                className="text-sm font-merriweather"
+                className="text-sm font-lato"
                 style={{ color: COLORS.WHITE }}
               >
                 Content coming soon...
@@ -239,7 +239,7 @@ export default function ExpandableInfoCard({
           {cardType && slug && (
             <Link
               href={`/profile/${slug}/${cardType}`}
-              className="block w-full mt-4 px-4 py-3 rounded-lg text-sm font-merriweather font-bold text-center transition-opacity hover:opacity-80"
+              className="block w-full mt-4 px-4 py-3 rounded-lg text-sm font-lato font-bold text-center transition-opacity hover:opacity-80"
               style={{
                 backgroundColor: COLORS.WHITE,
                 color: backgroundColor,

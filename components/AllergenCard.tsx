@@ -30,7 +30,7 @@ export default function AllergenCard({
     >
       <Twemoji hex={emojiHex} size={24} />
       <span
-        className="text-xs font-merriweather text-center mt-1 line-clamp-2 overflow-hidden px-1"
+        className="text-xs font-lato text-center mt-1 line-clamp-2 overflow-hidden px-1"
         style={{ color: COLORS.BLACK }}
       >
         {label}
