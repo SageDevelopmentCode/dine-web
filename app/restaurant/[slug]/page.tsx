@@ -61,6 +61,8 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
             <RestaurantLeftSection
               restaurant={restaurantData.restaurant}
               address={restaurantData.address}
+              cuisineOptions={restaurantData.cuisineOptions}
+              dietaryOptions={restaurantData.dietaryOptions}
             />
             <RestaurantRightSection />
           </div>

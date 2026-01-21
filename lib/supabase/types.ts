@@ -1550,6 +1550,7 @@ export type Database = {
       }
       restaurants: {
         Row: {
+          about: string | null
           allergy_accommodation:
             | Database["restaurant"]["Enums"]["restaurant_allergy_accommodation"]
             | null
@@ -1567,6 +1568,7 @@ export type Database = {
           website: string | null
         }
         Insert: {
+          about?: string | null
           allergy_accommodation?:
             | Database["restaurant"]["Enums"]["restaurant_allergy_accommodation"]
             | null
@@ -1584,6 +1586,7 @@ export type Database = {
           website?: string | null
         }
         Update: {
+          about?: string | null
           allergy_accommodation?:
             | Database["restaurant"]["Enums"]["restaurant_allergy_accommodation"]
             | null
