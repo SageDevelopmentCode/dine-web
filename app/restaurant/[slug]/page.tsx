@@ -70,7 +70,10 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
               cuisineOptions={restaurantData.cuisineOptions}
               dietaryOptions={restaurantData.dietaryOptions}
             />
-            <RestaurantRightSection />
+            <RestaurantRightSection
+              allergensHandled={restaurantData.allergensHandled}
+              kitchenProtocols={restaurantData.kitchenProtocols}
+            />
           </div>
         </div>
       </main>

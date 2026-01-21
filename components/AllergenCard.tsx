@@ -6,7 +6,7 @@ type Severity = "severe" | "moderate" | "mild";
 interface AllergenCardProps {
   emojiHex: string;
   label: string;
-  severity: Severity;
+  severity?: Severity;
   onClick?: () => void;
 }
 
@@ -25,7 +25,7 @@ export default function AllergenCard({
   return (
     <div
       className="flex flex-col items-center justify-center p-3 rounded-lg border-3 w-[88px] h-[88px] gap-1 cursor-pointer transition-all hover:opacity-80"
-      style={{ borderColor: severityColors[severity] }}
+      style={{ borderColor: severity ? severityColors[severity] : COLORS.DOWNLOAD_SECTION_BLUE }}
       onClick={onClick}
     >
       <Twemoji hex={emojiHex} size={24} />
