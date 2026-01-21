@@ -116,7 +116,7 @@ export default function MenuSection({
   return (
     <div className="mt-8">
       <h2
-        className="text-xl font-merriweather font-bold mb-6"
+        className="text-xl font-merriweather font-bold mb-4"
         style={{ color: COLORS.BLACK }}
       >
         Our Menu:
@@ -130,7 +130,7 @@ export default function MenuSection({
           <div key={category.id} className="mb-8">
             {/* Category Name as Subheading */}
             <h3
-              className="text-lg font-merriweather font-semibold mb-4"
+              className="text-base font-lato font-semibold mb-2"
               style={{ color: COLORS.BLACK }}
             >
               {category.name}

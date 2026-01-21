@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { COLORS } from "@/constants/colors";
 import AllergenCard from "./AllergenCard";
 import ProtocolCard from "./ProtocolCard";
@@ -113,6 +116,12 @@ export default function RestaurantRightSection({
   menuCategories,
   menuItems,
 }: RestaurantRightSectionProps) {
+  const [showAllProtocols, setShowAllProtocols] = useState(false);
+
+  const displayedProtocols = showAllProtocols
+    ? kitchenProtocols
+    : kitchenProtocols.slice(0, 5);
+
   return (
     <div className="flex flex-col w-full md:w-[35%] h-full overflow-y-auto pb-20 md:pb-0">
       <h2
@@ -138,7 +147,7 @@ export default function RestaurantRightSection({
           style={{ backgroundColor: COLORS.HEADER_BACKGROUND }}
         >
           <p
-            className="text-lg font-merriweather"
+            className="text-lg font-lato"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             No allergen information available
@@ -154,18 +163,34 @@ export default function RestaurantRightSection({
       </h2>
 
       {kitchenProtocols.length > 0 ? (
-        <div className="flex flex-wrap gap-3">
-          {kitchenProtocols.map((protocol) => (
-            <ProtocolCard key={protocol.protocol_id} label={protocol.label} />
-          ))}
-        </div>
+        <>
+          <div className="flex flex-wrap gap-3">
+            {displayedProtocols.map((protocol) => (
+              <ProtocolCard key={protocol.protocol_id} label={protocol.label} />
+            ))}
+          </div>
+          {kitchenProtocols.length > 5 && (
+            <button
+              onClick={() => setShowAllProtocols(!showAllProtocols)}
+              className="mt-3 px-4 py-2 rounded-lg text-sm font-lato font-bold transition-opacity hover:opacity-80"
+              style={{
+                backgroundColor: COLORS.BLACK,
+                color: COLORS.WHITE,
+              }}
+            >
+              {showAllProtocols
+                ? "Show Less"
+                : `View All (${kitchenProtocols.length})`}
+            </button>
+          )}
+        </>
       ) : (
         <div
           className="w-full p-8 rounded-lg flex items-center justify-center"
           style={{ backgroundColor: COLORS.HEADER_BACKGROUND }}
         >
           <p
-            className="text-lg font-merriweather"
+            className="text-lg font-lato"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             No safety protocol information available

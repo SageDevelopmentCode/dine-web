@@ -88,7 +88,7 @@ export default function RestaurantLeftSection({
           </div>
           {/* Review count */}
           <span
-            className="text-sm font-merriweather"
+            className="text-sm font-lato"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             (127)
@@ -109,7 +109,7 @@ export default function RestaurantLeftSection({
                 style={{ backgroundColor: "#3B82F6" }}
               >
                 <span
-                  className="text-sm font-merriweather"
+                  className="text-sm font-lato"
                   style={{ color: "#FFFFFF" }}
                 >
                   {dietary.label}
@@ -126,7 +126,7 @@ export default function RestaurantLeftSection({
               >
                 <Twemoji hex="2705" size={16} alt="checkmark emoji" />
                 <span
-                  className="text-sm font-merriweather"
+                  className="text-sm font-lato"
                   style={{ color: "#FFFFFF" }}
                 >
                   Accommodates Allergies
@@ -141,7 +141,7 @@ export default function RestaurantLeftSection({
                 style={{ backgroundColor: "#8B5CF6" }}
               >
                 <span
-                  className="text-sm font-merriweather"
+                  className="text-sm font-lato"
                   style={{ color: "#FFFFFF" }}
                 >
                   {formatRestaurantType(restaurant.restaurant_type)}
@@ -158,7 +158,7 @@ export default function RestaurantLeftSection({
               >
                 <Twemoji hex={cuisine.twemoji} size={16} alt="flag emoji" />
                 <span
-                  className="text-sm font-merriweather"
+                  className="text-sm font-lato"
                   style={{ color: "#FFFFFF" }}
                 >
                   {cuisine.label}
@@ -177,7 +177,7 @@ export default function RestaurantLeftSection({
             <Twemoji hex="1f4c4" size={20} alt="document emoji" />
             <div className="flex-1">
               <p
-                className="text-sm font-merriweather leading-relaxed"
+                className="text-sm font-lato leading-relaxed"
                 style={{ color: COLORS.BLACK }}
               >
                 {restaurant.about}
@@ -193,7 +193,7 @@ export default function RestaurantLeftSection({
         >
           <Twemoji hex="1f4cd" size={20} alt="pin emoji" />
           <p
-            className="text-sm font-merriweather"
+            className="text-sm font-lato"
             style={{ color: COLORS.BLACK }}
           >
             {locationString}
@@ -208,7 +208,7 @@ export default function RestaurantLeftSection({
           >
             <Twemoji hex="1f4de" size={20} alt="phone emoji" />
             <p
-              className="text-sm font-merriweather"
+              className="text-sm font-lato"
               style={{ color: COLORS.BLACK }}
             >
               {formatPhoneNumber(restaurant.phone)}
@@ -227,7 +227,7 @@ export default function RestaurantLeftSection({
               href={restaurant.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-merriweather hover:underline"
+              className="text-sm font-lato hover:underline"
               style={{ color: COLORS.BLACK }}
             >
               {restaurant.website}
