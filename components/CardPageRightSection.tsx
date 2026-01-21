@@ -81,7 +81,7 @@ export default function CardPageRightSection({
       <div className="w-full mb-6 rounded-2xl" style={{ backgroundColor }}>
         <div className="px-6 py-2 flex items-center gap-4 min-h-[120px]">
           {/* Icon */}
-          <div className="flex-shrink-0 -ml-8 h-[110px]">
+          <div className="shrink-0 -ml-8 h-[110px]">
             <Image
               src={cardIcons[cardType]}
               alt={cardTitles[cardType]}

@@ -2854,3 +2854,75 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
+// Extended type exports for components
+
+// Web Profile Types
+export type UserWebProfile = Tables<{ schema: "web_profiles"; }, "user_web_profiles"> & {
+  first_name: string | null;
+  last_name: string | null;
+  created_at: string;
+  updated_at: string | null;
+};
+
+export type UserAllergen = Tables<{ schema: "allergies"; }, "user_allergens">;
+
+// Emergency Types
+export type UserEmergencyCard = Tables<{ schema: "emergency"; }, "user_emergency_cards">;
+export type UserEmergencyCardContact = Tables<{ schema: "emergency"; }, "user_emergency_card_contacts">;
+export type UserEmergencyCardDoctor = Tables<{ schema: "emergency"; }, "user_emergency_card_doctors">;
+export type UserEmergencyCardHospital = Tables<{ schema: "emergency"; }, "user_emergency_card_hospitals">;
+
+// Reaction/Allergy Types
+export type UserReactionProfile = Tables<{ schema: "allergies"; }, "user_reaction_profiles">;
+
+export type UserReactionSymptomWithDetails = Tables<{ schema: "allergies"; }, "user_reaction_symptoms"> & {
+  symptom?: {
+    display_name: string;
+    severity: Database["public"]["Enums"]["severity_level"];
+  };
+};
+
+export type UserSafetyLevelWithDetails = Tables<{ schema: "allergies"; }, "user_safety_levels"> & {
+  safety_level: {
+    name: Database["public"]["Enums"]["safety_level"] | null;
+  };
+};
+
+export type UserSafetyRuleWithDetails = Tables<{ schema: "allergies"; }, "user_safety_rules"> & {
+  safety_level?: {
+    name: Database["public"]["Enums"]["safety_level"] | null;
+  };
+};
+
+// EpiPen Types
+export type UserEpipenCard = Tables<{ schema: "epipen"; }, "user_epipen_cards">;
+
+export type UserEpipenInstructionWithDetails = Tables<{ schema: "epipen"; }, "user_epipen_instructions">;
+
+// SWE (School/Work/Events) Types
+export type UserSweCard = Tables<{ schema: "swe"; }, "user_swe_cards">;
+
+export type UserSweCategoryWithDetails = Tables<{ schema: "swe"; }, "user_swe_categories"> & {
+  category_name: string;
+};
+
+export type UserSweMeasureWithDetails = Tables<{ schema: "swe"; }, "user_swe_measures">;
+
+// Travel Types
+export type UserTravelCard = Tables<{ schema: "travel"; }, "user_travel_cards">;
+export type UserTravelLanguage = Tables<{ schema: "travel"; }, "user_travel_languages">;
+
+export type UserTravelPhraseWithDetails = Tables<{ schema: "travel"; }, "user_travel_phrases"> & {
+  phrase?: {
+    phrase_key: string;
+    text: string;
+    placeholder_type: string | null;
+  };
+  category?: {
+    category_key: string;
+    category_name: string;
+  };
+};
+
+export type TravelPhraseCategory = Tables<{ schema: "travel"; }, "travel_phrase_categories">;
