@@ -2,6 +2,7 @@ import { COLORS } from "@/constants/colors";
 import { User } from "lucide-react";
 import { Twemoji } from "@/utils/twemoji";
 import { UserWebProfile, UserEmergencyCardContact } from "@/lib/supabase/types";
+
 import { formatTimestamp, formatPhoneNumber } from "@/utils/formatters";
 import DownloadDineSection from "./DownloadDineSection";
 
