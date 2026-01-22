@@ -51,7 +51,7 @@ export default function RestaurantLeftSection({
       <div className="flex flex-col w-full items-center md:items-start">
         {/* Restaurant Name */}
         <h2
-          className="text-2xl font-merriweather font-bold mb-4 text-center md:text-left"
+          className="text-3xl font-merriweather font-bold mb-4 text-center md:text-left"
           style={{ color: COLORS.BLACK }}
         >
           {restaurant.name}
