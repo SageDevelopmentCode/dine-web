@@ -13,6 +13,7 @@ type RestaurantCuisineOption = Database['restaurant']['Tables']['restaurant_cuis
 type RestaurantDietaryOption = Database['restaurant']['Tables']['restaurant_dietary_options']['Row'];
 type RestaurantAllergenHandled = Database['restaurant']['Tables']['restaurant_allergens_handled']['Row'];
 type RestaurantReview = Database['restaurant']['Tables']['restaurant_reviews']['Row'];
+type RestaurantWebProfileImage = Database['web_profiles']['Tables']['restaurant_web_profile_images']['Row'];
 
 // Composite type for trusted restaurants with all related data
 export type TrustedRestaurant = {
@@ -25,6 +26,7 @@ export type TrustedRestaurant = {
   dietaryOptions: RestaurantDietaryOption[];
   allergensHandled: RestaurantAllergenHandled[];
   reviews: RestaurantReview[];
+  images: RestaurantWebProfileImage[];
 };
 
 /**

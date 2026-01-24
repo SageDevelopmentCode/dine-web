@@ -136,6 +136,16 @@ BEGIN
             FROM restaurant.restaurant_reviews rr
             WHERE rr.restaurant_id = utr.restaurant_id
               AND rr.is_deleted = false
+          ),
+          'images', (
+            SELECT COALESCE(
+              json_agg(
+                row_to_json(rwpi.*) ORDER BY rwpi.sort_order ASC
+              ),
+              '[]'::json
+            )
+            FROM web_profiles.restaurant_web_profile_images rwpi
+            WHERE rwpi.restaurant_id = utr.restaurant_id
           )
         )
       ), '[]'::json)

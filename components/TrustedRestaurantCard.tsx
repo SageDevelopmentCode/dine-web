@@ -1,6 +1,7 @@
 import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
 import type { TrustedRestaurant } from "@/lib/supabase/web_profiles/get_initial_profile_data";
+import TrustedRestaurantCardCarousel from "./TrustedRestaurantCardCarousel";
 
 interface TrustedRestaurantCardProps {
   trustedRestaurant: TrustedRestaurant;
@@ -11,7 +12,7 @@ export default function TrustedRestaurantCard({
   trustedRestaurant,
   onClick,
 }: TrustedRestaurantCardProps) {
-  const { restaurant, addresses, cuisineOptions, allergensHandled, reviews } = trustedRestaurant;
+  const { restaurant, addresses, cuisineOptions, dietaryOptions, allergensHandled, reviews, images } = trustedRestaurant;
 
   // Get the first active address
   const primaryAddress = addresses.find((addr) => !addr.is_deleted);
@@ -37,8 +38,12 @@ export default function TrustedRestaurantCard({
       .join(" ");
   };
 
-  // Get active cuisine options
+  // Get active cuisine options and dietary options
   const activeCuisines = cuisineOptions.filter((c) => !c.is_deleted).slice(0, 3);
+  const activeDietaryOptions = dietaryOptions.filter((d) => !d.is_deleted);
+
+  // Get active allergens handled
+  const activeAllergensHandled = allergensHandled.filter((a) => !a.is_deleted);
 
   // Get allergy accommodation badge color
   const getAllergyAccommodationColor = (accommodation: string | null) => {
@@ -71,14 +76,19 @@ export default function TrustedRestaurantCard({
 
   return (
     <div
-      className="flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all hover:shadow-md mb-3"
+      className="flex flex-col rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md mb-3"
       style={{
-        borderColor: COLORS.DOWNLOAD_SECTION_BLUE,
-        backgroundColor: COLORS.WHITE
+        backgroundColor: COLORS.WHITE,
+        border: `1px solid ${COLORS.PAGE_BACKGROUND}`
       }}
       onClick={onClick}
     >
-      {/* Restaurant Name and Type */}
+      {/* Image Carousel */}
+      <TrustedRestaurantCardCarousel images={images} />
+
+      {/* Content Section */}
+      <div className="p-4">
+        {/* Restaurant Name and Type */}
       <div className="mb-2">
         <div className="flex items-center justify-between">
           <h4
@@ -128,19 +138,56 @@ export default function TrustedRestaurantCard({
         </div>
       )}
 
-      {/* Cuisine Options */}
-      {activeCuisines.length > 0 && (
+      {/* Badges Section: Dietary Options, Allergy Accommodation, and Cuisine Options */}
+      {(activeDietaryOptions.length > 0 ||
+        restaurant.allergy_accommodation === "yes" ||
+        restaurant.allergy_accommodation === "yes_certified" ||
+        activeCuisines.length > 0) && (
         <div className="flex gap-2 mb-2 flex-wrap">
+          {/* Dietary Options Badges */}
+          {activeDietaryOptions.map((dietary) => (
+            <div
+              key={dietary.dietary_id}
+              className="px-3 py-1 rounded-full flex items-center gap-2"
+              style={{ backgroundColor: "#3B82F6" }}
+            >
+              <span
+                className="text-xs font-lato"
+                style={{ color: "#FFFFFF" }}
+              >
+                {dietary.label}
+              </span>
+            </div>
+          ))}
+
+          {/* Allergy Accommodation Badge */}
+          {(restaurant.allergy_accommodation === "yes" ||
+            restaurant.allergy_accommodation === "yes_certified") && (
+            <div
+              className="px-3 py-1 rounded-full flex items-center gap-2"
+              style={{ backgroundColor: "#2AAC7E" }}
+            >
+              <Twemoji hex="2705" size={14} alt="checkmark emoji" />
+              <span
+                className="text-xs font-lato"
+                style={{ color: "#FFFFFF" }}
+              >
+                Allergy-Friendly
+              </span>
+            </div>
+          )}
+
+          {/* Cuisine Badges */}
           {activeCuisines.map((cuisine) => (
             <div
               key={cuisine.cuisine_id}
-              className="flex items-center gap-1 px-2 py-1 rounded"
-              style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
+              className="px-3 py-1 rounded-full flex items-center gap-2"
+              style={{ backgroundColor: "#171717" }}
             >
-              <Twemoji hex={cuisine.twemoji} size={14} />
+              <Twemoji hex={cuisine.twemoji} size={14} alt="flag emoji" />
               <span
                 className="text-xs font-lato"
-                style={{ color: COLORS.BLACK }}
+                style={{ color: "#FFFFFF" }}
               >
                 {cuisine.label}
               </span>
@@ -149,33 +196,22 @@ export default function TrustedRestaurantCard({
         </div>
       )}
 
-      {/* Allergy Accommodation Badge */}
-      {restaurant.allergy_accommodation && (
+      {/* Allergens Handled - Display emoji icons */}
+      {activeAllergensHandled.length > 0 && (
         <div className="mt-2">
-          <div
-            className="inline-block px-3 py-1 rounded-full text-xs font-lato font-semibold"
-            style={{
-              backgroundColor: getAllergyAccommodationColor(restaurant.allergy_accommodation),
-              color: COLORS.WHITE,
-            }}
-          >
-            {getAllergyAccommodationText(restaurant.allergy_accommodation)}
+          <div className="flex gap-2 flex-wrap items-center">
+            {activeAllergensHandled.map((allergen) => (
+              <Twemoji
+                key={allergen.allergen_id}
+                hex={allergen.twemoji}
+                size={20}
+                alt={allergen.allergen}
+              />
+            ))}
           </div>
         </div>
       )}
-
-      {/* Allergens Handled Count */}
-      {allergensHandled.filter((a) => !a.is_deleted).length > 0 && (
-        <div className="mt-2">
-          <p
-            className="text-xs font-lato"
-            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-          >
-            Handles {allergensHandled.filter((a) => !a.is_deleted).length} allergen
-            {allergensHandled.filter((a) => !a.is_deleted).length === 1 ? "" : "s"}
-          </p>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
