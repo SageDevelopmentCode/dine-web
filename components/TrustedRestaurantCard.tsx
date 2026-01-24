@@ -11,10 +11,22 @@ export default function TrustedRestaurantCard({
   trustedRestaurant,
   onClick,
 }: TrustedRestaurantCardProps) {
-  const { restaurant, addresses, cuisineOptions, allergensHandled } = trustedRestaurant;
+  const { restaurant, addresses, cuisineOptions, allergensHandled, reviews } = trustedRestaurant;
 
   // Get the first active address
   const primaryAddress = addresses.find((addr) => !addr.is_deleted);
+
+  // Calculate average overall rating
+  const calculateAverageRating = () => {
+    const ratingsWithValues = reviews.filter((review) => review.overall_rating !== null);
+    if (ratingsWithValues.length === 0) return null;
+
+    const sum = ratingsWithValues.reduce((acc, review) => acc + (review.overall_rating || 0), 0);
+    return (sum / ratingsWithValues.length).toFixed(1);
+  };
+
+  const averageRating = calculateAverageRating();
+  const reviewCount = reviews.length;
 
   // Format restaurant type for display
   const formatRestaurantType = (type: string | null) => {
@@ -68,12 +80,32 @@ export default function TrustedRestaurantCard({
     >
       {/* Restaurant Name and Type */}
       <div className="mb-2">
-        <h4
-          className="text-base font-merriweather font-bold"
-          style={{ color: COLORS.BLACK }}
-        >
-          {restaurant.name}
-        </h4>
+        <div className="flex items-center justify-between">
+          <h4
+            className="text-base font-merriweather font-bold"
+            style={{ color: COLORS.BLACK }}
+          >
+            {restaurant.name}
+          </h4>
+          {/* Average Rating */}
+          {averageRating && (
+            <div className="flex items-center gap-1">
+              <span
+                className="text-sm font-lato font-semibold"
+                style={{ color: COLORS.BLACK }}
+              >
+                {averageRating}
+              </span>
+              <Twemoji hex="2b50" size={16} />
+              <span
+                className="text-xs font-lato"
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+              >
+                ({reviewCount})
+              </span>
+            </div>
+          )}
+        </div>
         {restaurant.restaurant_type && (
           <p
             className="text-xs font-lato mt-1"

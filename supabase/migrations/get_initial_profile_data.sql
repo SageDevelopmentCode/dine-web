@@ -130,6 +130,12 @@ BEGIN
             FROM restaurant.restaurant_allergens_handled rah
             WHERE rah.restaurant_id = utr.restaurant_id
               AND rah.is_deleted = false
+          ),
+          'reviews', (
+            SELECT COALESCE(json_agg(row_to_json(rr.*)), '[]'::json)
+            FROM restaurant.restaurant_reviews rr
+            WHERE rr.restaurant_id = utr.restaurant_id
+              AND rr.is_deleted = false
           )
         )
       ), '[]'::json)
