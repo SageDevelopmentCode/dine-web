@@ -1,7 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database, UserWebProfile, UserAllergen, UserEmergencyCardContact } from '@/lib/supabase/types';
+import { Database } from '@/lib/supabase/types';
 
 // Type aliases for better readability
+type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
+type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
+type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
 type UserWebProfileSelectedCard = Database['web_profiles']['Tables']['user_web_profiles_selected_cards']['Row'];
 type Restaurant = Database['restaurant']['Tables']['restaurants']['Row'];
 type RestaurantAddress = Database['restaurant']['Tables']['restaurant_addresses']['Row'];
@@ -42,7 +45,7 @@ export async function getInitialProfileData(
   const supabase = await createClient();
 
   // Call the RPC function that fetches all data in a single database round-trip
-  const { data, error } = await (supabase.rpc as any)('get_initial_profile_data', {
+  const { data, error } = await supabase.rpc('get_initial_profile_data', {
     profile_slug: slug,
   });
 
@@ -55,11 +58,19 @@ export async function getInitialProfileData(
   }
 
   // Parse the JSON response and ensure proper typing
+  const result = data as {
+    profile: UserWebProfile;
+    selectedCards: UserWebProfileSelectedCard[];
+    allergens: UserAllergen[];
+    emergencyContacts: UserEmergencyCardContact[];
+    trustedRestaurants: TrustedRestaurant[];
+  };
+
   return {
-    profile: data.profile as UserWebProfile,
-    selectedCards: (data.selectedCards || []) as UserWebProfileSelectedCard[],
-    allergens: (data.allergens || []) as UserAllergen[],
-    emergencyContacts: (data.emergencyContacts || []) as UserEmergencyCardContact[],
-    trustedRestaurants: (data.trustedRestaurants || []) as TrustedRestaurant[],
+    profile: result.profile,
+    selectedCards: result.selectedCards || [],
+    allergens: result.allergens || [],
+    emergencyContacts: result.emergencyContacts || [],
+    trustedRestaurants: result.trustedRestaurants || [],
   };
 }
