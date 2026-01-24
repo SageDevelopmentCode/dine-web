@@ -5,13 +5,16 @@ import { COLORS } from "@/constants/colors";
 import AllergenCard from "./AllergenCard";
 import ExpandableInfoCard from "./ExpandableInfoCard";
 import AllergenDetailModal from "./AllergenDetailModal";
+import TrustedRestaurantCard from "./TrustedRestaurantCard";
 import { UserAllergen } from "@/lib/supabase/types";
+import type { TrustedRestaurant } from "@/lib/supabase/web_profiles/get_initial_profile_data";
 
 interface ProfileRightSectionProps {
   slug: string;
   userId: string;
   allergens: UserAllergen[];
   firstName?: string | null;
+  trustedRestaurants: TrustedRestaurant[];
 }
 
 export default function ProfileRightSection({
@@ -19,6 +22,7 @@ export default function ProfileRightSection({
   userId,
   allergens,
   firstName,
+  trustedRestaurants,
 }: ProfileRightSectionProps) {
   const [selectedAllergen, setSelectedAllergen] = useState<UserAllergen | null>(
     null
@@ -112,6 +116,30 @@ export default function ProfileRightSection({
                 label={allergen.allergen}
                 severity="mild"
                 onClick={() => handleAllergenClick(allergen)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Trusted Restaurants Section */}
+      {trustedRestaurants.length > 0 && (
+        <div className="mb-6 mt-8">
+          <h3
+            className="text-lg font-merriweather font-bold mb-4"
+            style={{ color: COLORS.BLACK }}
+          >
+            Trusted Restaurants
+          </h3>
+          <div className="flex flex-col">
+            {trustedRestaurants.map((tr) => (
+              <TrustedRestaurantCard
+                key={tr.id}
+                trustedRestaurant={tr}
+                onClick={() => {
+                  // TODO: Add click handler for restaurant details
+                  console.log("Clicked restaurant:", tr.restaurant.name);
+                }}
               />
             ))}
           </div>

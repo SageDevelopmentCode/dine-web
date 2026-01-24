@@ -25,8 +25,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     // Re-throw other errors to be handled by error boundary
     throw error;
   }
-
-  console.log("📊 Initial Profile Data Loaded:", initialData);
+  
   const userId = initialData.profile.user_id;
 
   return (
@@ -47,6 +46,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               userId={userId}
               allergens={initialData.allergens}
               firstName={initialData.profile.first_name}
+              trustedRestaurants={initialData.trustedRestaurants}
             />
           </div>
         </div>

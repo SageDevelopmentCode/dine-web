@@ -3,13 +3,31 @@ import { Database, UserWebProfile, UserAllergen, UserEmergencyCardContact } from
 
 // Type aliases for better readability
 type UserWebProfileSelectedCard = Database['web_profiles']['Tables']['user_web_profiles_selected_cards']['Row'];
+type Restaurant = Database['restaurant']['Tables']['restaurants']['Row'];
+type RestaurantAddress = Database['restaurant']['Tables']['restaurant_addresses']['Row'];
+type RestaurantHours = Database['restaurant']['Tables']['restaurant_hours']['Row'];
+type RestaurantCuisineOption = Database['restaurant']['Tables']['restaurant_cuisine_options']['Row'];
+type RestaurantDietaryOption = Database['restaurant']['Tables']['restaurant_dietary_options']['Row'];
+type RestaurantAllergenHandled = Database['restaurant']['Tables']['restaurant_allergens_handled']['Row'];
+
+// Composite type for trusted restaurants with all related data
+export type TrustedRestaurant = {
+  id: string;
+  created_at: string;
+  restaurant: Restaurant;
+  addresses: RestaurantAddress[];
+  hours: RestaurantHours[];
+  cuisineOptions: RestaurantCuisineOption[];
+  dietaryOptions: RestaurantDietaryOption[];
+  allergensHandled: RestaurantAllergenHandled[];
+};
 
 /**
  * Get initial profile data for page load (Tier 1)
  * Fetches only the immediately visible data to optimize initial load time
  * Uses a single Supabase RPC call instead of 5 sequential queries for better performance
  * @param slug - The URL slug to lookup
- * @returns Initial profile data: profile, selectedCards, allergens, emergencyContacts
+ * @returns Initial profile data: profile, selectedCards, allergens, emergencyContacts, trustedRestaurants
  * @throws Error if the slug is not found or the profile doesn't exist
  */
 export async function getInitialProfileData(
@@ -19,6 +37,7 @@ export async function getInitialProfileData(
   selectedCards: UserWebProfileSelectedCard[];
   allergens: UserAllergen[];
   emergencyContacts: UserEmergencyCardContact[];
+  trustedRestaurants: TrustedRestaurant[];
 }> {
   const supabase = await createClient();
 
@@ -41,5 +60,6 @@ export async function getInitialProfileData(
     selectedCards: (data.selectedCards || []) as UserWebProfileSelectedCard[],
     allergens: (data.allergens || []) as UserAllergen[],
     emergencyContacts: (data.emergencyContacts || []) as UserEmergencyCardContact[],
+    trustedRestaurants: (data.trustedRestaurants || []) as TrustedRestaurant[],
   };
 }

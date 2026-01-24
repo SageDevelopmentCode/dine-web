@@ -90,6 +90,51 @@ BEGIN
         WHERE user_id = v_user_id
         LIMIT 1
       )
+    ),
+    'trustedRestaurants', (
+      SELECT COALESCE(json_agg(
+        json_build_object(
+          'id', utr.restaurant_id,
+          'created_at', utr.created_at,
+          'restaurant', (
+            SELECT row_to_json(r.*)
+            FROM restaurant.restaurants r
+            WHERE r.id = utr.restaurant_id
+              AND r.is_deleted = false
+          ),
+          'addresses', (
+            SELECT COALESCE(json_agg(row_to_json(ra.*)), '[]'::json)
+            FROM restaurant.restaurant_addresses ra
+            WHERE ra.restaurant_id = utr.restaurant_id
+              AND ra.is_deleted = false
+          ),
+          'hours', (
+            SELECT COALESCE(json_agg(row_to_json(rh.*)), '[]'::json)
+            FROM restaurant.restaurant_hours rh
+            WHERE rh.restaurant_id = utr.restaurant_id
+          ),
+          'cuisineOptions', (
+            SELECT COALESCE(json_agg(row_to_json(rco.*)), '[]'::json)
+            FROM restaurant.restaurant_cuisine_options rco
+            WHERE rco.restaurant_id = utr.restaurant_id
+              AND rco.is_deleted = false
+          ),
+          'dietaryOptions', (
+            SELECT COALESCE(json_agg(row_to_json(rdo.*)), '[]'::json)
+            FROM restaurant.restaurant_dietary_options rdo
+            WHERE rdo.restaurant_id = utr.restaurant_id
+              AND rdo.is_deleted = false
+          ),
+          'allergensHandled', (
+            SELECT COALESCE(json_agg(row_to_json(rah.*)), '[]'::json)
+            FROM restaurant.restaurant_allergens_handled rah
+            WHERE rah.restaurant_id = utr.restaurant_id
+              AND rah.is_deleted = false
+          )
+        )
+      ), '[]'::json)
+      FROM core.user_trusted_restaurants utr
+      WHERE utr.user_id = v_user_id
     )
   ) INTO v_result;
 

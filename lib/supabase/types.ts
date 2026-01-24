@@ -409,6 +409,32 @@ export type Database = {
         }
         Relationships: []
       }
+      user_trusted_restaurants: {
+        Row: {
+          created_at: string
+          restaurant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          restaurant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          restaurant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_trusted_restaurants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -1405,6 +1431,100 @@ export type Database = {
           },
         ]
       }
+      restaurant_menu_item_review_images: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          restaurant_menu_item_review_id: string
+          sort_order: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          restaurant_menu_item_review_id: string
+          sort_order?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          restaurant_menu_item_review_id?: string
+          sort_order?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_menu_item_review_i_restaurant_menu_item_review__fkey"
+            columns: ["restaurant_menu_item_review_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant_menu_item_reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurant_menu_item_reviews: {
+        Row: {
+          created_at: string
+          food_allergies_accommodation_rating: number | null
+          id: string
+          is_deleted: boolean
+          order_again_rating: number | null
+          overall_rating: number | null
+          presentation_rating: number | null
+          quality_rating: number | null
+          restaurant_menu_item_id: string
+          review_description: string | null
+          safety_rating: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          food_allergies_accommodation_rating?: number | null
+          id?: string
+          is_deleted?: boolean
+          order_again_rating?: number | null
+          overall_rating?: number | null
+          presentation_rating?: number | null
+          quality_rating?: number | null
+          restaurant_menu_item_id: string
+          review_description?: string | null
+          safety_rating?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          food_allergies_accommodation_rating?: number | null
+          id?: string
+          is_deleted?: boolean
+          order_again_rating?: number | null
+          overall_rating?: number | null
+          presentation_rating?: number | null
+          quality_rating?: number | null
+          restaurant_menu_item_id?: string
+          review_description?: string | null
+          safety_rating?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_menu_item_reviews_restaurant_menu_item_id_fkey"
+            columns: ["restaurant_menu_item_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant_menu_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       restaurant_menu_items: {
         Row: {
           category_id: string
@@ -1473,6 +1593,103 @@ export type Database = {
           key?: string
         }
         Relationships: []
+      }
+      restaurant_review_images: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          restaurant_review_id: string
+          sort_order: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          restaurant_review_id: string
+          sort_order?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          restaurant_review_id?: string
+          sort_order?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_reviews_images_restaurant_review_id_fkey"
+            columns: ["restaurant_review_id"]
+            isOneToOne: false
+            referencedRelation: "restaurant_reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurant_reviews: {
+        Row: {
+          atmosphere_rating: number | null
+          created_at: string
+          dined_at: string
+          food_allergies_accomodation_rating: number | null
+          food_quality_rating: number | null
+          id: string
+          is_deleted: boolean
+          overall_rating: number | null
+          restaurant_id: string
+          review_description: string | null
+          safe_rating: number | null
+          service_rating: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          atmosphere_rating?: number | null
+          created_at?: string
+          dined_at: string
+          food_allergies_accomodation_rating?: number | null
+          food_quality_rating?: number | null
+          id?: string
+          is_deleted?: boolean
+          overall_rating?: number | null
+          restaurant_id: string
+          review_description?: string | null
+          safe_rating?: number | null
+          service_rating?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          atmosphere_rating?: number | null
+          created_at?: string
+          dined_at?: string
+          food_allergies_accomodation_rating?: number | null
+          food_quality_rating?: number | null
+          id?: string
+          is_deleted?: boolean
+          overall_rating?: number | null
+          restaurant_id?: string
+          review_description?: string | null
+          safe_rating?: number | null
+          service_rating?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_reviews_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       restaurant_staff: {
         Row: {
@@ -1633,6 +1850,10 @@ export type Database = {
       }
       get_menu_items_with_details: {
         Args: { p_menu_item_id?: string; p_restaurant_id: string }
+        Returns: Json
+      }
+      get_restaurant_profile_data: {
+        Args: { p_restaurant_id: string }
         Returns: Json
       }
     }
@@ -2177,6 +2398,11 @@ export type Database = {
           p_title: string
           p_user_id: string
         }
+        Returns: Json
+      }
+      get_all_community_posts_with_nested_data: { Args: never; Returns: Json }
+      get_channel_posts_with_nested_data: {
+        Args: { p_channel_id: string }
         Returns: Json
       }
       get_comment_replies: { Args: { p_comment_id: string }; Returns: Json }
@@ -2854,75 +3080,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-
-// Extended type exports for components
-
-// Web Profile Types
-export type UserWebProfile = Tables<{ schema: "web_profiles"; }, "user_web_profiles"> & {
-  first_name: string | null;
-  last_name: string | null;
-  created_at: string;
-  updated_at: string | null;
-};
-
-export type UserAllergen = Tables<{ schema: "allergies"; }, "user_allergens">;
-
-// Emergency Types
-export type UserEmergencyCard = Tables<{ schema: "emergency"; }, "user_emergency_cards">;
-export type UserEmergencyCardContact = Tables<{ schema: "emergency"; }, "user_emergency_card_contacts">;
-export type UserEmergencyCardDoctor = Tables<{ schema: "emergency"; }, "user_emergency_card_doctors">;
-export type UserEmergencyCardHospital = Tables<{ schema: "emergency"; }, "user_emergency_card_hospitals">;
-
-// Reaction/Allergy Types
-export type UserReactionProfile = Tables<{ schema: "allergies"; }, "user_reaction_profiles">;
-
-export type UserReactionSymptomWithDetails = Tables<{ schema: "allergies"; }, "user_reaction_symptoms"> & {
-  symptom?: {
-    display_name: string;
-    severity: Database["public"]["Enums"]["severity_level"];
-  } | null;
-};
-
-export type UserSafetyLevelWithDetails = Tables<{ schema: "allergies"; }, "user_safety_levels"> & {
-  safety_level: {
-    name: Database["public"]["Enums"]["safety_level"] | null;
-  };
-};
-
-export type UserSafetyRuleWithDetails = Tables<{ schema: "allergies"; }, "user_safety_rules"> & {
-  safety_level?: {
-    name: Database["public"]["Enums"]["safety_level"] | null;
-  };
-};
-
-// EpiPen Types
-export type UserEpipenCard = Tables<{ schema: "epipen"; }, "user_epipen_cards">;
-
-export type UserEpipenInstructionWithDetails = Tables<{ schema: "epipen"; }, "user_epipen_instructions">;
-
-// SWE (School/Work/Events) Types
-export type UserSweCard = Tables<{ schema: "swe"; }, "user_swe_cards">;
-
-export type UserSweCategoryWithDetails = Tables<{ schema: "swe"; }, "user_swe_categories"> & {
-  category_name: string;
-};
-
-export type UserSweMeasureWithDetails = Tables<{ schema: "swe"; }, "user_swe_measures">;
-
-// Travel Types
-export type UserTravelCard = Tables<{ schema: "travel"; }, "user_travel_cards">;
-export type UserTravelLanguage = Tables<{ schema: "travel"; }, "user_travel_languages">;
-
-export type UserTravelPhraseWithDetails = Tables<{ schema: "travel"; }, "user_travel_phrases"> & {
-  phrase?: {
-    phrase_key: string;
-    text: string;
-    placeholder_type: string | null;
-  };
-  category?: {
-    category_key: string;
-    category_name: string;
-  };
-};
-
-export type TravelPhraseCategory = Tables<{ schema: "travel"; }, "travel_phrase_categories">;
