@@ -193,10 +193,6 @@ export default function ProfileRightSection({
               <TrustedRestaurantCard
                 key={tr.id}
                 trustedRestaurant={tr}
-                onClick={() => {
-                  // TODO: Add click handler for restaurant details
-                  console.log("Clicked restaurant:", tr.restaurant.name);
-                }}
               />
             ))}
           </div>

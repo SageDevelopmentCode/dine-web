@@ -2,17 +2,16 @@ import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
 import type { TrustedRestaurant } from "@/lib/supabase/web_profiles/get_initial_profile_data";
 import TrustedRestaurantCardCarousel from "./TrustedRestaurantCardCarousel";
+import Link from "next/link";
 
 interface TrustedRestaurantCardProps {
   trustedRestaurant: TrustedRestaurant;
-  onClick?: () => void;
 }
 
 export default function TrustedRestaurantCard({
   trustedRestaurant,
-  onClick,
 }: TrustedRestaurantCardProps) {
-  const { restaurant, addresses, cuisineOptions, dietaryOptions, allergensHandled, reviews, images } = trustedRestaurant;
+  const { restaurant, addresses, cuisineOptions, dietaryOptions, allergensHandled, reviews, images, slug } = trustedRestaurant;
 
   // Get the first active address
   const primaryAddress = addresses.find((addr) => !addr.is_deleted);
@@ -74,14 +73,18 @@ export default function TrustedRestaurantCard({
     }
   };
 
+  // Render as Link if slug exists, otherwise as div
+  const CardWrapper = slug ? Link : "div";
+  const wrapperProps = slug ? { href: `/restaurant/${slug}` } : {};
+
   return (
-    <div
+    <CardWrapper
       className="flex flex-col rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md mb-3"
       style={{
         backgroundColor: COLORS.WHITE,
         border: `1px solid ${COLORS.PAGE_BACKGROUND}`
       }}
-      onClick={onClick}
+      {...wrapperProps}
     >
       {/* Image Carousel */}
       <TrustedRestaurantCardCarousel images={images} />
@@ -212,6 +215,6 @@ export default function TrustedRestaurantCard({
         </div>
       )}
       </div>
-    </div>
+    </CardWrapper>
   );
 }

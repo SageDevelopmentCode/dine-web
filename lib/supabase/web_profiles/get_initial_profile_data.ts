@@ -27,6 +27,7 @@ export type TrustedRestaurant = {
   allergensHandled: RestaurantAllergenHandled[];
   reviews: RestaurantReview[];
   images: RestaurantWebProfileImage[];
+  slug: string | null;
 };
 
 /**

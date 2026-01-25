@@ -146,6 +146,12 @@ BEGIN
             )
             FROM web_profiles.restaurant_web_profile_images rwpi
             WHERE rwpi.restaurant_id = utr.restaurant_id
+          ),
+          'slug', (
+            SELECT rwpu.slug
+            FROM web_profiles.restaurant_web_profile_urls rwpu
+            WHERE rwpu.restaurant_id = utr.restaurant_id
+            LIMIT 1
           )
         )
       ), '[]'::json)
