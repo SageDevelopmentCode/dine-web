@@ -36,6 +36,7 @@ export type RecentReview = {
   review: RestaurantReview;
   restaurant: Restaurant;
   images: RestaurantReviewImage[];
+  slug: string | null;
 };
 
 /**

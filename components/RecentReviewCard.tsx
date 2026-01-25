@@ -5,6 +5,7 @@ import { Twemoji } from "@/utils/twemoji";
 import { formatTimestamp } from "@/utils/formatters";
 import ReviewImageCarousel from "./ReviewImageCarousel";
 import { RecentReview } from "@/lib/supabase/web_profiles/get_initial_profile_data";
+import Link from "next/link";
 
 interface RecentReviewCardProps {
   recentReview: RecentReview;
@@ -13,7 +14,7 @@ interface RecentReviewCardProps {
 export default function RecentReviewCard({
   recentReview,
 }: RecentReviewCardProps) {
-  const { review, restaurant, images } = recentReview;
+  const { review, restaurant, images, slug } = recentReview;
 
   // Render star rating from a numeric value
   const renderStars = (rating: number | null) => {
@@ -51,11 +52,13 @@ export default function RecentReviewCard({
   // Filter out null ratings
   const activeRatings = ratingCategories.filter((cat) => cat.value !== null);
 
-  return (
-    <div
-      className="rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200 mb-3"
-      style={{ backgroundColor: COLORS.WHITE }}
-    >
+  // Shared card styling and classes
+  const cardClassName = "rounded-lg overflow-hidden cursor-pointer hover:shadow-md transition-shadow duration-200 mb-3";
+  const cardStyle = { backgroundColor: COLORS.WHITE };
+
+  // Card content JSX
+  const cardContent = (
+    <>
       {/* First row: Restaurant name + overall rating + timestamp */}
       <div className="p-4 pb-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
@@ -126,6 +129,21 @@ export default function RecentReviewCard({
       {images && images.length > 0 && (
         <ReviewImageCarousel images={images} />
       )}
+    </>
+  );
+
+  // Render with Link wrapper if slug exists, otherwise plain div
+  if (slug) {
+    return (
+      <Link href={`/restaurant/${slug}`} className={cardClassName} style={cardStyle}>
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={cardClassName} style={cardStyle}>
+      {cardContent}
     </div>
   );
 }

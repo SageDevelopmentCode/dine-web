@@ -178,6 +178,12 @@ BEGIN
               )
               FROM restaurant.restaurant_review_images rri
               WHERE rri.restaurant_review_id = rr.id
+            ),
+            'slug', (
+              SELECT rwpu.slug
+              FROM web_profiles.restaurant_web_profile_urls rwpu
+              WHERE rwpu.restaurant_id = rr.restaurant_id
+              LIMIT 1
             )
           ) ORDER BY rr.created_at DESC
         ),
