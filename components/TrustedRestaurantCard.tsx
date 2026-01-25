@@ -44,48 +44,16 @@ export default function TrustedRestaurantCard({
   // Get active allergens handled
   const activeAllergensHandled = allergensHandled.filter((a) => !a.is_deleted);
 
-  // Get allergy accommodation badge color
-  const getAllergyAccommodationColor = (accommodation: string | null) => {
-    switch (accommodation) {
-      case "yes_certified":
-        return COLORS.SEVERE_BORDER;
-      case "yes":
-        return COLORS.MODERATE_BORDER;
-      case "limited":
-        return COLORS.MILD_BORDER;
-      default:
-        return COLORS.SECONDARY_TEXT_GRAY;
-    }
+  // Shared card styling and classes
+  const cardClassName = "flex flex-col rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md mb-3";
+  const cardStyle = {
+    backgroundColor: COLORS.WHITE,
+    border: `1px solid ${COLORS.PAGE_BACKGROUND}`
   };
 
-  const getAllergyAccommodationText = (accommodation: string | null) => {
-    switch (accommodation) {
-      case "yes_certified":
-        return "Certified Allergy-Friendly";
-      case "yes":
-        return "Allergy-Friendly";
-      case "limited":
-        return "Limited Accommodation";
-      case "no":
-        return "No Accommodation";
-      default:
-        return "";
-    }
-  };
-
-  // Render as Link if slug exists, otherwise as div
-  const CardWrapper = slug ? Link : "div";
-  const wrapperProps = slug ? { href: `/restaurant/${slug}` } : {};
-
-  return (
-    <CardWrapper
-      className="flex flex-col rounded-lg overflow-hidden cursor-pointer transition-all hover:shadow-md mb-3"
-      style={{
-        backgroundColor: COLORS.WHITE,
-        border: `1px solid ${COLORS.PAGE_BACKGROUND}`
-      }}
-      {...wrapperProps}
-    >
+  // Card content JSX
+  const cardContent = (
+    <>
       {/* Image Carousel */}
       <TrustedRestaurantCardCarousel images={images} />
 
@@ -231,6 +199,21 @@ export default function TrustedRestaurantCard({
         </div>
       )}
       </div>
-    </CardWrapper>
+    </>
+  );
+
+  // Render with Link wrapper if slug exists, otherwise plain div
+  if (slug) {
+    return (
+      <Link href={`/restaurant/${slug}`} className={cardClassName} style={cardStyle}>
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={cardClassName} style={cardStyle}>
+      {cardContent}
+    </div>
   );
 }
