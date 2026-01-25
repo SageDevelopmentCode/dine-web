@@ -25,7 +25,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
     // Re-throw other errors to be handled by error boundary
     throw error;
   }
-  
+
   const userId = initialData.profile.user_id;
 
   return (
@@ -45,7 +45,6 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               slug={slug}
               userId={userId}
               allergens={initialData.allergens}
-              firstName={initialData.profile.first_name}
               trustedRestaurants={initialData.trustedRestaurants}
             />
           </div>

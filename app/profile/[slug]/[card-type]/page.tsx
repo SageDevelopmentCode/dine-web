@@ -8,16 +8,11 @@ import { getFoodAllergiesData } from "@/lib/supabase/allergies/get_food_allergie
 import { getEmergencyCardData } from "@/lib/supabase/emergency/get_emergency_card_data";
 import { getEpipenCardData } from "@/lib/supabase/epipen/get_epipen_card_data";
 import { getSweCardData } from "@/lib/supabase/swe/get_swe_card_data";
+import { getTravelCardData } from "@/lib/supabase/travel/get_travel_card_data";
 import { getUserAvailableCards } from "@/lib/supabase/user_cards/get_user_available_cards";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { cardBackgroundColors, type ValidCardType } from "@/constants/card-config";
-import type {
-  UserTravelCard,
-  UserTravelLanguage,
-  UserTravelPhraseWithDetails,
-  TravelPhraseCategory,
-} from "@/lib/supabase/types";
 
 interface CardPageProps {
   params: Promise<{
@@ -161,23 +156,7 @@ export default async function CardPage({ params }: CardPageProps) {
       }
 
       case "travel": {
-        const supabase = await createClient();
-        const { data, error } = await supabase
-          .schema("travel")
-          .rpc("get_travel_card_data_web", {
-            p_user_id: userId,
-          });
-
-        if (error) {
-          throw new Error(`Failed to fetch travel data: ${error.message}`);
-        }
-
-        cardData = data as {
-          travelCard: UserTravelCard | null;
-          travelLanguages: UserTravelLanguage[];
-          travelPhrases: UserTravelPhraseWithDetails[];
-          travelCategories: TravelPhraseCategory[];
-        };
+        cardData = await getTravelCardData(userId);
         break;
       }
 
@@ -207,7 +186,6 @@ export default async function CardPage({ params }: CardPageProps) {
               cardType={validCardType}
               backgroundColor={cardBackgroundColors[validCardType]}
               cardData={cardData}
-              firstName={initialData.profile.first_name}
             />
           </div>
 

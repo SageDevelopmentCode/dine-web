@@ -9,7 +9,7 @@ import type {
   UserTravelLanguage,
   UserTravelPhraseWithDetails,
   TravelPhraseCategory,
-} from "@/lib/supabase/types";
+} from "@/lib/supabase/travel/get_travel_card_data";
 
 interface TravelCardContentProps {
   travelCard: UserTravelCard | null;

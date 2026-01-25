@@ -199,17 +199,33 @@ export default function TrustedRestaurantCard({
         </div>
       )}
 
-      {/* Allergens Handled - Display emoji icons */}
+      {/* Allergens Handled - Display emoji icons with labels */}
       {activeAllergensHandled.length > 0 && (
-        <div className="mt-2">
-          <div className="flex gap-2 flex-wrap items-center">
+        <div className="mt-6">
+          <p
+            className="text-sm font-lato font-semibold mb-3"
+            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+          >
+            We safely accommodate:
+          </p>
+          <div className="flex gap-4 flex-wrap">
             {activeAllergensHandled.map((allergen) => (
-              <Twemoji
+              <div
                 key={allergen.allergen_id}
-                hex={allergen.twemoji}
-                size={20}
-                alt={allergen.allergen}
-              />
+                className="flex flex-col items-center gap-1"
+              >
+                <Twemoji
+                  hex={allergen.twemoji}
+                  size={28}
+                  alt={allergen.allergen}
+                />
+                <span
+                  className="text-xs font-lato text-center"
+                  style={{ color: COLORS.BLACK }}
+                >
+                  {allergen.allergen}
+                </span>
+              </div>
             ))}
           </div>
         </div>
