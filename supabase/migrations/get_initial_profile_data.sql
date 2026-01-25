@@ -157,6 +157,36 @@ BEGIN
       ), '[]'::json)
       FROM core.user_trusted_restaurants utr
       WHERE utr.user_id = v_user_id
+    ),
+    'recentReviews', (
+      SELECT COALESCE(
+        json_agg(
+          json_build_object(
+            'review', row_to_json(rr.*),
+            'restaurant', (
+              SELECT row_to_json(r.*)
+              FROM restaurant.restaurants r
+              WHERE r.id = rr.restaurant_id
+                AND r.is_deleted = false
+            ),
+            'images', (
+              SELECT COALESCE(
+                json_agg(
+                  row_to_json(rri.*) ORDER BY rri.sort_order ASC NULLS LAST
+                ),
+                '[]'::json
+              )
+              FROM restaurant.restaurant_review_images rri
+              WHERE rri.restaurant_review_id = rr.id
+            )
+          ) ORDER BY rr.created_at DESC
+        ),
+        '[]'::json
+      )
+      FROM restaurant.restaurant_reviews rr
+      WHERE rr.user_id = v_user_id
+        AND rr.is_deleted = false
+      LIMIT 5
     )
   ) INTO v_result;
 

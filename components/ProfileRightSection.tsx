@@ -6,8 +6,9 @@ import AllergenCard from "./AllergenCard";
 import ExpandableInfoCard from "./ExpandableInfoCard";
 import AllergenDetailModal from "./AllergenDetailModal";
 import TrustedRestaurantCard from "./TrustedRestaurantCard";
+import RecentReviewCard from "./RecentReviewCard";
 import { Database } from "@/lib/supabase/types";
-import type { TrustedRestaurant } from "@/lib/supabase/web_profiles/get_initial_profile_data";
+import type { TrustedRestaurant, RecentReview } from "@/lib/supabase/web_profiles/get_initial_profile_data";
 
 // Type alias for better readability
 type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
@@ -18,6 +19,7 @@ interface ProfileRightSectionProps {
   allergens: UserAllergen[];
   firstName?: string | null;
   trustedRestaurants: TrustedRestaurant[];
+  recentReviews: RecentReview[];
 }
 
 export default function ProfileRightSection({
@@ -26,6 +28,7 @@ export default function ProfileRightSection({
   allergens,
   firstName,
   trustedRestaurants,
+  recentReviews,
 }: ProfileRightSectionProps) {
   const [selectedAllergen, setSelectedAllergen] = useState<UserAllergen | null>(
     null
@@ -193,6 +196,26 @@ export default function ProfileRightSection({
               <TrustedRestaurantCard
                 key={tr.id}
                 trustedRestaurant={tr}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Recent Reviews Section */}
+      {recentReviews.length > 0 && (
+        <div className="mb-6 mt-8">
+          <h3
+            className="text-lg font-merriweather font-bold mb-4"
+            style={{ color: COLORS.BLACK }}
+          >
+            Recent Reviews
+          </h3>
+          <div className="flex flex-col">
+            {recentReviews.map((rr) => (
+              <RecentReviewCard
+                key={rr.review.id}
+                recentReview={rr}
               />
             ))}
           </div>

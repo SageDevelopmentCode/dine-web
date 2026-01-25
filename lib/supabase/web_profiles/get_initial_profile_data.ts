@@ -14,6 +14,7 @@ type RestaurantDietaryOption = Database['restaurant']['Tables']['restaurant_diet
 type RestaurantAllergenHandled = Database['restaurant']['Tables']['restaurant_allergens_handled']['Row'];
 type RestaurantReview = Database['restaurant']['Tables']['restaurant_reviews']['Row'];
 type RestaurantWebProfileImage = Database['web_profiles']['Tables']['restaurant_web_profile_images']['Row'];
+type RestaurantReviewImage = Database['restaurant']['Tables']['restaurant_review_images']['Row'];
 
 // Composite type for trusted restaurants with all related data
 export type TrustedRestaurant = {
@@ -30,12 +31,19 @@ export type TrustedRestaurant = {
   slug: string | null;
 };
 
+// Composite type for recent reviews with restaurant and images
+export type RecentReview = {
+  review: RestaurantReview;
+  restaurant: Restaurant;
+  images: RestaurantReviewImage[];
+};
+
 /**
  * Get initial profile data for page load (Tier 1)
  * Fetches only the immediately visible data to optimize initial load time
- * Uses a single Supabase RPC call instead of 5 sequential queries for better performance
+ * Uses a single Supabase RPC call instead of multiple sequential queries for better performance
  * @param slug - The URL slug to lookup
- * @returns Initial profile data: profile, selectedCards, allergens, emergencyContacts, trustedRestaurants
+ * @returns Initial profile data: profile, selectedCards, allergens, emergencyContacts, trustedRestaurants, recentReviews
  * @throws Error if the slug is not found or the profile doesn't exist
  */
 export async function getInitialProfileData(
@@ -46,6 +54,7 @@ export async function getInitialProfileData(
   allergens: UserAllergen[];
   emergencyContacts: UserEmergencyCardContact[];
   trustedRestaurants: TrustedRestaurant[];
+  recentReviews: RecentReview[];
 }> {
   const supabase = await createClient();
 
@@ -69,6 +78,7 @@ export async function getInitialProfileData(
     allergens: UserAllergen[];
     emergencyContacts: UserEmergencyCardContact[];
     trustedRestaurants: TrustedRestaurant[];
+    recentReviews: RecentReview[];
   };
 
   return {
@@ -77,5 +87,6 @@ export async function getInitialProfileData(
     allergens: result.allergens || [],
     emergencyContacts: result.emergencyContacts || [],
     trustedRestaurants: result.trustedRestaurants || [],
+    recentReviews: result.recentReviews || [],
   };
 }

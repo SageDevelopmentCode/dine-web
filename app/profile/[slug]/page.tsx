@@ -46,6 +46,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               userId={userId}
               allergens={initialData.allergens}
               trustedRestaurants={initialData.trustedRestaurants}
+              recentReviews={initialData.recentReviews}
             />
           </div>
         </div>
