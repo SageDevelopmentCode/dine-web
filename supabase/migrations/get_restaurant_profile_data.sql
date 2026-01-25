@@ -162,6 +162,85 @@ BEGIN
       ), '[]'::json)
       FROM restaurant.restaurant_menu_items mi
       WHERE mi.restaurant_id = v_restaurant_id
+    ),
+
+    -- Restaurant reviews with user info and images
+    'restaurantReviews', (
+      SELECT COALESCE(
+        json_agg(
+          json_build_object(
+            'review', row_to_json(rr.*),
+            'user', (
+              SELECT json_build_object(
+                'first_name', up.first_name,
+                'last_name', up.last_name
+              )
+              FROM core.user_profiles up
+              WHERE up.user_id = rr.user_id
+            ),
+            'images', (
+              SELECT COALESCE(
+                json_agg(
+                  row_to_json(rri.*) ORDER BY rri.sort_order ASC NULLS LAST
+                ),
+                '[]'::json
+              )
+              FROM restaurant.restaurant_review_images rri
+              WHERE rri.restaurant_review_id = rr.id
+            )
+          ) ORDER BY rr.created_at DESC
+        ),
+        '[]'::json
+      )
+      FROM restaurant.restaurant_reviews rr
+      WHERE rr.restaurant_id = v_restaurant_id
+        AND rr.is_deleted = false
+      LIMIT 5
+    ),
+
+    -- Menu item reviews with user info, images, and menu item details
+    'menuItemReviews', (
+      SELECT COALESCE(
+        json_agg(
+          json_build_object(
+            'review', row_to_json(mir.*),
+            'user', (
+              SELECT json_build_object(
+                'first_name', up.first_name,
+                'last_name', up.last_name
+              )
+              FROM core.user_profiles up
+              WHERE up.user_id = mir.user_id
+            ),
+            'menuItem', (
+              SELECT json_build_object(
+                'id', mi.id,
+                'name', mi.name,
+                'description', mi.description
+              )
+              FROM restaurant.restaurant_menu_items mi
+              WHERE mi.id = mir.restaurant_menu_item_id
+            ),
+            'images', (
+              SELECT COALESCE(
+                json_agg(
+                  row_to_json(miri.*) ORDER BY miri.sort_order ASC NULLS LAST
+                ),
+                '[]'::json
+              )
+              FROM restaurant.restaurant_menu_item_review_images miri
+              WHERE miri.restaurant_menu_item_review_id = mir.id
+            )
+          ) ORDER BY mir.created_at DESC
+        ),
+        '[]'::json
+      )
+      FROM restaurant.restaurant_menu_item_reviews mir
+      WHERE mir.restaurant_menu_item_id IN (
+        SELECT id FROM restaurant.restaurant_menu_items WHERE restaurant_id = v_restaurant_id
+      )
+        AND mir.is_deleted = false
+      LIMIT 5
     )
   ) INTO v_result;
 
@@ -176,4 +255,4 @@ GRANT EXECUTE ON FUNCTION public.get_restaurant_profile_data(TEXT) TO anon;
 
 -- Add comment for documentation
 COMMENT ON FUNCTION public.get_restaurant_profile_data(TEXT) IS
-'Fetches complete restaurant profile data for page load in a single call. Returns URL, profile, images, restaurant details, address, dietary options, kitchen protocols, cuisine options, allergens handled, hours, menu categories, and menu items (with all nested details) as JSON. Replaces 363+ queries with 1 optimized server-side call.';
+'Fetches complete restaurant profile data for page load in a single call. Returns URL, profile, images, restaurant details, address, dietary options, kitchen protocols, cuisine options, allergens handled, hours, menu categories, menu items (with all nested details), restaurant reviews (last 5), and menu item reviews (last 5) as JSON. Replaces 363+ queries with 1 optimized server-side call.';

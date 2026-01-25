@@ -5,6 +5,11 @@ import { COLORS } from "@/constants/colors";
 import AllergenCard from "./AllergenCard";
 import ProtocolCard from "./ProtocolCard";
 import MenuSection from "./MenuSection";
+import RestaurantReviewsSection from "./RestaurantReviewsSection";
+import {
+  RestaurantReviewWithDetails,
+  MenuItemReviewWithDetails,
+} from "@/lib/supabase/restaurant_profiles/get_restaurant_profile_data";
 
 interface RestaurantAllergen {
   allergen_id: string;
@@ -108,6 +113,8 @@ interface RestaurantRightSectionProps {
   kitchenProtocols: RestaurantKitchenProtocol[];
   menuCategories: RestaurantMenuCategory[];
   menuItems: RestaurantMenuItem[];
+  restaurantReviews: RestaurantReviewWithDetails[];
+  menuItemReviews: MenuItemReviewWithDetails[];
 }
 
 export default function RestaurantRightSection({
@@ -115,6 +122,8 @@ export default function RestaurantRightSection({
   kitchenProtocols,
   menuCategories,
   menuItems,
+  restaurantReviews,
+  menuItemReviews,
 }: RestaurantRightSectionProps) {
   const [showAllProtocols, setShowAllProtocols] = useState(false);
 
@@ -199,6 +208,11 @@ export default function RestaurantRightSection({
       )}
 
       <MenuSection menuCategories={menuCategories} menuItems={menuItems} />
+
+      <RestaurantReviewsSection
+        restaurantReviews={restaurantReviews}
+        menuItemReviews={menuItemReviews}
+      />
     </div>
   );
 }

@@ -4,20 +4,16 @@ import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
 import { formatTimestamp } from "@/utils/formatters";
 import ReviewImageCarousel from "./ReviewImageCarousel";
-import { RecentReview } from "@/lib/supabase/web_profiles/get_initial_profile_data";
-import Link from "next/link";
+import { MenuItemReviewWithDetails } from "@/lib/supabase/restaurant_profiles/get_restaurant_profile_data";
 
-interface RecentReviewCardProps {
-  recentReview: RecentReview;
+interface MenuItemReviewCardProps {
+  menuItemReview: MenuItemReviewWithDetails;
 }
 
-export default function RecentReviewCard({
-  recentReview,
-}: RecentReviewCardProps) {
-  const { review, restaurant, images, slug } = recentReview;
-
-  // If no restaurant provided, we're on the restaurant page itself
-  const showRestaurantName = !!restaurant;
+export default function MenuItemReviewCard({
+  menuItemReview,
+}: MenuItemReviewCardProps) {
+  const { review, user, menuItem, images } = menuItemReview;
 
   // Render star rating from a numeric value
   const renderStars = (rating: number | null) => {
@@ -31,49 +27,56 @@ export default function RecentReviewCard({
     return <span className="inline-flex gap-0.5">{stars}</span>;
   };
 
-  // Rating categories with labels
+  // Rating categories with labels for menu item reviews
   const ratingCategories = [
     {
-      key: "atmosphere_rating",
-      label: "Atmosphere",
-      value: review.atmosphere_rating,
-    },
-    { key: "service_rating", label: "Service", value: review.service_rating },
-    {
-      key: "food_quality_rating",
-      label: "Food Quality",
-      value: review.food_quality_rating,
+      key: "quality_rating",
+      label: "Quality",
+      value: review.quality_rating,
     },
     {
-      key: "food_allergies_accomodation_rating",
+      key: "presentation_rating",
+      label: "Presentation",
+      value: review.presentation_rating,
+    },
+    {
+      key: "food_allergies_accommodation_rating",
       label: "Allergy Accommodation",
-      value: review.food_allergies_accomodation_rating,
+      value: review.food_allergies_accommodation_rating,
     },
-    { key: "safe_rating", label: "Safety", value: review.safe_rating },
+    { key: "safety_rating", label: "Safety", value: review.safety_rating },
+    {
+      key: "order_again_rating",
+      label: "Order Again",
+      value: review.order_again_rating,
+    },
   ];
 
   // Filter out null ratings
   const activeRatings = ratingCategories.filter((cat) => cat.value !== null);
 
   // Shared card styling and classes
-  const cardClassName = "rounded-lg overflow-hidden cursor-pointer hover:shadow-md transition-shadow duration-200 mb-3";
+  const cardClassName =
+    "rounded-lg overflow-hidden mb-3";
   const cardStyle = { backgroundColor: COLORS.WHITE };
 
-  // Card content JSX
-  const cardContent = (
-    <>
-      {/* First row: Restaurant name (if provided) + overall rating + timestamp */}
+  // User display name
+  const userName = `${user.first_name} ${user.last_name}`;
+
+  return (
+    <div className={cardClassName} style={cardStyle}>
+      {/* First row: Menu item name with icon indicator + overall rating + timestamp */}
       <div className="p-4 pb-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2">
-            {showRestaurantName && (
-              <h4
-                className="font-lato font-semibold text-base"
-                style={{ color: COLORS.BLACK }}
-              >
-                {restaurant?.name || "Unknown Restaurant"}
-              </h4>
-            )}
+            {/* Plate/utensils icon to indicate menu item review */}
+            <Twemoji hex="1f37d" size={18} className="inline-block" />
+            <h4
+              className="font-lato font-semibold text-base"
+              style={{ color: COLORS.BLACK }}
+            >
+              {menuItem.name}
+            </h4>
             {review.overall_rating && (
               <div className="flex items-center gap-1">
                 {renderStars(review.overall_rating)}
@@ -85,6 +88,15 @@ export default function RecentReviewCard({
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
             {formatTimestamp(review.created_at, review.updated_at)}
+          </span>
+        </div>
+        {/* User name */}
+        <div className="mt-1">
+          <span
+            className="text-sm font-lato"
+            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+          >
+            by {userName}
           </span>
         </div>
       </div>
@@ -134,21 +146,6 @@ export default function RecentReviewCard({
       {images && images.length > 0 && (
         <ReviewImageCarousel images={images} />
       )}
-    </>
-  );
-
-  // Render with Link wrapper if slug exists, otherwise plain div
-  if (slug) {
-    return (
-      <Link href={`/restaurant/${slug}`} className={cardClassName} style={cardStyle}>
-        {cardContent}
-      </Link>
-    );
-  }
-
-  return (
-    <div className={cardClassName} style={cardStyle}>
-      {cardContent}
     </div>
   );
 }

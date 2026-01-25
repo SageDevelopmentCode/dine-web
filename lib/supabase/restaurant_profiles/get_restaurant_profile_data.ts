@@ -21,6 +21,38 @@ type RestaurantMenuItemImage = Database['restaurant']['Tables']['restaurant_menu
 type RestaurantMenuItemModificationNote = Database['restaurant']['Tables']['restaurant_menu_item_modification_notes']['Row'];
 type RestaurantMenuItemPreparationMethod = Database['restaurant']['Tables']['restaurant_menu_item_preparation_methods']['Row'];
 type RestaurantMenuItemProtocolOverride = Database['restaurant']['Tables']['restaurant_menu_item_protocol_overrides']['Row'];
+type RestaurantReview = Database['restaurant']['Tables']['restaurant_reviews']['Row'];
+type RestaurantReviewImage = Database['restaurant']['Tables']['restaurant_review_images']['Row'];
+type RestaurantMenuItemReview = Database['restaurant']['Tables']['restaurant_menu_item_reviews']['Row'];
+type RestaurantMenuItemReviewImage = Database['restaurant']['Tables']['restaurant_menu_item_review_images']['Row'];
+
+// User type for review attribution
+type UserInfo = {
+  first_name: string;
+  last_name: string;
+};
+
+// Menu item info for review context
+type MenuItemInfo = {
+  id: string;
+  name: string;
+  description: string | null;
+};
+
+// Composite type for restaurant reviews with user info and images
+export type RestaurantReviewWithDetails = {
+  review: RestaurantReview;
+  user: UserInfo;
+  images: RestaurantReviewImage[];
+};
+
+// Composite type for menu item reviews with user info, images, and menu item
+export type MenuItemReviewWithDetails = {
+  review: RestaurantMenuItemReview;
+  user: UserInfo;
+  menuItem: MenuItemInfo;
+  images: RestaurantMenuItemReviewImage[];
+};
 
 // Composite type for menu items with all related data
 type RestaurantMenuItemWithDetails = RestaurantMenuItem & {
@@ -46,6 +78,8 @@ export async function getRestaurantProfileData(slug: string): Promise<{
   hours: RestaurantHours[];
   menuItems: RestaurantMenuItemWithDetails[];
   menuCategories: RestaurantMenuCategory[];
+  restaurantReviews: RestaurantReviewWithDetails[];
+  menuItemReviews: MenuItemReviewWithDetails[];
 }> {
   const supabase = await createClient();
 
@@ -81,6 +115,8 @@ export async function getRestaurantProfileData(slug: string): Promise<{
     hours: RestaurantHours[];
     menuItems: RestaurantMenuItemWithDetails[];
     menuCategories: RestaurantMenuCategory[];
+    restaurantReviews: RestaurantReviewWithDetails[];
+    menuItemReviews: MenuItemReviewWithDetails[];
   };
 
   return {
@@ -96,5 +132,7 @@ export async function getRestaurantProfileData(slug: string): Promise<{
     hours: (restaurantData.hours || []) as RestaurantHours[],
     menuItems: (restaurantData.menuItems || []) as RestaurantMenuItemWithDetails[],
     menuCategories: (restaurantData.menuCategories || []) as RestaurantMenuCategory[],
+    restaurantReviews: (restaurantData.restaurantReviews || []) as RestaurantReviewWithDetails[],
+    menuItemReviews: (restaurantData.menuItemReviews || []) as MenuItemReviewWithDetails[],
   };
 }

@@ -75,6 +75,8 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
               kitchenProtocols={restaurantData.kitchenProtocols}
               menuCategories={restaurantData.menuCategories}
               menuItems={restaurantData.menuItems}
+              restaurantReviews={restaurantData.restaurantReviews}
+              menuItemReviews={restaurantData.menuItemReviews}
             />
           </div>
         </div>
