@@ -130,6 +130,7 @@ const emojiAssets: { [key: string]: string } = {
   "274c": "/assets/emojis/274c.png", // ❌ cross mark
   "2b50": "/assets/emojis/2b50.png", // ⭐ star
   "1f4cd": "/assets/emojis/1f4cd.png", // 📍 pin
+  "1f44b": "/assets/emojis/1f44b.png", // 👋 waving hand
 };
 
 interface TwemojiProps {
