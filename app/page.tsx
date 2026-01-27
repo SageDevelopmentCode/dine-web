@@ -1,5 +1,5 @@
 import { COLORS } from "@/constants/colors";
-import HomeScreenSection from "@/components/HomeScreenSection";
+import HomeScreenSection from "@/components/landing/HomeScreenSection";
 
 export default function Home() {
   return (

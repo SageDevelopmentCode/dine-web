@@ -1,5 +1,5 @@
 import Image from "next/image";
-import FeatureCard from "@/components/FeatureCard";
+import FeatureCard from "@/components/landing/FeatureCard";
 import { LANDING_FEATURES } from "@/constants/landing-features";
 
 export default function PhoneShowcaseSection() {

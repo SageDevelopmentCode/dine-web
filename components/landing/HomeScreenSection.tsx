@@ -1,6 +1,6 @@
-import LandingHeader from "@/components/LandingHeader";
-import HeroSection from "@/components/HeroSection";
-import PhoneShowcaseSection from "@/components/PhoneShowcaseSection";
+import LandingHeader from "@/components/landing/LandingHeader";
+import HeroSection from "@/components/landing/HeroSection";
+import PhoneShowcaseSection from "@/components/landing/PhoneShowcaseSection";
 
 export default function HomeScreenSection() {
   return (
