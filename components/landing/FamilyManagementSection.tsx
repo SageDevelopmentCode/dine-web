@@ -133,60 +133,76 @@ export default function FamilyManagementSection() {
           </motion.div>
 
           {/* Right Images */}
-          <motion.div
-            className="relative h-full overflow-hidden flex items-end justify-center"
-            variants={imagesVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-          >
+          <div className="relative h-full overflow-hidden flex items-end justify-center">
             {/* First Phone - Back */}
-            <Image
-              src="/assets/Screens/Mobile.png"
-              alt="Dine mobile app - family member 1"
-              width={300}
-              height={600}
-              className="absolute h-[450px] md:h-[500px] lg:h-[550px] w-auto object-contain -mb-10"
+            <motion.div
+              className="absolute"
               style={{
                 right: "50%",
                 zIndex: 3,
               }}
-              loading="lazy"
-              quality={100}
-              unoptimized={true}
-            />
+              variants={imagesVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+            >
+              <Image
+                src="/assets/Screens/Mobile.png"
+                alt="Dine mobile app - family member 1"
+                width={300}
+                height={600}
+                className="h-[450px] md:h-[500px] lg:h-[550px] w-auto object-contain -mb-10"
+                loading="lazy"
+                quality={100}
+                unoptimized={true}
+              />
+            </motion.div>
 
             {/* Second Phone - Middle */}
-            <Image
-              src="/assets/Screens/Mobile.png"
-              alt="Dine mobile app - family member 2"
-              width={300}
-              height={600}
-              className="absolute h-[400px] md:h-[450px] lg:h-[500px] w-auto object-contain -mb-10"
+            <motion.div
+              className="absolute"
               style={{
                 right: "25%",
                 zIndex: 2,
               }}
-              loading="lazy"
-              quality={100}
-              unoptimized={true}
-            />
+              variants={imagesVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+            >
+              <Image
+                src="/assets/Screens/Mobile.png"
+                alt="Dine mobile app - family member 2"
+                width={300}
+                height={600}
+                className="h-[400px] md:h-[450px] lg:h-[500px] w-auto object-contain -mb-10"
+                loading="lazy"
+                quality={100}
+                unoptimized={true}
+              />
+            </motion.div>
 
             {/* Third Phone - Front */}
-            <Image
-              src="/assets/Screens/Mobile.png"
-              alt="Dine mobile app - family member 3"
-              width={300}
-              height={600}
-              className="absolute h-[350px] md:h-[400px] lg:h-[450px] w-auto object-contain -mb-10"
+            <motion.div
+              className="absolute"
               style={{
                 right: "0%",
                 zIndex: 1,
               }}
-              loading="lazy"
-              quality={100}
-              unoptimized={true}
-            />
-          </motion.div>
+              variants={imagesVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+            >
+              <Image
+                src="/assets/Screens/Mobile.png"
+                alt="Dine mobile app - family member 3"
+                width={300}
+                height={600}
+                className="h-[350px] md:h-[400px] lg:h-[450px] w-auto object-contain -mb-10"
+                loading="lazy"
+                quality={100}
+                unoptimized={true}
+              />
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
