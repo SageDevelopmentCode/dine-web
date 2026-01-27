@@ -1,8 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database } from '@/lib/supabase/types';
-
-// Type alias for better readability
-type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
+import type { UserWebProfile } from '@/lib/supabase/types';
 
 /**
  * Get a user's web profile by profile ID

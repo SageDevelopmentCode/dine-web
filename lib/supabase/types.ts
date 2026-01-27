@@ -2979,6 +2979,27 @@ export type CompositeTypes<
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
+// EpiPen Types
+export type UserEpipenCard = Database['epipen']['Tables']['user_epipen_cards']['Row'];
+export type UserEpipenInstruction = Database['epipen']['Tables']['user_epipen_instructions']['Row'];
+export type EpipenInstruction = Database['epipen']['Tables']['epipen_instructions']['Row'];
+export type UserEpipenInstructionWithDetails = UserEpipenInstruction & {
+  epipen_instruction?: EpipenInstruction | null;
+};
+
+// Web Profile Types
+export type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
+export type UserProfile = Database['core']['Tables']['user_profiles']['Row'];
+
+// Extended type for web profile enriched with user profile data (used by RPC functions)
+export type UserWebProfileWithUserData = UserWebProfile & {
+  first_name?: string | null;
+  last_name?: string | null;
+  account_type?: Database['public']['Enums']['account_type'];
+};
+
+export type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
+
 export const Constants = {
   allergies: {
     Enums: {},

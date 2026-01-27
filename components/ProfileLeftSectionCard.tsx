@@ -1,13 +1,13 @@
 import { COLORS } from "@/constants/colors";
 import { User } from "lucide-react";
 import { Twemoji } from "@/utils/twemoji";
-import { UserWebProfile, UserEmergencyCardContact } from "@/lib/supabase/types";
+import { UserWebProfileWithUserData, UserEmergencyCardContact } from "@/lib/supabase/types";
 import { formatTimestamp, formatPhoneNumber } from "@/utils/formatters";
 import Link from "next/link";
 import DownloadDineSection from "./DownloadDineSection";
 
 interface ProfileLeftSectionCardProps {
-  profile: UserWebProfile;
+  profile: UserWebProfileWithUserData;
   emergencyContacts: UserEmergencyCardContact[];
   slug: string;
 }

@@ -1,10 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database } from '@/lib/supabase/types';
+import { Database, UserWebProfileWithUserData, UserEmergencyCardContact } from '@/lib/supabase/types';
 
 // Type aliases for better readability
-type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
 type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
-type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
 type UserWebProfileSelectedCard = Database['web_profiles']['Tables']['user_web_profiles_selected_cards']['Row'];
 type Restaurant = Database['restaurant']['Tables']['restaurants']['Row'];
 type RestaurantAddress = Database['restaurant']['Tables']['restaurant_addresses']['Row'];
@@ -50,7 +48,7 @@ export type RecentReview = {
 export async function getInitialProfileData(
   slug: string
 ): Promise<{
-  profile: UserWebProfile;
+  profile: UserWebProfileWithUserData;
   selectedCards: UserWebProfileSelectedCard[];
   allergens: UserAllergen[];
   emergencyContacts: UserEmergencyCardContact[];
@@ -74,7 +72,7 @@ export async function getInitialProfileData(
 
   // Parse the JSON response and ensure proper typing
   const result = data as {
-    profile: UserWebProfile;
+    profile: UserWebProfileWithUserData;
     selectedCards: UserWebProfileSelectedCard[];
     allergens: UserAllergen[];
     emergencyContacts: UserEmergencyCardContact[];

@@ -10,7 +10,7 @@ export default function Home() {
       style={{ backgroundColor: COLORS.LANDING_PAGE_BACKGROUND }}
     >
       {/* Home Screen Section - 100vh */}
-      <div className="h-screen w-full flex flex-col">
+      <div className="h-screen w-full flex flex-col overflow-hidden">
         {/* Header */}
         <header className="w-full px-8 py-6">
           <nav className="w-full mx-auto flex items-center justify-between">
@@ -23,6 +23,8 @@ export default function Home() {
                 height={80}
                 priority
                 className="object-contain w-auto h-10"
+                quality={100}
+                unoptimized={true}
               />
             </div>
 
