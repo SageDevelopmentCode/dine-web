@@ -5,6 +5,7 @@ import EmergencyMedicalSection from "@/components/landing/EmergencyMedicalSectio
 import SchoolWorkEventsSection from "@/components/landing/SchoolWorkEventsSection";
 import TravelTranslationSection from "@/components/landing/TravelTranslationSection";
 import WebProfileSection from "@/components/landing/WebProfileSection";
+import FamilyManagementSection from "@/components/landing/FamilyManagementSection";
 
 export default function Home() {
   return (
@@ -30,10 +31,8 @@ export default function Home() {
       {/* Web Profile Section */}
       <WebProfileSection />
 
-      {/* Future sections go here */}
-      <main className="max-w-7xl mx-auto px-8 py-12">
-        {/* Add more sections as needed */}
-      </main>
+      {/* Family Management Section */}
+      <FamilyManagementSection />
     </div>
   );
 }
