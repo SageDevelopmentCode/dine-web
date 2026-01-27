@@ -1,5 +1,6 @@
 import { COLORS } from "@/constants/colors";
 import HomeScreenSection from "@/components/landing/HomeScreenSection";
+import RestaurantAllergySection from "@/components/landing/RestaurantAllergySection";
 
 export default function Home() {
   return (
@@ -10,12 +11,8 @@ export default function Home() {
       {/* Home Screen Section - 100vh */}
       <HomeScreenSection />
 
-      {/* White Background Section */}
-      <section className="bg-white py-24">
-        <div className="max-w-7xl mx-auto px-8">
-          {/* Content will be added here */}
-        </div>
-      </section>
+      {/* Restaurant Allergy Information Section */}
+      <RestaurantAllergySection />
 
       {/* Future sections go here */}
       <main className="max-w-7xl mx-auto px-8 py-12">
