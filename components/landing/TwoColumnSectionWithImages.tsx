@@ -1,6 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 interface ImageConfig {
   src: string;
@@ -44,6 +49,42 @@ export default function TwoColumnSectionWithImages({
   images,
   invertLayout = false,
 }: TwoColumnSectionWithImagesProps) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+  // Animation variants for content
+  const contentVariants = {
+    hidden: {
+      opacity: 0,
+      x: invertLayout ? 50 : -50
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number]
+      }
+    }
+  };
+
+  // Animation variants for images
+  const imagesVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.95
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        delay: 0.2,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number]
+      }
+    }
+  };
+
   // Split heading text to identify highlighted word
   const renderHeading = () => {
     if (!heading.highlightedWord) {
@@ -64,7 +105,12 @@ export default function TwoColumnSectionWithImages({
 
   // Content column
   const contentColumn = (
-    <div className="flex flex-col gap-6 py-24 px-8 lg:px-16 max-w-3xl lg:max-w-none lg:pr-12">
+    <motion.div
+      className="flex flex-col gap-6 py-24 px-8 lg:px-16 max-w-3xl lg:max-w-none lg:pr-12"
+      variants={contentVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+    >
       {/* Heading */}
       <div className="max-w-md">
         <h2
@@ -115,14 +161,17 @@ export default function TwoColumnSectionWithImages({
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 
   // Images column
   const imagesColumn = (
-    <div
+    <motion.div
       className="relative w-full h-full overflow-hidden flex items-center justify-center"
       style={{ backgroundColor: imageBackgroundColor }}
+      variants={imagesVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
     >
       <div className="relative w-full h-full">
         {images.map((image, index) => (
@@ -133,7 +182,7 @@ export default function TwoColumnSectionWithImages({
             width={image.width}
             height={image.height}
             quality={100}
-            unoptimized={true}
+            loading="lazy"
             className={`absolute ${image.heightClass} ${image.widthClass} object-contain`}
             style={{
               transform: image.transform,
@@ -145,11 +194,11 @@ export default function TwoColumnSectionWithImages({
           />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
-    <section className="w-full bg-white">
+    <section ref={ref} className="w-full bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch min-h-[50vh]">
         {invertLayout ? (
           <>
