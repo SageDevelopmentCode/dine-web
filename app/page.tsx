@@ -6,6 +6,7 @@ import SchoolWorkEventsSection from "@/components/landing/SchoolWorkEventsSectio
 import TravelTranslationSection from "@/components/landing/TravelTranslationSection";
 import WebProfileSection from "@/components/landing/WebProfileSection";
 import FamilyManagementSection from "@/components/landing/FamilyManagementSection";
+import RestaurantDiscoverySection from "@/components/landing/RestaurantDiscoverySection";
 
 export default function Home() {
   return (
@@ -33,6 +34,9 @@ export default function Home() {
 
       {/* Family Management Section */}
       <FamilyManagementSection />
+
+      {/* Restaurant Discovery Section */}
+      <RestaurantDiscoverySection />
     </div>
   );
 }
