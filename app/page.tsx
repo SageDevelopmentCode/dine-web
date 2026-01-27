@@ -139,11 +139,11 @@ export default function Home() {
           </section>
 
           {/* Phone Showcase Section */}
-          <section className="relative flex-1 w-full">
-            <div className="relative flex items-center justify-center h-full w-full">
+          <section className="relative flex-1 w-full flex flex-col justify-end">
+            <div className="relative flex items-center justify-center w-full">
 
               {/* Left Cards Group */}
-              <div className="hidden md:flex absolute left-[-13%] bottom-[15%] flex-row gap-4 z-10">
+              <div className="hidden md:flex absolute left-[-13%] bottom-[13%] flex-row gap-4 z-10">
                 {/* Travel Card */}
                 <div
                   className="relative w-[300px] h-[130px] rounded-2xl p-4 overflow-hidden"
@@ -220,7 +220,7 @@ export default function Home() {
               </div>
 
               {/* Right Cards Group */}
-              <div className="hidden md:flex absolute right-[-13%] bottom-[15%] flex-row gap-4 z-10">
+              <div className="hidden md:flex absolute right-[-13%] bottom-[13%] flex-row gap-4 z-10">
                 {/* EpiPen Instructions Card */}
                 <div
                   className="relative w-[300px] h-[130px] rounded-2xl p-4 overflow-hidden"
@@ -286,7 +286,14 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Future sections go here - they will be below the 100vh home screen */}
+      {/* White Background Section */}
+      <section className="bg-white py-24">
+        <div className="max-w-7xl mx-auto px-8">
+          {/* Content will be added here */}
+        </div>
+      </section>
+
+      {/* Future sections go here */}
       <main className="max-w-7xl mx-auto px-8 py-12">
         {/* Add more sections as needed */}
       </main>
