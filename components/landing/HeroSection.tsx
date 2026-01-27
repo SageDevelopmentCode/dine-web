@@ -2,12 +2,24 @@
 
 import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 
 export default function HeroSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+  // Rotating words with smooth transitions
+  const words = ["easiest", "clearest", "instant", "prepared", "understood", "effortless"];
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
+    }, 5000); // Change word every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [words.length]);
 
   // Animation variants for badge
   const badgeVariants = {
@@ -73,6 +85,30 @@ export default function HeroSection() {
     },
   };
 
+  // Animation variants for rotating word
+  const wordVariants = {
+    initial: {
+      opacity: 0,
+      y: 10,
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      transition: {
+        duration: 0.3,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
+    },
+  };
+
   return (
     <section
       ref={ref}
@@ -104,8 +140,22 @@ export default function HeroSection() {
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        The <span style={{ color: COLORS.DOWNLOAD_SECTION_BLUE }}>easy</span>{" "}
-        way to handle <span className="italic">food allergies</span>.
+        The{" "}
+        <span style={{ color: COLORS.DOWNLOAD_SECTION_BLUE, display: "inline-block" }}>
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={words[currentWordIndex]}
+              variants={wordVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              style={{ display: "inline-block" }}
+            >
+              {words[currentWordIndex]}
+            </motion.span>
+          </AnimatePresence>
+        </span>{" "}
+        way to share <span className="italic">food allergies</span>.
       </motion.h1>
 
       {/* Description Text */}
