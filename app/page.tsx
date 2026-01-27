@@ -82,7 +82,7 @@ export default function Home() {
         {/* Hero + Phone Showcase - Flexible space */}
         <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-8">
           {/* Hero Section */}
-          <section className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto pt-4 pb-8">
+          <section className="mt-20 flex flex-col items-center text-center max-w-4xl mx-auto pt-4 pb-0">
             {/* Badge */}
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-2"
