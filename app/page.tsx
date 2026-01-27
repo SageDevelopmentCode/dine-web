@@ -4,6 +4,7 @@ import RestaurantAllergySection from "@/components/landing/RestaurantAllergySect
 import EmergencyMedicalSection from "@/components/landing/EmergencyMedicalSection";
 import SchoolWorkEventsSection from "@/components/landing/SchoolWorkEventsSection";
 import TravelTranslationSection from "@/components/landing/TravelTranslationSection";
+import WebProfileSection from "@/components/landing/WebProfileSection";
 
 export default function Home() {
   return (
@@ -25,6 +26,9 @@ export default function Home() {
 
       {/* Travel and Translation Section */}
       <TravelTranslationSection />
+
+      {/* Web Profile Section */}
+      <WebProfileSection />
 
       {/* Future sections go here */}
       <main className="max-w-7xl mx-auto px-8 py-12">

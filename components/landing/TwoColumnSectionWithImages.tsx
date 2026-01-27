@@ -182,6 +182,7 @@ export default function TwoColumnSectionWithImages({
             width={image.width}
             height={image.height}
             quality={100}
+            unoptimized={true}
             loading="lazy"
             className={`absolute ${image.heightClass} ${image.widthClass} object-contain`}
             style={{
