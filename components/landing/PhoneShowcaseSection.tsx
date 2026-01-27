@@ -1,10 +1,37 @@
+"use client";
+
 import Image from "next/image";
 import FeatureCard from "@/components/landing/FeatureCard";
 import { LANDING_FEATURES } from "@/constants/landing-features";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 export default function PhoneShowcaseSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+  // Animation variants for phone image
+  const phoneVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.8,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        delay: 0.4,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
+    },
+  };
+
   return (
-    <section className="relative flex-1 w-full flex flex-col justify-end">
+    <section
+      ref={ref}
+      className="relative flex-1 w-full flex flex-col justify-end"
+    >
       <div className="relative flex items-center justify-center w-full">
         {/* Left Cards Group */}
         <div className="hidden md:flex absolute left-[-13%] bottom-[5%] flex-row gap-4 z-10">
@@ -24,9 +51,11 @@ export default function PhoneShowcaseSection() {
         </div>
 
         {/* Center Phone Image */}
-        <div
+        <motion.div
           className="relative z-20 -mb-10"
-          style={{ animation: "fadeInScale 0.6s ease-out 0.4s both" }}
+          variants={phoneVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
         >
           <Image
             src="/assets/Screens/Home.png"
@@ -38,7 +67,7 @@ export default function PhoneShowcaseSection() {
             unoptimized={true}
             className="object-contain w-[270px] h-auto"
           />
-        </div>
+        </motion.div>
 
         {/* Right Cards Group */}
         <div className="hidden md:flex absolute right-[-13%] bottom-[5%] flex-row gap-4 z-10">
