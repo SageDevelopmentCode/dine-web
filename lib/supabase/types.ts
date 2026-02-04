@@ -440,7 +440,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_trusted_restaurants_with_nested_data: {
+        Args: { p_user_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
@@ -835,6 +838,228 @@ export type Database = {
       [_ in never]: never
     }
   }
+  monitoring: {
+    Tables: {
+      api_metrics: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: number
+          ip_address: string | null
+          method: string
+          occurred_at: string
+          response_time_ms: number
+          status_code: number
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: number
+          ip_address?: string | null
+          method: string
+          occurred_at?: string
+          response_time_ms: number
+          status_code: number
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: number
+          ip_address?: string | null
+          method?: string
+          occurred_at?: string
+          response_time_ms?: number
+          status_code?: number
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      error_logs: {
+        Row: {
+          created_at: string
+          endpoint: string
+          error_message: string
+          error_type: string | null
+          id: number
+          ip_address: string | null
+          method: string | null
+          occurred_at: string
+          stack_trace: string | null
+          status_code: number | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          error_message: string
+          error_type?: string | null
+          id?: number
+          ip_address?: string | null
+          method?: string | null
+          occurred_at?: string
+          stack_trace?: string | null
+          status_code?: number | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          error_message?: string
+          error_type?: string | null
+          id?: number
+          ip_address?: string | null
+          method?: string | null
+          occurred_at?: string
+          stack_trace?: string | null
+          status_code?: number | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      query_metrics: {
+        Row: {
+          created_at: string
+          execution_time_ms: number
+          id: number
+          occurred_at: string
+          params: Json | null
+          query_name: string
+        }
+        Insert: {
+          created_at?: string
+          execution_time_ms: number
+          id?: number
+          occurred_at?: string
+          params?: Json | null
+          query_name: string
+        }
+        Update: {
+          created_at?: string
+          execution_time_ms?: number
+          id?: number
+          occurred_at?: string
+          params?: Json | null
+          query_name?: string
+        }
+        Relationships: []
+      }
+      request_stats: {
+        Row: {
+          avg_response_time_ms: number
+          created_at: string
+          endpoint: string
+          error_count: number
+          id: number
+          max_response_time_ms: number
+          min_response_time_ms: number
+          request_count: number
+          success_count: number
+          time_bucket: string
+        }
+        Insert: {
+          avg_response_time_ms: number
+          created_at?: string
+          endpoint: string
+          error_count?: number
+          id?: number
+          max_response_time_ms: number
+          min_response_time_ms: number
+          request_count?: number
+          success_count?: number
+          time_bucket: string
+        }
+        Update: {
+          avg_response_time_ms?: number
+          created_at?: string
+          endpoint?: string
+          error_count?: number
+          id?: number
+          max_response_time_ms?: number
+          min_response_time_ms?: number
+          request_count?: number
+          success_count?: number
+          time_bucket?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      cleanup_old_metrics: { Args: never; Returns: undefined }
+      get_dashboard_overview: {
+        Args: { time_range_hours?: number }
+        Returns: {
+          avg_response_time: number
+          error_rate: number
+          total_errors: number
+          total_requests: number
+          unique_endpoints: number
+        }[]
+      }
+      get_endpoint_metrics: {
+        Args: { time_range_hours?: number }
+        Returns: {
+          avg_response_time: number
+          endpoint: string
+          error_count: number
+          max_response_time: number
+          min_response_time: number
+          request_count: number
+          success_rate: number
+        }[]
+      }
+      get_performance_trends: {
+        Args: { bucket_minutes?: number; time_range_hours?: number }
+        Returns: {
+          avg_response_time: number
+          error_count: number
+          request_count: number
+          time_bucket: string
+        }[]
+      }
+      get_recent_errors: {
+        Args: { limit_count?: number }
+        Returns: {
+          endpoint: string
+          error_message: string
+          error_type: string
+          id: number
+          occurred_at: string
+          status_code: number
+        }[]
+      }
+      get_recent_requests: {
+        Args: { limit_count?: number }
+        Returns: {
+          endpoint: string
+          id: number
+          method: string
+          occurred_at: string
+          response_time_ms: number
+          status_code: number
+        }[]
+      }
+      get_slowest_queries: {
+        Args: { limit_count?: number; time_range_hours?: number }
+        Returns: {
+          avg_execution_time: number
+          execution_count: number
+          max_execution_time: number
+          query_name: string
+        }[]
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       [_ in never]: never
@@ -846,6 +1071,10 @@ export type Database = {
       get_food_allergies_data: { Args: { profile_slug: string }; Returns: Json }
       get_initial_profile_data: {
         Args: { profile_slug: string }
+        Returns: Json
+      }
+      get_restaurant_edit_details: {
+        Args: { p_restaurant_id: string }
         Returns: Json
       }
       get_restaurant_profile_data: {
@@ -1852,8 +2081,20 @@ export type Database = {
         Args: { p_menu_item_id?: string; p_restaurant_id: string }
         Returns: Json
       }
+      get_restaurant_home_metrics: {
+        Args: { p_restaurant_id: string }
+        Returns: Json
+      }
       get_restaurant_profile_data: {
         Args: { p_restaurant_id: string }
+        Returns: Json
+      }
+      get_restaurant_reviews_paginated: {
+        Args: { p_limit?: number; p_offset?: number; p_restaurant_id: string }
+        Returns: Json
+      }
+      get_user_reviews_with_nested_data: {
+        Args: { p_user_id: string }
         Returns: Json
       }
     }
@@ -2411,6 +2652,14 @@ export type Database = {
         Args: { p_restaurant_id: string }
         Returns: Json
       }
+      get_user_comments_with_nested_data: {
+        Args: { p_user_id: string }
+        Returns: Json
+      }
+      get_user_posts_with_nested_data: {
+        Args: { p_user_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
@@ -2681,6 +2930,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          is_deactivated: boolean
           is_deleted: boolean | null
           restaurant_id: string | null
           show_about_us: boolean | null
@@ -2700,6 +2950,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          is_deactivated?: boolean
           is_deleted?: boolean | null
           restaurant_id?: string | null
           show_about_us?: boolean | null
@@ -2719,6 +2970,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          is_deactivated?: boolean
           is_deleted?: boolean | null
           restaurant_id?: string | null
           show_about_us?: boolean | null
@@ -2979,27 +3231,6 @@ export type CompositeTypes<
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
-// EpiPen Types
-export type UserEpipenCard = Database['epipen']['Tables']['user_epipen_cards']['Row'];
-export type UserEpipenInstruction = Database['epipen']['Tables']['user_epipen_instructions']['Row'];
-export type EpipenInstruction = Database['epipen']['Tables']['epipen_instructions']['Row'];
-export type UserEpipenInstructionWithDetails = UserEpipenInstruction & {
-  epipen_instruction?: EpipenInstruction | null;
-};
-
-// Web Profile Types
-export type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
-export type UserProfile = Database['core']['Tables']['user_profiles']['Row'];
-
-// Extended type for web profile enriched with user profile data (used by RPC functions)
-export type UserWebProfileWithUserData = UserWebProfile & {
-  first_name?: string | null;
-  last_name?: string | null;
-  account_type?: Database['public']['Enums']['account_type'];
-};
-
-export type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
-
 export const Constants = {
   allergies: {
     Enums: {},
@@ -3014,6 +3245,9 @@ export const Constants = {
     Enums: {},
   },
   family: {
+    Enums: {},
+  },
+  monitoring: {
     Enums: {},
   },
   public: {
