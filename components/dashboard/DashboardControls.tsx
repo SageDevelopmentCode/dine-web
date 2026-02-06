@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { LogOut, RefreshCw } from "lucide-react";
 import { useState } from "react";
+import { COLORS } from "@/constants/colors";
 
 interface DashboardControlsProps {
   currentTimeRange: number;
@@ -15,7 +16,7 @@ export default function DashboardControls({
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleTimeRangeChange = (hours: number) => {
-    router.push(`/dashboard?timeRange=${hours}`);
+    router.push(`/dashboard/performance?timeRange=${hours}`);
   };
 
   const handleRefresh = () => {
@@ -35,7 +36,7 @@ export default function DashboardControls({
   return (
     <div className="flex items-center gap-4">
       {/* Time Range Selector */}
-      <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+      <div className="flex items-center gap-2 rounded-lg p-1" style={{ backgroundColor: COLORS.DASHBOARD_DARK_HOVER }}>
         {[
           { label: "1h", value: 1 },
           { label: "24h", value: 24 },
@@ -45,11 +46,17 @@ export default function DashboardControls({
           <button
             key={option.value}
             onClick={() => handleTimeRangeChange(option.value)}
-            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+            className="px-3 py-1 rounded text-sm font-medium font-lato transition-colors shadow-sm"
+            style={
               currentTimeRange === option.value
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-600 hover:text-gray-900"
-            }`}
+                ? {
+                    backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
+                    color: COLORS.WHITE,
+                  }
+                : {
+                    color: COLORS.DASHBOARD_DARK_TEXT_SECONDARY,
+                  }
+            }
           >
             {option.label}
           </button>
@@ -59,12 +66,16 @@ export default function DashboardControls({
       {/* Refresh Button */}
       <button
         onClick={handleRefresh}
-        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        className="p-2 rounded-lg transition-colors"
+        style={{
+          backgroundColor: COLORS.DASHBOARD_DARK_HOVER,
+          color: COLORS.DASHBOARD_DARK_TEXT_SECONDARY
+        }}
         title="Refresh data"
         disabled={isRefreshing}
       >
         <RefreshCw
-          className={`w-5 h-5 text-gray-600 ${
+          className={`w-5 h-5 ${
             isRefreshing ? "animate-spin" : ""
           }`}
         />
@@ -73,10 +84,20 @@ export default function DashboardControls({
       {/* Logout Button */}
       <button
         onClick={handleLogout}
-        className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors"
+        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-lato text-sm font-medium"
+        style={{
+          backgroundColor: COLORS.DASHBOARD_DARK_HOVER,
+          color: COLORS.DASHBOARD_DARK_TEXT,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = COLORS.SEVERE_BORDER;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = COLORS.DASHBOARD_DARK_HOVER;
+        }}
       >
         <LogOut className="w-4 h-4" />
-        <span className="text-sm font-medium">Logout</span>
+        <span>Logout</span>
       </button>
     </div>
   );
