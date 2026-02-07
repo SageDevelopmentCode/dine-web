@@ -52,16 +52,124 @@ export default function FamilyManagementSection() {
   return (
     <section
       ref={ref}
-      className="w-full h-[85vh] flex items-center justify-center bg-white py-12"
+      className="w-full bg-white py-12"
     >
+      {/* Mobile: Stacked layout, Desktop: Container with rounded corners */}
       <div
-        className="w-full h-full mx-8 rounded-3xl"
+        className="w-full lg:h-[85vh] lg:mx-8 lg:rounded-3xl lg:flex lg:items-center lg:justify-center"
         style={{ backgroundColor: "#F6F5F3" }}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch h-full">
-          {/* Left Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch lg:h-full w-full">
+          {/* Images Section - Order 1 on mobile, stays right on desktop */}
+          <div
+            className="relative w-full min-h-[300px] py-8 lg:py-0 lg:min-h-0 lg:h-full overflow-hidden order-1 lg:order-2"
+            style={{ backgroundColor: "#F6F5F3" }}
+          >
+            {/* Mobile: Flex layout */}
+            <motion.div
+              className="flex flex-row items-center justify-center gap-4 lg:hidden w-full h-full"
+              variants={imagesVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+            >
+              <Image
+                src="/assets/Screens/Mobile.png"
+                alt="Dine mobile app - family member 1"
+                width={300}
+                height={600}
+                quality={100}
+                unoptimized={true}
+                loading="lazy"
+                className="h-[250px] w-auto object-contain"
+              />
+              <Image
+                src="/assets/Screens/Mobile.png"
+                alt="Dine mobile app - family member 2"
+                width={300}
+                height={600}
+                quality={100}
+                unoptimized={true}
+                loading="lazy"
+                className="h-[250px] w-auto object-contain"
+              />
+            </motion.div>
+
+            {/* Desktop: Absolute positioning (original layout) */}
+            <div className="hidden lg:flex relative h-full items-end justify-center">
+              {/* First Phone - Back */}
+              <motion.div
+                className="absolute"
+                style={{
+                  right: "50%",
+                  zIndex: 3,
+                }}
+                variants={imagesVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+              >
+                <Image
+                  src="/assets/Screens/Mobile.png"
+                  alt="Dine mobile app - family member 1"
+                  width={300}
+                  height={600}
+                  className="h-[450px] md:h-[500px] lg:h-[550px] w-auto object-contain -mb-10"
+                  loading="lazy"
+                  quality={100}
+                  unoptimized={true}
+                />
+              </motion.div>
+
+              {/* Second Phone - Middle */}
+              <motion.div
+                className="absolute"
+                style={{
+                  right: "25%",
+                  zIndex: 2,
+                }}
+                variants={imagesVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+              >
+                <Image
+                  src="/assets/Screens/Mobile.png"
+                  alt="Dine mobile app - family member 2"
+                  width={300}
+                  height={600}
+                  className="h-[400px] md:h-[450px] lg:h-[500px] w-auto object-contain -mb-10"
+                  loading="lazy"
+                  quality={100}
+                  unoptimized={true}
+                />
+              </motion.div>
+
+              {/* Third Phone - Front */}
+              <motion.div
+                className="absolute"
+                style={{
+                  right: "0%",
+                  zIndex: 1,
+                }}
+                variants={imagesVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+              >
+                <Image
+                  src="/assets/Screens/Mobile.png"
+                  alt="Dine mobile app - family member 3"
+                  width={300}
+                  height={600}
+                  className="h-[350px] md:h-[400px] lg:h-[450px] w-auto object-contain -mb-10"
+                  loading="lazy"
+                  quality={100}
+                  unoptimized={true}
+                />
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Content Section - Order 2 on mobile, stays left on desktop */}
           <motion.div
-            className="flex flex-col gap-8 justify-center p-8 md:p-12 lg:p-16"
+            className="flex flex-col gap-4 lg:gap-8 justify-center p-8 md:p-12 lg:p-16 order-2 lg:order-1"
             variants={contentVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -120,7 +228,7 @@ export default function FamilyManagementSection() {
             {/* Action Button */}
             <div>
               <button
-                className="font-merriweather text-sm md:text-base px-5 
+                className="font-merriweather text-sm md:text-base px-5
                 py-2 rounded-xl hover:opacity-90 transition-opacity"
                 style={{
                   backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
@@ -131,78 +239,6 @@ export default function FamilyManagementSection() {
               </button>
             </div>
           </motion.div>
-
-          {/* Right Images */}
-          <div className="relative h-full overflow-hidden flex items-end justify-center">
-            {/* First Phone - Back */}
-            <motion.div
-              className="absolute"
-              style={{
-                right: "50%",
-                zIndex: 3,
-              }}
-              variants={imagesVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-            >
-              <Image
-                src="/assets/Screens/Mobile.png"
-                alt="Dine mobile app - family member 1"
-                width={300}
-                height={600}
-                className="h-[450px] md:h-[500px] lg:h-[550px] w-auto object-contain -mb-10"
-                loading="lazy"
-                quality={100}
-                unoptimized={true}
-              />
-            </motion.div>
-
-            {/* Second Phone - Middle */}
-            <motion.div
-              className="absolute"
-              style={{
-                right: "25%",
-                zIndex: 2,
-              }}
-              variants={imagesVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-            >
-              <Image
-                src="/assets/Screens/Mobile.png"
-                alt="Dine mobile app - family member 2"
-                width={300}
-                height={600}
-                className="h-[400px] md:h-[450px] lg:h-[500px] w-auto object-contain -mb-10"
-                loading="lazy"
-                quality={100}
-                unoptimized={true}
-              />
-            </motion.div>
-
-            {/* Third Phone - Front */}
-            <motion.div
-              className="absolute"
-              style={{
-                right: "0%",
-                zIndex: 1,
-              }}
-              variants={imagesVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-            >
-              <Image
-                src="/assets/Screens/Mobile.png"
-                alt="Dine mobile app - family member 3"
-                width={300}
-                height={600}
-                className="h-[350px] md:h-[400px] lg:h-[450px] w-auto object-contain -mb-10"
-                loading="lazy"
-                quality={100}
-                unoptimized={true}
-              />
-            </motion.div>
-          </div>
         </div>
       </div>
     </section>

@@ -28,18 +28,19 @@ export default function WebProfileSection() {
   return (
     <section
       ref={ref}
-      className="w-full h-[85vh] flex flex-col items-center justify-start overflow-hidden pt-8 md:pt-12"
+      className="w-full h-[53vh] md:h-[85vh] flex flex-col items-center justify-start overflow-hidden pt-6 md:pt-12"
       style={{ backgroundColor: COLORS.LANDING_PAGE_BACKGROUND }}
     >
       {/* Content Container */}
-      <div className="flex flex-col items-center text-center max-w-4xl mx-auto px-8 mb-4 md:mb-6">
+      <div className="flex flex-col items-center text-center max-w-4xl mx-auto px-8 mb-2 md:mb-6">
         {/* Main Heading */}
         <h2
           className="font-merriweather text-2xl md:text-3xl lg:text-4xl font-regular leading-snug mb-4 max-w-md"
           style={{ color: COLORS.BLACK }}
         >
-          One <span style={{ color: "#65A9F2", fontStyle: "italic" }}>link</span> for all your
-          allergy information
+          One{" "}
+          <span style={{ color: "#65A9F2", fontStyle: "italic" }}>link</span>{" "}
+          for all your allergy information
         </h2>
 
         {/* Description Text */}
@@ -65,19 +66,19 @@ export default function WebProfileSection() {
 
       {/* Images Container - Side by Side */}
       <motion.div
-        className="flex items-end justify-center gap-4 md:gap-8 flex-1 w-full max-w-6xl px-4 -mb-30"
+        className="flex items-end justify-center gap-4 md:gap-8 flex-1 w-full max-w-6xl px-4 -mb-[120px] md:-mb-30"
         variants={imagesVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
         {/* Web Image */}
-        <div className="relative h-full flex items-end">
+        <div className="relative h-full flex items-end w-full md:w-auto">
           <Image
             src="/assets/Screens/Web.png"
             alt="Dine web profile showing allergy information and cards"
             width={600}
             height={700}
-            className="h-full w-auto object-contain"
+            className="h-full w-full md:w-auto object-contain"
             loading="lazy"
             quality={100}
             unoptimized={true}
@@ -85,7 +86,7 @@ export default function WebProfileSection() {
         </div>
 
         {/* Mobile Image */}
-        <div className="relative h-full flex items-end">
+        <div className="relative h-full items-end hidden md:flex">
           <Image
             src="/assets/Screens/Mobile.png"
             alt="Dine mobile app showing allergy cards"

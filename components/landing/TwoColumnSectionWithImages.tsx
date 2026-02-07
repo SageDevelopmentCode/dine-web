@@ -56,23 +56,23 @@ export default function TwoColumnSectionWithImages({
   const contentVariants = {
     hidden: {
       opacity: 0,
-      x: invertLayout ? 50 : -50
+      x: invertLayout ? 50 : -50,
     },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
         duration: 0.8,
-        ease: [0.22, 1, 0.36, 1] as [number, number, number, number]
-      }
-    }
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
+    },
   };
 
   // Animation variants for images
   const imagesVariants = {
     hidden: {
       opacity: 0,
-      scale: 0.95
+      scale: 0.95,
     },
     visible: {
       opacity: 1,
@@ -80,9 +80,9 @@ export default function TwoColumnSectionWithImages({
       transition: {
         duration: 0.8,
         delay: 0.2,
-        ease: [0.22, 1, 0.36, 1] as [number, number, number, number]
-      }
-    }
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
+    },
   };
 
   // Split heading text to identify highlighted word
@@ -189,7 +189,7 @@ export default function TwoColumnSectionWithImages({
             quality={100}
             unoptimized={true}
             loading="lazy"
-            className="h-[250px] w-auto object-contain"
+            className={`h-[250px] w-auto object-contain ${index === 0 ? "-ml-40" : ""}`}
           />
         ))}
       </div>
