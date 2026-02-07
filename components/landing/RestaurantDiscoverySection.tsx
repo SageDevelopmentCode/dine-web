@@ -46,12 +46,41 @@ export default function RestaurantDiscoverySection() {
   return (
     <section
       ref={ref}
-      className="w-full flex flex-col items-center justify-start overflow-hidden py-12"
+      className="w-full flex flex-col items-center justify-start overflow-hidden py-8 md:py-12"
       style={{ backgroundColor: COLORS.RESTAURANT_DISCOVERY_BG }}
     >
-      {/* Images Container - Side by Side at Top */}
+      {/* Images Container - Mobile Version (< lg breakpoint) */}
       <motion.div
-        className="flex items-end justify-center gap-6 md:gap-10 mb-8 md:mb-12 px-4 max-w-7xl w-full"
+        className="flex lg:hidden items-center justify-center gap-4 mb-8 px-4 w-full min-h-[300px]"
+        variants={imagesVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+      >
+        <Image
+          src="/assets/Screens/Web.png"
+          alt="Dine web profile showing restaurant discovery"
+          width={700}
+          height={700}
+          className="h-[250px] w-auto object-contain -ml-40"
+          loading="lazy"
+          quality={100}
+          unoptimized={true}
+        />
+        <Image
+          src="/assets/Screens/Mobile.png"
+          alt="Dine mobile app showing restaurant discovery"
+          width={400}
+          height={700}
+          className="h-[250px] w-auto object-contain"
+          loading="lazy"
+          quality={100}
+          unoptimized={true}
+        />
+      </motion.div>
+
+      {/* Images Container - Desktop Version (>= lg breakpoint) */}
+      <motion.div
+        className="hidden lg:flex items-end justify-center gap-6 md:gap-10 mb-8 md:mb-12 px-4 max-w-7xl w-full"
         variants={imagesVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
