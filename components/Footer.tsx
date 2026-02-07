@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { motion, useInView, Variants } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 
 export default function Footer() {
   const ref = useRef(null);
@@ -42,6 +43,8 @@ export default function Footer() {
               alt="Dine by SageField Logo"
               width={150}
               height={60}
+              priority
+              unoptimized={true}
               className="object-contain"
             />
           </div>
@@ -54,23 +57,44 @@ export default function Footer() {
             >
               About us
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               <li>
                 <Link
                   href="/team"
-                  className="font-merriweather text-sm hover:opacity-70 transition-opacity"
+                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5"
                   style={{ color: COLORS.BLACK }}
                 >
-                  About Dine
+                  <span>About Dine</span>
+                  <ChevronRight
+                    size={18}
+                    style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+                  />
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/partners"
-                  className="font-merriweather text-sm hover:opacity-70 transition-opacity"
+                  href="/for-you"
+                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5"
                   style={{ color: COLORS.BLACK }}
                 >
-                  Features
+                  <span>For you</span>
+                  <ChevronRight
+                    size={18}
+                    style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+                  />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/for-restaurants"
+                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5"
+                  style={{ color: COLORS.BLACK }}
+                >
+                  <span>For Restaurants</span>
+                  <ChevronRight
+                    size={18}
+                    style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+                  />
                 </Link>
               </li>
             </ul>
@@ -84,14 +108,18 @@ export default function Footer() {
             >
               Resources
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               <li>
                 <Link
                   href="/blog"
-                  className="font-merriweather text-sm hover:opacity-70 transition-opacity"
+                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5"
                   style={{ color: COLORS.BLACK }}
                 >
-                  Blog
+                  <span>Blog</span>
+                  <ChevronRight
+                    size={18}
+                    style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+                  />
                 </Link>
               </li>
             </ul>
@@ -126,33 +154,37 @@ export default function Footer() {
                 url="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ height: 32, width: 32 }}
+                style={{ height: 44, width: 44 }}
                 bgColor={PRIMARY_BLUE}
                 aria-label="LinkedIn"
+                className="transition-transform hover:scale-110"
               />
               <SocialIcon
                 url="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ height: 32, width: 32 }}
+                style={{ height: 44, width: 44 }}
                 bgColor={PRIMARY_BLUE}
                 aria-label="Facebook"
+                className="transition-transform hover:scale-110"
               />
               <SocialIcon
                 url="https://youtube.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ height: 32, width: 32 }}
+                style={{ height: 44, width: 44 }}
                 bgColor={PRIMARY_BLUE}
                 aria-label="YouTube"
+                className="transition-transform hover:scale-110"
               />
               <SocialIcon
                 url="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ height: 32, width: 32 }}
+                style={{ height: 44, width: 44 }}
                 bgColor={PRIMARY_BLUE}
                 aria-label="Instagram"
+                className="transition-transform hover:scale-110"
               />
             </div>
           </div>
