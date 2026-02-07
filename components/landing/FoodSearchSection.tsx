@@ -1,53 +1,53 @@
 import TwoColumnSectionWithImages from "./TwoColumnSectionWithImages";
 
-export default function TravelTranslationSection() {
+export default function FoodSearchSection() {
   return (
     <TwoColumnSectionWithImages
       heading={{
-        text: "Your allergies translated into 50+ languages.",
+        text: "Search from over 1.9 million verified food items.",
         highlightedWord: {
-          word: "50+",
+          word: "1.9 million",
           color: "#65A9F2",
         },
       }}
-      subtitle="Travel anywhere with confidence and clarity."
+      subtitle="Most items include allergen, dietary, and nutrition facts."
       contentBox={{
-        text: "Traveling abroad? Your allergy card translates into the local language. Essential phrases, emergency instructions, and allergen names in Japanese, Spanish, French, and 50+ more languages",
+        text: "Save your favorite foods and share your safety ratings with the community. Provide allergen expectations and comments to help other people with food allergies make informed decisions. Your insights contribute to a growing database of real-world experiences.",
         backgroundColor: "#F6F5F3",
       }}
       checklist={[
-        "Automatic translation to local languages",
-        "Essential emergency phrases included",
-        "Recognized allergen names in 50+ countries",
+        "Access verified allergen and nutrition data",
+        "Save foods and track your safe options",
+        "Share safety ratings with the allergy community",
       ]}
-      imageBackgroundColor="#55BEC1"
+      imageBackgroundColor="#FF8C42"
       images={[
         {
           src: "/assets/Screens/Web.png",
-          alt: "Dine Web Translation Feature",
+          alt: "Dine Food Search Database",
           width: 600,
           height: 700,
           zIndex: 10,
           top: "50%",
-          right: "10%",
+          left: "10%",
           transform: "translate(0%, -50%)",
           heightClass: "h-[75%]",
           widthClass: "w-auto",
         },
         {
           src: "/assets/Screens/Mobile.png",
-          alt: "Dine Travel Translation Card",
+          alt: "Dine Food Search Card",
           width: 350,
           height: 700,
           zIndex: 20,
           top: "60%",
-          right: "7%",
+          left: "3%",
           transform: "translate(10%, -50%)",
           heightClass: "h-[70%]",
           widthClass: "w-auto",
         },
       ]}
-      invertLayout={true}
+      invertLayout={false}
     />
   );
 }

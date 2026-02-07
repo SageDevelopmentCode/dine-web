@@ -4,6 +4,7 @@ import RestaurantAllergySection from "@/components/landing/RestaurantAllergySect
 import EmergencyMedicalSection from "@/components/landing/EmergencyMedicalSection";
 import SchoolWorkEventsSection from "@/components/landing/SchoolWorkEventsSection";
 import TravelTranslationSection from "@/components/landing/TravelTranslationSection";
+import FoodSearchSection from "@/components/landing/FoodSearchSection";
 import WebProfileSection from "@/components/landing/WebProfileSection";
 import FamilyManagementSection from "@/components/landing/FamilyManagementSection";
 import RestaurantDiscoverySection from "@/components/landing/RestaurantDiscoverySection";
@@ -28,6 +29,9 @@ export default function Home() {
 
       {/* Travel and Translation Section */}
       <TravelTranslationSection />
+
+      {/* Food Search and Community Section */}
+      <FoodSearchSection />
 
       {/* Web Profile Section */}
       <WebProfileSection />

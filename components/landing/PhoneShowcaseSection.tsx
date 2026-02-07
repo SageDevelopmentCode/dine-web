@@ -30,7 +30,7 @@ export default function PhoneShowcaseSection() {
   return (
     <section
       ref={ref}
-      className="relative flex-1 w-full flex flex-col justify-end"
+      className="relative w-full flex flex-col"
     >
       <div className="relative flex items-center justify-center w-full">
         {/* Left Cards Group */}

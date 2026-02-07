@@ -9,11 +9,13 @@ export default function HomeScreenSection() {
       <LandingHeader />
 
       {/* Hero + Phone Showcase - Flexible space */}
-      <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-8">
-        {/* Hero Section */}
-        <HeroSection />
+      <div className="flex-1 flex flex-col justify-between max-w-7xl mx-auto w-full px-8">
+        {/* Hero Section - centered with flex grow */}
+        <div className="flex-1 flex items-center justify-center min-h-0">
+          <HeroSection />
+        </div>
 
-        {/* Phone Showcase Section */}
+        {/* Phone Showcase Section - anchored at bottom */}
         <PhoneShowcaseSection />
       </div>
     </div>
