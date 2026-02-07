@@ -11,15 +11,15 @@ type UserSafetyRule = Database['allergies']['Tables']['user_safety_rules']['Row'
 type SafetyRule = Database['allergies']['Tables']['safety_rules']['Row'];
 
 // Composite types with nested details
-type UserReactionSymptomWithDetails = UserReactionSymptom & {
+export type UserReactionSymptomWithDetails = UserReactionSymptom & {
   symptom?: Symptom | null;
 };
 
-type UserSafetyLevelWithDetails = UserSafetyLevel & {
+export type UserSafetyLevelWithDetails = UserSafetyLevel & {
   safety_level?: SafetyLevel | null;
 };
 
-type UserSafetyRuleWithDetails = UserSafetyRule & {
+export type UserSafetyRuleWithDetails = UserSafetyRule & {
   safety_rule?: SafetyRule | null;
 };
 

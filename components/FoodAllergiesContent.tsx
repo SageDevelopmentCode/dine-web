@@ -4,12 +4,14 @@ import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
 import AllergenCard from "./AllergenCard";
 import type {
-  UserReactionProfile,
   UserReactionSymptomWithDetails,
   UserSafetyLevelWithDetails,
   UserSafetyRuleWithDetails,
-  UserAllergen,
-} from "@/lib/supabase/types";
+} from "@/lib/supabase/allergies/get_food_allergies_data";
+import type { Database } from "@/lib/supabase/types";
+
+type UserReactionProfile = Database["allergies"]["Tables"]["user_reaction_profiles"]["Row"];
+type UserAllergen = Database["allergies"]["Tables"]["user_allergens"]["Row"];
 
 interface FoodAllergiesContentProps {
   reactionProfile: UserReactionProfile | null;

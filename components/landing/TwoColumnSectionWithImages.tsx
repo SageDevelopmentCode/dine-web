@@ -106,7 +106,9 @@ export default function TwoColumnSectionWithImages({
   // Content column
   const contentColumn = (
     <motion.div
-      className="flex flex-col gap-6 py-24 px-8 lg:px-16 max-w-3xl lg:max-w-none lg:pr-12"
+      className={`flex flex-col gap-6 py-24 px-8 lg:px-16 max-w-3xl lg:max-w-none lg:pr-12 order-2 ${
+        invertLayout ? "lg:order-2" : "lg:order-1"
+      }`}
       variants={contentVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -167,7 +169,9 @@ export default function TwoColumnSectionWithImages({
   // Images column
   const imagesColumn = (
     <motion.div
-      className="relative w-full h-full overflow-hidden flex items-center justify-center"
+      className={`relative w-full min-h-[400px] lg:min-h-0 lg:h-full overflow-hidden flex items-center justify-center order-1 ${
+        invertLayout ? "lg:order-1" : "lg:order-2"
+      }`}
       style={{ backgroundColor: imageBackgroundColor }}
       variants={imagesVariants}
       initial="hidden"
@@ -201,17 +205,8 @@ export default function TwoColumnSectionWithImages({
   return (
     <section ref={ref} className="w-full bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch min-h-[50vh]">
-        {invertLayout ? (
-          <>
-            {imagesColumn}
-            {contentColumn}
-          </>
-        ) : (
-          <>
-            {contentColumn}
-            {imagesColumn}
-          </>
-        )}
+        {imagesColumn}
+        {contentColumn}
       </div>
     </section>
   );

@@ -8,6 +8,7 @@ import FoodSearchSection from "@/components/landing/FoodSearchSection";
 import WebProfileSection from "@/components/landing/WebProfileSection";
 import FamilyManagementSection from "@/components/landing/FamilyManagementSection";
 import RestaurantDiscoverySection from "@/components/landing/RestaurantDiscoverySection";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -41,6 +42,9 @@ export default function Home() {
 
       {/* Restaurant Discovery Section */}
       <RestaurantDiscoverySection />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
