@@ -43,6 +43,17 @@ export default function TravelCardContent({
 
     // Replace allergen placeholders with translated allergen names
     if (phrase.allergens && phrase.allergens.length > 0) {
+      // First, handle indexed placeholders: {ALLERGEN_0}, {ALLERGEN_1}, etc. (case-insensitive)
+      text = text.replace(/\{allergen_(\d+)\}/gi, (match, indexStr) => {
+        const index = parseInt(indexStr, 10);
+        if (index < phrase.allergens!.length) {
+          const allergen = phrase.allergens![index];
+          return (allergen.translations && allergen.translations[selectedLanguage]) || allergen.allergen;
+        }
+        return match; // Return original if index out of bounds
+      });
+
+      // Then, handle generic placeholders: [allergen], [allergens]
       const allergenNames = phrase.allergens
         .map((a) => {
           // Use translated allergen name if available, otherwise use English
@@ -54,6 +65,17 @@ export default function TravelCardContent({
 
     // Replace emergency contact placeholders
     if (phrase.contacts && phrase.contacts.length > 0) {
+      // First, handle indexed placeholders: {CONTACT_0}, {CONTACT_1}, etc. (case-insensitive)
+      text = text.replace(/\{contact_(\d+)\}/gi, (match, indexStr) => {
+        const index = parseInt(indexStr, 10);
+        if (index < phrase.contacts!.length) {
+          const contact = phrase.contacts![index];
+          return `${contact.full_name} (${contact.relationship}): ${contact.phone_number}`;
+        }
+        return match; // Return original if index out of bounds
+      });
+
+      // Then, handle generic placeholders: [emergency contact]
       const contactInfo = phrase.contacts
         .map((c) => `${c.full_name} (${c.phone_number})`)
         .join(", ");
