@@ -1,13 +1,19 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database, UserWebProfileWithUserData, UserEmergencyCardContact } from '@/lib/supabase/types';
+import { Database, UserWebProfileWithUserData, UserEmergencyCardContact, Json } from '@/lib/supabase/types';
 
 // Type aliases for better readability
 type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
-type UserWebProfileSelectedCard = Database['web_profiles']['Tables']['user_web_profiles_selected_cards']['Row'];
 
 // Extended type for selected cards with card_type from JOIN with core.user_cards
-export type UserWebProfileSelectedCardWithType = UserWebProfileSelectedCard & {
-  card_type: Database['core']['Enums']['card_type'];
+export type UserWebProfileSelectedCardWithType = {
+  created_at: string;
+  id: string;
+  is_deleted: boolean;
+  selected_card_id: string;
+  selected_subitems: Json | null;
+  user_id: string;
+  user_web_profiles_id: string;
+  card_type?: Database['public']['Enums']['card_type'];
 };
 
 type Restaurant = Database['restaurant']['Tables']['restaurants']['Row'];

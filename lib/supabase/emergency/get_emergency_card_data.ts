@@ -39,10 +39,17 @@ export async function getEmergencyCardData(
   }
 
   // Parse the JSON response and ensure proper typing
+  const result = data as {
+    card: UserEmergencyCard | null;
+    contacts: UserEmergencyCardContact[];
+    doctors: UserEmergencyCardDoctor[];
+    hospitals: UserEmergencyCardHospital[];
+  };
+
   return {
-    card: (data.card || null) as UserEmergencyCard | null,
-    contacts: (data.contacts || []) as UserEmergencyCardContact[],
-    doctors: (data.doctors || []) as UserEmergencyCardDoctor[],
-    hospitals: (data.hospitals || []) as UserEmergencyCardHospital[],
+    card: result.card || null,
+    contacts: result.contacts || [],
+    doctors: result.doctors || [],
+    hospitals: result.hospitals || [],
   };
 }

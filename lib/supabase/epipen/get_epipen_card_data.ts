@@ -32,8 +32,13 @@ export async function getEpipenCardData(
   }
 
   // Parse the JSON response and ensure proper typing
+  const result = data as {
+    card: UserEpipenCard | null;
+    instructions: UserEpipenInstructionWithDetails[];
+  };
+
   return {
-    card: (data.card || null) as UserEpipenCard | null,
-    instructions: (data.instructions || []) as UserEpipenInstructionWithDetails[],
+    card: result.card || null,
+    instructions: result.instructions || [],
   };
 }
