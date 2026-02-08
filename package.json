@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "types:generate": "npx supabase gen types typescript --project-id ohydgbpsblevcowvyrjh --schema public,core,travel,swe,emergency,epipen,allergies,web_profiles,family,restaurant,threads,monitoring > lib/supabase/types.ts"
+    "types:generate": "node scripts/generate-types.js",
+    "types:generate:token": "node scripts/generate-types-with-token.js"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
