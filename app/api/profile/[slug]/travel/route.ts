@@ -1,10 +1,8 @@
-import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
+import { getTravelCardData } from '@/lib/supabase/travel/get_travel_card_data';
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-
     // Get user_id from query parameter
     const userId = request.nextUrl.searchParams.get('user_id');
 
@@ -15,16 +13,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Call the RPC function to get all travel data in a single query
-    const { data, error } = await supabase
-      .schema('travel')
-      .rpc('get_travel_card_data_web', {
-        p_user_id: userId,
-      });
-
-    if (error) {
-      throw new Error(`Failed to fetch travel data: ${error.message}`);
-    }
+    // Use the same function as the dedicated page - includes client-side merging
+    const data = await getTravelCardData(userId);
 
     return NextResponse.json(data);
   } catch (error) {

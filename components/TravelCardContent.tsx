@@ -35,11 +35,20 @@ export default function TravelCardContent({
 
   // Helper function to replace placeholders in phrase text
   const renderPhraseText = (phrase: UserTravelPhraseWithDetails): string => {
-    let text = phrase.travel_phrase?.text || "";
+    // Get translated text for selected language, fall back to English default
+    let text =
+      (phrase.translations && phrase.translations[selectedLanguage]) ||
+      phrase.travel_phrase?.text ||
+      "";
 
-    // Replace allergen placeholders
+    // Replace allergen placeholders with translated allergen names
     if (phrase.allergens && phrase.allergens.length > 0) {
-      const allergenNames = phrase.allergens.map((a) => a.allergen).join(", ");
+      const allergenNames = phrase.allergens
+        .map((a) => {
+          // Use translated allergen name if available, otherwise use English
+          return (a.translations && a.translations[selectedLanguage]) || a.allergen;
+        })
+        .join(", ");
       text = text.replace(/\[allergens?\]/gi, allergenNames);
     }
 
@@ -146,23 +155,29 @@ export default function TravelCardContent({
                     {/* Display allergens if present */}
                     {phrase.allergens && phrase.allergens.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {phrase.allergens.map((allergen) => (
-                          <span
-                            key={allergen.id}
-                            className="px-2 py-1 rounded-full text-xs font-merriweather flex items-center gap-1"
-                            style={{
-                              backgroundColor: variant === "dedicated" ? COLORS.PAGE_BACKGROUND : COLORS.WHITE,
-                              color: "#3E8C90",
-                            }}
-                          >
-                            <Twemoji
-                              hex={allergen.twemoji}
-                              size={14}
-                              alt={allergen.allergen}
-                            />
-                            {allergen.allergen}
-                          </span>
-                        ))}
+                        {phrase.allergens.map((allergen) => {
+                          // Use translated allergen name if available, otherwise use English
+                          const displayName =
+                            (allergen.translations && allergen.translations[selectedLanguage]) ||
+                            allergen.allergen;
+                          return (
+                            <span
+                              key={allergen.id}
+                              className="px-2 py-1 rounded-full text-xs font-merriweather flex items-center gap-1"
+                              style={{
+                                backgroundColor: variant === "dedicated" ? COLORS.PAGE_BACKGROUND : COLORS.WHITE,
+                                color: "#3E8C90",
+                              }}
+                            >
+                              <Twemoji
+                                hex={allergen.twemoji}
+                                size={14}
+                                alt={displayName}
+                              />
+                              {displayName}
+                            </span>
+                          );
+                        })}
                       </div>
                     )}
 
