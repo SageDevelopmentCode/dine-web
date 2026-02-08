@@ -4,6 +4,12 @@ import { Database, UserWebProfileWithUserData, UserEmergencyCardContact } from '
 // Type aliases for better readability
 type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
 type UserWebProfileSelectedCard = Database['web_profiles']['Tables']['user_web_profiles_selected_cards']['Row'];
+
+// Extended type for selected cards with card_type from JOIN with core.user_cards
+export type UserWebProfileSelectedCardWithType = UserWebProfileSelectedCard & {
+  card_type: Database['core']['Enums']['card_type'];
+};
+
 type Restaurant = Database['restaurant']['Tables']['restaurants']['Row'];
 type RestaurantAddress = Database['restaurant']['Tables']['restaurant_addresses']['Row'];
 type RestaurantHours = Database['restaurant']['Tables']['restaurant_hours']['Row'];
@@ -49,7 +55,7 @@ export async function getInitialProfileData(
   slug: string
 ): Promise<{
   profile: UserWebProfileWithUserData;
-  selectedCards: UserWebProfileSelectedCard[];
+  selectedCards: UserWebProfileSelectedCardWithType[];
   allergens: UserAllergen[];
   emergencyContacts: UserEmergencyCardContact[];
   trustedRestaurants: TrustedRestaurant[];
@@ -73,7 +79,7 @@ export async function getInitialProfileData(
   // Parse the JSON response and ensure proper typing
   const result = data as {
     profile: UserWebProfileWithUserData;
-    selectedCards: UserWebProfileSelectedCard[];
+    selectedCards: UserWebProfileSelectedCardWithType[];
     allergens: UserAllergen[];
     emergencyContacts: UserEmergencyCardContact[];
     trustedRestaurants: TrustedRestaurant[];

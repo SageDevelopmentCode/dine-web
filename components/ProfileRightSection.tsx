@@ -8,16 +8,38 @@ import AllergenDetailModal from "./AllergenDetailModal";
 import TrustedRestaurantCard from "./TrustedRestaurantCard";
 import RecentReviewCard from "./RecentReviewCard";
 import { Database } from "@/lib/supabase/types";
-import type { TrustedRestaurant, RecentReview } from "@/lib/supabase/web_profiles/get_initial_profile_data";
+import type {
+  TrustedRestaurant,
+  RecentReview,
+  UserWebProfileSelectedCardWithType
+} from "@/lib/supabase/web_profiles/get_initial_profile_data";
 
 // Type alias for better readability
 type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
+
+// Card type mapping from database enum to frontend string
+type DatabaseCardType = "allergy" | "emergency" | "epipen" | "travel" | "swe";
+type ValidCardType =
+  | "food-allergies"
+  | "emergency"
+  | "epipen"
+  | "swe"
+  | "travel";
+
+const cardTypeMapping: Record<DatabaseCardType, ValidCardType> = {
+  allergy: "food-allergies",
+  emergency: "emergency",
+  epipen: "epipen",
+  travel: "travel",
+  swe: "swe",
+};
 
 interface ProfileRightSectionProps {
   slug: string;
   userId: string;
   allergens: UserAllergen[];
   firstName?: string | null;
+  selectedCards: UserWebProfileSelectedCardWithType[];
   trustedRestaurants: TrustedRestaurant[];
   recentReviews: RecentReview[];
 }
@@ -27,6 +49,7 @@ export default function ProfileRightSection({
   userId,
   allergens,
   firstName,
+  selectedCards,
   trustedRestaurants,
   recentReviews,
 }: ProfileRightSectionProps) {
@@ -34,6 +57,19 @@ export default function ProfileRightSection({
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Map selected cards to frontend card types
+  const activeCardTypes = new Set<ValidCardType>(
+    selectedCards.map((card) => {
+      const dbCardType = card.card_type as DatabaseCardType;
+      return cardTypeMapping[dbCardType];
+    }).filter(Boolean)
+  );
+
+  // Helper function to check if a card should be shown
+  const shouldShowCard = (cardType: ValidCardType): boolean => {
+    return activeCardTypes.has(cardType);
+  };
 
   // Filter allergens by severity
   const severeAllergens = allergens.filter((a) => a.severity === "severe");
@@ -130,56 +166,66 @@ export default function ProfileRightSection({
 
       {/* Info Cards Section */}
       <div className="mt-8">
-        <ExpandableInfoCard
-          icon="/assets/JustMe.png"
-          title="Food Allergies"
-          description="Includes food preferences, allergies, instructions"
-          backgroundColor={COLORS.FOOD_ALLERGIES_BG}
-          slug={slug}
-          userId={userId}
-          cardType="food-allergies"
-        />
+        {shouldShowCard("food-allergies") && (
+          <ExpandableInfoCard
+            icon="/assets/JustMe.png"
+            title="Food Allergies"
+            description="Includes food preferences, allergies, instructions"
+            backgroundColor={COLORS.FOOD_ALLERGIES_BG}
+            slug={slug}
+            userId={userId}
+            cardType="food-allergies"
+          />
+        )}
 
-        <ExpandableInfoCard
-          icon="/assets/Emergency.png"
-          title="Emergency Medical"
-          description="If I'm unconscious or having a severe reaction"
-          backgroundColor={COLORS.EMERGENCY_MEDICAL_BG}
-          slug={slug}
-          userId={userId}
-          cardType="emergency"
-        />
+        {shouldShowCard("emergency") && (
+          <ExpandableInfoCard
+            icon="/assets/Emergency.png"
+            title="Emergency Medical"
+            description="If I'm unconscious or having a severe reaction"
+            backgroundColor={COLORS.EMERGENCY_MEDICAL_BG}
+            slug={slug}
+            userId={userId}
+            cardType="emergency"
+          />
+        )}
 
-        <ExpandableInfoCard
-          icon="/assets/Epipen.png"
-          title="Epipen Guide"
-          description="How to help in an emergency"
-          backgroundColor={COLORS.EPIPEN_COLOR}
-          slug={slug}
-          userId={userId}
-          cardType="epipen"
-        />
+        {shouldShowCard("epipen") && (
+          <ExpandableInfoCard
+            icon="/assets/Epipen.png"
+            title="Epipen Guide"
+            description="How to help in an emergency"
+            backgroundColor={COLORS.EPIPEN_COLOR}
+            slug={slug}
+            userId={userId}
+            cardType="epipen"
+          />
+        )}
 
-        <ExpandableInfoCard
-          icon="/assets/SWE.png"
-          title="School/Work/Events"
-          description="For teachers, coworkers, daycare, camp, or caregivers"
-          backgroundColor={COLORS.SCHOOL_WORK_EVENTS_BG}
-          slug={slug}
-          userId={userId}
-          cardType="swe"
-          firstName={firstName}
-        />
+        {shouldShowCard("swe") && (
+          <ExpandableInfoCard
+            icon="/assets/SWE.png"
+            title="School/Work/Events"
+            description="For teachers, coworkers, daycare, camp, or caregivers"
+            backgroundColor={COLORS.SCHOOL_WORK_EVENTS_BG}
+            slug={slug}
+            userId={userId}
+            cardType="swe"
+            firstName={firstName}
+          />
+        )}
 
-        <ExpandableInfoCard
-          icon="/assets/Travel.png"
-          title="Travel"
-          description="Multi-Language Allergy Information"
-          backgroundColor={COLORS.TRAVEL_BG}
-          slug={slug}
-          userId={userId}
-          cardType="travel"
-        />
+        {shouldShowCard("travel") && (
+          <ExpandableInfoCard
+            icon="/assets/Travel.png"
+            title="Travel"
+            description="Multi-Language Allergy Information"
+            backgroundColor={COLORS.TRAVEL_BG}
+            slug={slug}
+            userId={userId}
+            cardType="travel"
+          />
+        )}
       </div>
 
       {/* Trusted Restaurants Section */}

@@ -62,12 +62,14 @@ BEGIN
           'created_at', sc.created_at,
           'user_web_profiles_id', sc.user_web_profiles_id,
           'selected_card_id', sc.selected_card_id,
+          'card_type', uc.card_type,
           'selected_subitems', sc.selected_subitems,
           'user_id', sc.user_id,
           'is_deleted', sc.is_deleted
         )
       ), '[]'::json)
       FROM web_profiles.user_web_profiles_selected_cards sc
+      LEFT JOIN core.user_cards uc ON sc.selected_card_id = uc.id
       WHERE sc.user_web_profiles_id = v_profile_id
         AND sc.is_deleted = false
     ),

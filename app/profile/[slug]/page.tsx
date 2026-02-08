@@ -17,6 +17,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   let initialData;
   try {
     initialData = await getInitialProfileData(slug);
+    console.log(initialData);
   } catch (error) {
     // If profile not found, show the not-found page
     if (error instanceof Error && error.message.includes("No profile found")) {
@@ -45,6 +46,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               slug={slug}
               userId={userId}
               allergens={initialData.allergens}
+              selectedCards={initialData.selectedCards}
               trustedRestaurants={initialData.trustedRestaurants}
               recentReviews={initialData.recentReviews}
             />
