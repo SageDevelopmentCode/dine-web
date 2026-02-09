@@ -87,15 +87,17 @@ export default async function CardPage({ params }: CardPageProps) {
             emergencyContacts: [],
             emergencyDoctors: [],
             emergencyHospitals: [],
+            reactionProfile: null,
           };
         } else {
-          const { card, contacts, doctors, hospitals } =
+          const { card, contacts, doctors, hospitals, reactionProfile } =
             await getEmergencyCardData(emergencyCardLookup.card_id);
           cardData = {
             emergencyCard: card,
             emergencyContacts: contacts,
             emergencyDoctors: doctors,
             emergencyHospitals: hospitals,
+            reactionProfile: reactionProfile,
           };
         }
         break;

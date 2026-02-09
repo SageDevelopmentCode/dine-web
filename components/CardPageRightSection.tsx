@@ -32,6 +32,7 @@ import type {
   UserTravelPhraseWithDetails,
   TravelPhraseCategory,
   UserAllergen,
+  Database,
 } from "@/lib/supabase/types";
 
 interface CardPageRightSectionProps {
@@ -50,6 +51,7 @@ interface CardPageRightSectionProps {
         emergencyContacts: UserEmergencyCardContact[];
         emergencyDoctors: UserEmergencyCardDoctor[];
         emergencyHospitals: UserEmergencyCardHospital[];
+        reactionProfile: Database['allergies']['Tables']['user_reaction_profiles']['Row'] | null;
       }
     | {
         epipenCard: UserEpipenCard | null;
@@ -129,6 +131,7 @@ export default function CardPageRightSection({
             emergencyContacts={cardData.emergencyContacts}
             emergencyDoctors={cardData.emergencyDoctors}
             emergencyHospitals={cardData.emergencyHospitals}
+            reactionProfile={cardData.reactionProfile}
             textColor={COLORS.BLACK}
             variant="dedicated"
           />

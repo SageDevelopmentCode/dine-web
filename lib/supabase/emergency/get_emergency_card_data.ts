@@ -4,13 +4,17 @@ import {
   UserEmergencyCardContact,
   UserEmergencyCardDoctor,
   UserEmergencyCardHospital,
+  Database,
 } from '@/lib/supabase/types';
+
+// Type alias for reaction profile
+type UserReactionProfile = Database['allergies']['Tables']['user_reaction_profiles']['Row'];
 
 /**
  * Get comprehensive emergency card data using the RPC function
  * Fetches all emergency-related data in a single RPC call instead of multiple sequential queries
  * @param cardId - The card_id to lookup
- * @returns Emergency card data: card, contacts, doctors, hospitals
+ * @returns Emergency card data: card, contacts, doctors, hospitals, reactionProfile
  * @throws Error if the RPC call fails
  */
 export async function getEmergencyCardData(
@@ -20,6 +24,7 @@ export async function getEmergencyCardData(
   contacts: UserEmergencyCardContact[];
   doctors: UserEmergencyCardDoctor[];
   hospitals: UserEmergencyCardHospital[];
+  reactionProfile: UserReactionProfile | null;
 }> {
   const supabase = await createClient();
 
@@ -44,6 +49,7 @@ export async function getEmergencyCardData(
     contacts: UserEmergencyCardContact[];
     doctors: UserEmergencyCardDoctor[];
     hospitals: UserEmergencyCardHospital[];
+    reactionProfile: UserReactionProfile | null;
   };
 
   return {
@@ -51,5 +57,6 @@ export async function getEmergencyCardData(
     contacts: result.contacts || [],
     doctors: result.doctors || [],
     hospitals: result.hospitals || [],
+    reactionProfile: result.reactionProfile || null,
   };
 }

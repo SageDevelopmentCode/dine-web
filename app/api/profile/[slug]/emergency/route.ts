@@ -35,11 +35,12 @@ export async function GET(request: NextRequest) {
         emergencyContacts: [],
         emergencyDoctors: [],
         emergencyHospitals: [],
+        reactionProfile: null,
       });
     }
 
     // Use RPC to fetch all related data in a single call
-    const { card, contacts, doctors, hospitals } = await getEmergencyCardData(
+    const { card, contacts, doctors, hospitals, reactionProfile } = await getEmergencyCardData(
       emergencyCardLookup.card_id
     );
 
@@ -48,6 +49,7 @@ export async function GET(request: NextRequest) {
       emergencyContacts: contacts,
       emergencyDoctors: doctors,
       emergencyHospitals: hospitals,
+      reactionProfile: reactionProfile,
     });
   } catch (error) {
     console.error('Error fetching emergency data:', error);

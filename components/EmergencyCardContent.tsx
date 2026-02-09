@@ -6,6 +6,7 @@ import type {
   UserEmergencyCardContact,
   UserEmergencyCardDoctor,
   UserEmergencyCardHospital,
+  Database,
 } from "@/lib/supabase/types";
 
 interface EmergencyCardContentProps {
@@ -13,6 +14,7 @@ interface EmergencyCardContentProps {
   emergencyContacts: UserEmergencyCardContact[];
   emergencyDoctors: UserEmergencyCardDoctor[];
   emergencyHospitals: UserEmergencyCardHospital[];
+  reactionProfile?: Database['allergies']['Tables']['user_reaction_profiles']['Row'] | null;
   textColor?: string;
   variant?: "expandable" | "dedicated";
 }
@@ -22,6 +24,7 @@ export default function EmergencyCardContent({
   emergencyContacts,
   emergencyDoctors,
   emergencyHospitals,
+  reactionProfile,
   textColor = COLORS.WHITE,
   variant = "expandable",
 }: EmergencyCardContentProps) {
@@ -86,6 +89,45 @@ export default function EmergencyCardContent({
 
   return (
     <div className="space-y-4">
+      {/* Anaphylaxis Warning Banner */}
+      {reactionProfile?.has_anaphylaxis && (
+        <div
+          className="rounded-lg p-4 border-l-4"
+          style={{
+            backgroundColor: variant === "dedicated" ? "#FFF5F5" : "rgba(241, 101, 101, 0.15)",
+            borderLeftColor: COLORS.SEVERE_BORDER
+          }}
+        >
+          <div className="flex items-start gap-2">
+            <span className="text-lg">⚠️</span>
+            <div className="flex-1">
+              <h4
+                className="text-sm font-merriweather font-semibold mb-2"
+                style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
+              >
+                Anaphylaxis Warning
+              </h4>
+              <div
+                className="space-y-1 text-xs font-merriweather"
+                style={{ color: variant === "dedicated" ? COLORS.BLACK : COLORS.WHITE }}
+              >
+                <p>This person has a history of anaphylaxis.</p>
+                {reactionProfile.first_symptom && (
+                  <p>
+                    <strong>First symptom:</strong> {reactionProfile.first_symptom}
+                  </p>
+                )}
+                {reactionProfile.reaction_speed && (
+                  <p>
+                    <strong>Reaction speed:</strong> {reactionProfile.reaction_speed}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Personal Information Section */}
       {emergencyCard && (
         <div className="rounded-lg p-4" style={{ backgroundColor: variant === "dedicated" ? COLORS.WHITE : "#692B47" }}>
