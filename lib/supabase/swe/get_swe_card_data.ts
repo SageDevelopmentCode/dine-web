@@ -5,6 +5,21 @@ import type {
   UserSweMeasureWithDetails,
 } from '@/lib/supabase/types';
 
+/**
+ * Normalize category display names to slugified keys for color mapping
+ * Maps display names like "In the Classroom" to keys like "classroom"
+ */
+function normalizeCategoryName(displayName: string): string {
+  const nameMap: Record<string, string> = {
+    "In the Classroom": "classroom",
+    "In the Office": "office",
+    "Meetings and Events": "meetings-events",
+    "Birthday Parties and Celebrations": "birthday-parties",
+    "Field Trips": "field-trips",
+  };
+  return nameMap[displayName] || displayName.toLowerCase().replace(/\s+/g, '-');
+}
+
 // Mobile RPC response types
 interface MobileMeasure {
   instruction_key: string;
@@ -78,12 +93,12 @@ export async function getSweCardData(
       custom_category_name: mobileCategory.is_custom ? mobileCategory.category_name : null,
       is_deleted: false,
       swe_card_id: mobileData.card.id,
-      // Add nested swe_category object
+      // Add nested swe_category object with normalized name for color matching
       swe_category: mobileCategory.default_category_id
         ? {
             id: mobileCategory.default_category_id,
             created_at: new Date().toISOString(),
-            category_name: mobileCategory.category_name,
+            category_name: normalizeCategoryName(mobileCategory.category_name),
           }
         : null,
     };

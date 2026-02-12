@@ -37,6 +37,15 @@ const categoryDescriptions: Record<string, string> = {
   "field-trips": "Safety procedures for field trips and off-campus activities",
 };
 
+// Category display names (reverse mapping from normalized keys to display names)
+const categoryDisplayNames: Record<string, string> = {
+  classroom: "In the Classroom",
+  office: "In the Office",
+  "meetings-events": "Meetings and Events",
+  "birthday-parties": "Birthday Parties and Celebrations",
+  "field-trips": "Field Trips",
+};
+
 export default function SweCardContent({
   sweCard,
   sweCategories,
@@ -106,6 +115,12 @@ export default function SweCardContent({
     return categoryDescriptions[categoryName || ""] || null;
   };
 
+  // Get display name for a category (converts normalized key to display name)
+  const getCategoryDisplayName = (category: UserSweCategoryWithDetails): string => {
+    const categoryName = category.swe_category?.category_name;
+    return categoryDisplayNames[categoryName || ""] || categoryName || "";
+  };
+
   return (
     <div className="space-y-4">
       {/* Prevention Measures */}
@@ -138,7 +153,7 @@ export default function SweCardContent({
                     <div className="flex-1 text-left">
                       <h5 className="text-base font-merriweather font-semibold text-gray-900">
                         {category.custom_category_name ||
-                          category.swe_category?.category_name}
+                          getCategoryDisplayName(category)}
                       </h5>
                       {description && (
                         <p className="text-xs font-merriweather text-gray-600 mt-1">
