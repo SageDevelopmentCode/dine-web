@@ -3416,6 +3416,21 @@ export type UserEmergencyCardContact = Database['emergency']['Tables']['user_eme
 export type UserEmergencyCardDoctor = Database['emergency']['Tables']['user_emergency_card_doctors']['Row'];
 export type UserEmergencyCardHospital = Database['emergency']['Tables']['user_emergency_card_hospitals']['Row'];
 
+// SWE Types
+export type UserSweCard = Database['swe']['Tables']['user_swe_cards']['Row'];
+export type UserSweCategory = Database['swe']['Tables']['user_swe_categories']['Row'];
+export type SweCategory = Database['swe']['Tables']['swe_categories']['Row'];
+export type UserSweMeasure = Database['swe']['Tables']['user_swe_measures']['Row'];
+export type SweMeasure = Database['swe']['Tables']['swe_measures']['Row'];
+
+export type UserSweCategoryWithDetails = UserSweCategory & {
+  swe_category?: SweCategory | null;
+};
+
+export type UserSweMeasureWithDetails = UserSweMeasure & {
+  swe_measure?: SweMeasure | null;
+};
+
 export const Constants = {
   allergies: {
     Enums: {},

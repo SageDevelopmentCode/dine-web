@@ -1,25 +1,37 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database } from '@/lib/supabase/types';
+import type {
+  UserSweCard,
+  UserSweCategoryWithDetails,
+  UserSweMeasureWithDetails,
+} from '@/lib/supabase/types';
 
-// Type aliases for better readability
-type UserSweCard = Database['swe']['Tables']['user_swe_cards']['Row'];
-type UserSweCategory = Database['swe']['Tables']['user_swe_categories']['Row'];
-type SweCategory = Database['swe']['Tables']['swe_categories']['Row'];
-type UserSweMeasure = Database['swe']['Tables']['user_swe_measures']['Row'];
-type SweMeasure = Database['swe']['Tables']['swe_measures']['Row'];
+// Mobile RPC response types
+interface MobileMeasure {
+  instruction_key: string;
+  instruction_text: string;
+  is_custom: boolean;
+  is_user_override: boolean;
+  user_measure_id: string | null;
+  measure_order: string;
+}
 
-// Composite types with nested details
-type UserSweCategoryWithDetails = UserSweCategory & {
-  swe_category?: SweCategory | null;
-};
+interface MobileCategory {
+  id: string;
+  category_name: string;
+  is_custom: boolean;
+  default_category_id: string | null;
+  measures: MobileMeasure[];
+}
 
-type UserSweMeasureWithDetails = UserSweMeasure & {
-  swe_measure?: SweMeasure | null;
-};
+interface MobileRPCResponse {
+  card: UserSweCard;
+  categories: MobileCategory[];
+  selected_cards?: unknown[];
+}
 
 /**
- * Get comprehensive SWE card data using the RPC function
- * Fetches all SWE-related data in a single RPC call instead of multiple sequential queries
+ * Get comprehensive SWE card data using the mobile RPC function
+ * Fetches all SWE-related data in a single RPC call and transforms it for web use
  * @param cardId - The card_id to lookup
  * @returns SWE card data: card, categories, measures
  * @throws Error if the RPC call fails
@@ -33,10 +45,10 @@ export async function getSweCardData(
 }> {
   const supabase = await createClient();
 
-  // Call the RPC function in the swe schema
+  // Call the mobile RPC function (takes TEXT parameter)
   const { data, error } = await supabase
     .schema('swe')
-    .rpc('get_swe_card_data_web', {
+    .rpc('get_swe_card_data', {
       p_card_id: cardId,
     });
 
@@ -48,10 +60,67 @@ export async function getSweCardData(
     throw new Error(`No data returned for card_id "${cardId}"`);
   }
 
-  // Parse the JSON response and ensure proper typing
+  // Parse the mobile RPC response
+  const mobileData = data as unknown as MobileRPCResponse;
+
+  // Transform mobile format to web format
+  const categories: UserSweCategoryWithDetails[] = [];
+  const measures: UserSweMeasureWithDetails[] = [];
+
+  // Process each category and flatten measures
+  mobileData.categories.forEach((mobileCategory) => {
+    // Transform category to web format
+    const webCategory: UserSweCategoryWithDetails = {
+      id: mobileCategory.id,
+      created_at: new Date().toISOString(), // Mobile doesn't include this
+      user_id: mobileData.card.user_id,
+      default_category_id: mobileCategory.default_category_id,
+      custom_category_name: mobileCategory.is_custom ? mobileCategory.category_name : null,
+      is_deleted: false,
+      swe_card_id: mobileData.card.id,
+      // Add nested swe_category object
+      swe_category: mobileCategory.default_category_id
+        ? {
+            id: mobileCategory.default_category_id,
+            created_at: new Date().toISOString(),
+            category_name: mobileCategory.category_name,
+          }
+        : null,
+    };
+
+    categories.push(webCategory);
+
+    // Transform and flatten measures
+    mobileCategory.measures.forEach((mobileMeasure) => {
+      const webMeasure: UserSweMeasureWithDetails = {
+        id: mobileMeasure.user_measure_id || `virtual-${mobileMeasure.instruction_key}`,
+        created_at: mobileMeasure.measure_order || new Date().toISOString(),
+        user_category_id: mobileCategory.id,
+        instruction_text: mobileMeasure.instruction_text,
+        is_deleted: false,
+        is_custom: mobileMeasure.is_custom,
+        user_id: mobileData.card.user_id,
+        swe_card_id: mobileData.card.id,
+        instruction_key: mobileMeasure.instruction_key,
+        // Add nested swe_measure object (for default measures)
+        swe_measure: !mobileMeasure.is_custom
+          ? {
+              id: `default-${mobileMeasure.instruction_key}`,
+              created_at: mobileMeasure.measure_order || new Date().toISOString(),
+              category_id: mobileCategory.default_category_id || '',
+              instruction_key: mobileMeasure.instruction_key,
+              instruction_text: mobileMeasure.instruction_text,
+            }
+          : null,
+      };
+
+      measures.push(webMeasure);
+    });
+  });
+
   return {
-    card: (data.card || null) as UserSweCard | null,
-    categories: (data.categories || []) as UserSweCategoryWithDetails[],
-    measures: (data.measures || []) as UserSweMeasureWithDetails[],
+    card: mobileData.card || null,
+    categories,
+    measures,
   };
 }

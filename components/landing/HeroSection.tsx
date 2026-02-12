@@ -125,14 +125,14 @@ export default function HeroSection() {
         animate={isInView ? "visible" : "hidden"}
       >
         <Twemoji hex="1f44b" size={18} />
-        <span className="font-merriweather text-xs">
+        <span className="font-merriweather text-xs lg:text-sm">
           Hello, Dine is available <span className="font-bold">now</span>!
         </span>
       </motion.div>
 
       {/* Main Heading */}
       <motion.h1
-        className="font-merriweather text-2xl md:text-3xl lg:text-4xl font-regular leading-snug mb-4 max-w-md"
+        className="font-merriweather text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-regular leading-snug mb-4 max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl 2xl:max-w-4xl"
         style={{
           color: COLORS.BLACK,
         }}
@@ -160,7 +160,7 @@ export default function HeroSection() {
 
       {/* Description Text */}
       <motion.p
-        className="font-merriweather text-xs md:text-sm max-w-lg mb-6 px-4"
+        className="font-merriweather text-xs md:text-sm lg:text-base xl:text-lg max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl mb-6 px-4"
         style={{
           color: COLORS.SECONDARY_TEXT_GRAY,
         }}
@@ -176,7 +176,7 @@ export default function HeroSection() {
       <div className="flex flex-col sm:flex-row items-center gap-4">
         {/* Button 1: Download App */}
         <motion.button
-          className="font-merriweather text-base px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
+          className="font-merriweather text-base lg:text-lg px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
           style={{
             backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
             color: COLORS.WHITE,
@@ -191,7 +191,7 @@ export default function HeroSection() {
 
         {/* Button 2: Discover Our Story */}
         <motion.button
-          className="font-merriweather text-base px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
+          className="font-merriweather text-base lg:text-lg px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
           style={{
             backgroundColor: COLORS.WHITE,
             color: COLORS.DOWNLOAD_SECTION_BLUE,

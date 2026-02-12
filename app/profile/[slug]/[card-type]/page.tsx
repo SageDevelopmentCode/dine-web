@@ -188,6 +188,7 @@ export default async function CardPage({ params }: CardPageProps) {
               cardType={validCardType}
               backgroundColor={cardBackgroundColors[validCardType]}
               cardData={cardData}
+              firstName={initialData.profile.first_name}
             />
           </div>
 

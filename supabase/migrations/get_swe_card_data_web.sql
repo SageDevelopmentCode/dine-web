@@ -53,7 +53,7 @@ BEGIN
             usc.is_deleted,
             usc.swe_card_id
           FROM swe.user_swe_categories usc
-          WHERE usc.user_id = v_user_id
+          WHERE usc.user_id = v_user_id AND usc.swe_card_id = v_swe_card_id
         )
         -- Merge: Create UserSweCategoryWithDetails structure
         SELECT
@@ -114,14 +114,14 @@ BEGIN
             usm.swe_card_id,
             usm.instruction_key
           FROM swe.user_swe_measures usm
-          WHERE usm.user_id = v_user_id
+          WHERE usm.user_id = v_user_id AND usm.swe_card_id = v_swe_card_id
         )
         -- Merge: Create UserSweMeasureWithDetails structure
         SELECT
           -- If user has modified/created this measure, use user measure id, otherwise create virtual id
           COALESCE(um.id::text, CONCAT('default-', dm.id::text)) AS id,
           COALESCE(um.created_at, dm.created_at) AS created_at,
-          COALESCE(um.user_category_id, dm.category_id) AS user_category_id,
+          COALESCE(um.user_category_id::text, CONCAT('default-', dm.category_id::text)) AS user_category_id,
           COALESCE(um.instruction_text, dm.instruction_text) AS instruction_text,
           COALESCE(um.is_deleted, false) AS is_deleted,
           COALESCE(um.is_custom, false) AS is_custom,
@@ -143,14 +143,10 @@ BEGIN
         FROM default_measures dm
         FULL OUTER JOIN user_measures um ON dm.instruction_key = um.instruction_key
         WHERE
+          -- Only include measures that the user has actually selected/created
+          um.id IS NOT NULL
           -- Exclude deleted measures
-          (um.is_deleted IS NULL OR um.is_deleted = false)
-          AND (
-            -- Include if it's a default measure (with or without override)
-            dm.instruction_key IS NOT NULL
-            -- OR if it's a custom user measure (custom instruction_key)
-            OR (dm.instruction_key IS NULL AND um.instruction_key LIKE 'custom-%')
-          )
+          AND (um.is_deleted IS NULL OR um.is_deleted = false)
       ) AS merged_measures
     )
   ) INTO v_result;
