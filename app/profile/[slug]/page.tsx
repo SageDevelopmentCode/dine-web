@@ -46,6 +46,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               slug={slug}
               userId={userId}
               allergens={initialData.allergens}
+              firstName={initialData.profile.first_name}
               selectedCards={initialData.selectedCards}
               trustedRestaurants={initialData.trustedRestaurants}
               recentReviews={initialData.recentReviews}

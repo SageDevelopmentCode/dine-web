@@ -105,6 +105,11 @@ export default function SweCardContent({
 
   // Get background color for a category
   const getCategoryColor = (category: UserSweCategoryWithDetails): string => {
+    // For expandable variant (in ProfileRightSection), use consistent purple background
+    if (variant === "expandable") {
+      return "#44276A";
+    }
+    // For dedicated variant (in card page), use multi-color system
     const categoryName = category.swe_category?.category_name;
     return categoryColors[categoryName || "default"] || categoryColors.default;
   };
@@ -151,20 +156,20 @@ export default function SweCardContent({
                     className="w-full px-4 py-3 flex items-center justify-between hover:opacity-80 transition-opacity"
                   >
                     <div className="flex-1 text-left">
-                      <h5 className="text-base font-merriweather font-semibold text-gray-900">
+                      <h5 className={`text-base font-merriweather font-semibold ${variant === "expandable" ? "text-white" : "text-gray-900"}`}>
                         {category.custom_category_name ||
                           getCategoryDisplayName(category)}
                       </h5>
                       {description && (
-                        <p className="text-xs font-merriweather text-gray-600 mt-1">
+                        <p className={`text-xs font-merriweather mt-1 ${variant === "expandable" ? "text-white" : "text-gray-600"}`}>
                           {description}
                         </p>
                       )}
                     </div>
                     {isExpanded ? (
-                      <ChevronUp className="w-5 h-5 text-gray-700 flex-shrink-0 ml-2" />
+                      <ChevronUp className={`w-5 h-5 flex-shrink-0 ml-2 ${variant === "expandable" ? "text-white" : "text-gray-700"}`} />
                     ) : (
-                      <ChevronDown className="w-5 h-5 text-gray-700 flex-shrink-0 ml-2" />
+                      <ChevronDown className={`w-5 h-5 flex-shrink-0 ml-2 ${variant === "expandable" ? "text-white" : "text-gray-700"}`} />
                     )}
                   </button>
 
