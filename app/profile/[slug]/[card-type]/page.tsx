@@ -12,7 +12,8 @@ import { getTravelCardData } from "@/lib/supabase/travel/get_travel_card_data";
 import { getUserAvailableCards } from "@/lib/supabase/user_cards/get_user_available_cards";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { cardBackgroundColors, type ValidCardType } from "@/constants/card-config";
+import { cardBackgroundColors, cardTitles, type ValidCardType } from "@/constants/card-config";
+import type { Metadata } from "next";
 
 interface CardPageProps {
   params: Promise<{
@@ -28,6 +29,39 @@ const VALID_CARD_TYPES = [
   "swe",
   "travel",
 ] as const;
+
+export async function generateMetadata({ params }: CardPageProps): Promise<Metadata> {
+  const { slug, "card-type": cardType } = await params;
+
+  // Validate card type
+  if (!VALID_CARD_TYPES.includes(cardType as ValidCardType)) {
+    return {
+      title: 'User Profile | Dine',
+    };
+  }
+
+  const validCardType = cardType as ValidCardType;
+  const cardDisplayName = cardTitles[validCardType];
+
+  try {
+    const initialData = await getInitialProfileData(slug);
+    const firstName = initialData.profile.first_name || '';
+    const lastName = initialData.profile.last_name || '';
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    const title = fullName
+      ? `${fullName}'s ${cardDisplayName} | Dine`
+      : `${cardDisplayName} | Dine`;
+
+    return {
+      title,
+    };
+  } catch (error) {
+    return {
+      title: `${cardDisplayName} | Dine`,
+    };
+  }
+}
 
 export default async function CardPage({ params }: CardPageProps) {
   const { slug, "card-type": cardType } = await params;

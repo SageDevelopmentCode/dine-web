@@ -4,11 +4,33 @@ import ProfileLeftSection from "@/components/ProfileLeftSection";
 import ProfileRightSection from "@/components/ProfileRightSection";
 import { getInitialProfileData } from "@/lib/supabase/web_profiles/get_initial_profile_data";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 interface ProfilePageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  try {
+    const initialData = await getInitialProfileData(slug);
+    const firstName = initialData.profile.first_name || '';
+    const lastName = initialData.profile.last_name || '';
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    const title = fullName ? `${fullName} | Dine Profile` : 'User Profile | Dine';
+
+    return {
+      title,
+    };
+  } catch (error) {
+    return {
+      title: 'User Profile | Dine',
+    };
+  }
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
