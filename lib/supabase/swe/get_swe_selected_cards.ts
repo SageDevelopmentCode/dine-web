@@ -1,0 +1,178 @@
+import { createClient } from '@/lib/supabase/server';
+import { Database } from '@/lib/supabase/types';
+import { getEmergencyCardData } from '@/lib/supabase/emergency/get_emergency_card_data';
+import { getEpipenCardData } from '@/lib/supabase/epipen/get_epipen_card_data';
+import { getTravelCardData } from '@/lib/supabase/travel/get_travel_card_data';
+
+// Type aliases
+type UserSweSelectedCard = Database['swe']['Tables']['user_swe_selected_cards']['Row'];
+type UserCard = Database['core']['Tables']['user_cards']['Row'];
+type CardType = Database['public']['Enums']['card_type'];
+
+// Union type for all possible card data structures
+export type SelectedCardData =
+  | {
+      type: 'emergency';
+      card: Awaited<ReturnType<typeof getEmergencyCardData>>['card'];
+      contacts: Awaited<ReturnType<typeof getEmergencyCardData>>['contacts'];
+      doctors: Awaited<ReturnType<typeof getEmergencyCardData>>['doctors'];
+      hospitals: Awaited<ReturnType<typeof getEmergencyCardData>>['hospitals'];
+      reactionProfile: Awaited<ReturnType<typeof getEmergencyCardData>>['reactionProfile'];
+      selectedSubitems: any;
+    }
+  | {
+      type: 'epipen';
+      card: Awaited<ReturnType<typeof getEpipenCardData>>['card'];
+      instructions: Awaited<ReturnType<typeof getEpipenCardData>>['instructions'];
+      selectedSubitems: any;
+    }
+  | {
+      type: 'travel';
+      travelCard: Awaited<ReturnType<typeof getTravelCardData>>['travelCard'];
+      travelLanguages: Awaited<ReturnType<typeof getTravelCardData>>['travelLanguages'];
+      travelPhrases: Awaited<ReturnType<typeof getTravelCardData>>['travelPhrases'];
+      travelCategories: Awaited<ReturnType<typeof getTravelCardData>>['travelCategories'];
+      selectedSubitems: any;
+    }
+  | {
+      type: 'allergy';
+      // Food allergies card - for now we'll include a placeholder
+      // This can be expanded when food allergies fetcher is available
+      selectedSubitems: any;
+    };
+
+/**
+ * Map database card_type to our type system
+ */
+function mapCardType(dbCardType: CardType): 'emergency' | 'epipen' | 'travel' | 'allergy' | null {
+  switch (dbCardType) {
+    case 'emergency':
+      return 'emergency';
+    case 'epipen':
+      return 'epipen';
+    case 'travel':
+      return 'travel';
+    case 'allergy':
+      return 'allergy';
+    default:
+      return null;
+  }
+}
+
+/**
+ * Get selected cards for a SWE card
+ * Fetches all cards that have been marked as important for this SWE card
+ * @param sweCardId - The SWE card_id
+ * @param userId - The user ID who owns the cards
+ * @returns Array of selected cards with their data and selectedSubitems
+ */
+export async function getSweSelectedCards(
+  sweCardId: string,
+  userId: string
+): Promise<SelectedCardData[]> {
+  const supabase = await createClient();
+
+  // Use RPC function to get selected cards with their card types
+  // This avoids direct queries to core.user_cards which requires elevated permissions
+  const { data: cardTypesData, error: cardTypesError } = await supabase
+    .schema('swe')
+    .rpc('get_swe_selected_card_types', {
+      p_swe_card_id: sweCardId as any,
+      p_user_id: userId as any,
+    });
+
+  if (cardTypesError) {
+    console.error('=== RPC Error Debug Info ===');
+    console.error('Full Supabase error:', cardTypesError);
+    console.error('Error details:', JSON.stringify(cardTypesError, null, 2));
+    console.error('Error code:', cardTypesError.code);
+    console.error('Error hint:', cardTypesError.hint);
+    console.error('Error message:', cardTypesError.message);
+    console.error('Parameters passed:', { p_swe_card_id: sweCardId, p_user_id: userId });
+    console.error('===========================');
+    throw new Error(`Failed to fetch selected card types: ${cardTypesError.message}`);
+  }
+
+  if (!cardTypesData || cardTypesData.length === 0) {
+    return [];
+  }
+
+  // Fetch data for each selected card based on its type
+  const cardDataPromises = cardTypesData.map(async (row: {
+    selected_card_id: string;
+    card_type: string;
+    selected_subitems: any;
+  }): Promise<SelectedCardData | null> => {
+    const cardType = mapCardType(row.card_type as CardType);
+    if (!cardType) return null;
+
+    try {
+      switch (cardType) {
+        case 'emergency': {
+          // For emergency cards, we need to look up the card_id from user_emergency_cards
+          const { data: emergencyCardLookup } = await supabase
+            .schema('emergency')
+            .from('user_emergency_cards')
+            .select('card_id')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+          if (!emergencyCardLookup) return null;
+
+          const emergencyData = await getEmergencyCardData(emergencyCardLookup.card_id);
+          return {
+            type: 'emergency',
+            ...emergencyData,
+            selectedSubitems: row.selected_subitems,
+          };
+        }
+
+        case 'epipen': {
+          // For epipen cards, look up card_id from user_epipen_cards
+          const { data: epipenCardLookup } = await supabase
+            .schema('epipen')
+            .from('user_epipen_cards')
+            .select('card_id')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+          if (!epipenCardLookup) return null;
+
+          const epipenData = await getEpipenCardData(epipenCardLookup.card_id);
+          return {
+            type: 'epipen',
+            ...epipenData,
+            selectedSubitems: row.selected_subitems,
+          };
+        }
+
+        case 'travel': {
+          // Travel cards use user_id directly
+          const travelData = await getTravelCardData(userId);
+          return {
+            type: 'travel',
+            ...travelData,
+            selectedSubitems: row.selected_subitems,
+          };
+        }
+
+        case 'allergy': {
+          // Food allergies - placeholder for now
+          return {
+            type: 'allergy',
+            selectedSubitems: row.selected_subitems,
+          };
+        }
+
+        default:
+          return null;
+      }
+    } catch (error) {
+      console.error(`Failed to fetch data for card type ${cardType}:`, error);
+      return null;
+    }
+  });
+
+  const results = await Promise.all(cardDataPromises);
+  return results.filter((r): r is SelectedCardData => r !== null);
+}

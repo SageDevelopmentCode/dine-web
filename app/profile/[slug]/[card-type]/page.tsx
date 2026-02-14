@@ -8,6 +8,7 @@ import { getFoodAllergiesData } from "@/lib/supabase/allergies/get_food_allergie
 import { getEmergencyCardData } from "@/lib/supabase/emergency/get_emergency_card_data";
 import { getEpipenCardData } from "@/lib/supabase/epipen/get_epipen_card_data";
 import { getSweCardData } from "@/lib/supabase/swe/get_swe_card_data";
+import { getSweSelectedCards } from "@/lib/supabase/swe/get_swe_selected_cards";
 import { getTravelCardData } from "@/lib/supabase/travel/get_travel_card_data";
 import { getUserAvailableCards } from "@/lib/supabase/user_cards/get_user_available_cards";
 import { notFound } from "next/navigation";
@@ -168,7 +169,7 @@ export default async function CardPage({ params }: CardPageProps) {
         const { data: sweCardLookup } = await supabase
           .schema("swe")
           .from("user_swe_cards")
-          .select("card_id")
+          .select("id, card_id")
           .eq("user_id", userId)
           .maybeSingle();
 
@@ -177,15 +178,24 @@ export default async function CardPage({ params }: CardPageProps) {
             sweCard: null,
             sweCategories: [],
             sweMeasures: [],
+            selectedCards: [],
           };
         } else {
           const { card, categories, measures } = await getSweCardData(
             sweCardLookup.card_id
           );
+
+          // Fetch selected cards for this SWE card
+          const selectedCards = await getSweSelectedCards(
+            sweCardLookup.id,
+            userId
+          );
+
           cardData = {
             sweCard: card,
             sweCategories: categories,
             sweMeasures: measures,
+            selectedCards,
           };
         }
         break;

@@ -2444,6 +2444,14 @@ export type Database = {
     Functions: {
       get_swe_card_data: { Args: { p_card_id: string }; Returns: Json }
       get_swe_card_data_web: { Args: { p_card_id: string }; Returns: Json }
+      get_swe_selected_card_types: {
+        Args: { p_swe_card_id: string; p_user_id: string }
+        Returns: {
+          card_type: string
+          selected_card_id: string
+          selected_subitems: Json
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
@@ -2995,7 +3003,9 @@ export type Database = {
         Args: { p_card_id: string; p_user_id: string }
         Returns: Json
       }
-      get_travel_card_data_web: { Args: { p_user_id: string }; Returns: Json }
+      get_travel_card_data_web:
+        | { Args: { p_user_id: string }; Returns: Json }
+        | { Args: { p_card_id: string; p_user_id: string }; Returns: Json }
     }
     Enums: {
       [_ in never]: never
@@ -3390,47 +3400,6 @@ export type CompositeTypes<
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
-// Custom Type Aliases
-// Note: These are manually maintained and should be preserved when regenerating types
-
-// EpiPen Types
-export type UserEpipenCard = Database['epipen']['Tables']['user_epipen_cards']['Row'];
-export type UserEpipenInstruction = Database['epipen']['Tables']['user_epipen_instructions']['Row'];
-export type EpipenInstruction = Database['epipen']['Tables']['epipen_instructions']['Row'];
-export type UserEpipenInstructionWithDetails = UserEpipenInstruction & {
-  epipen_instruction?: EpipenInstruction | null;
-};
-
-// Web Profile Types
-export type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
-export type UserProfile = Database['core']['Tables']['user_profiles']['Row'];
-export type UserWebProfileWithUserData = UserWebProfile & {
-  first_name?: string | null;
-  last_name?: string | null;
-  account_type?: Database['public']['Enums']['account_type'];
-};
-
-// Emergency Types
-export type UserEmergencyCard = Database['emergency']['Tables']['user_emergency_cards']['Row'];
-export type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
-export type UserEmergencyCardDoctor = Database['emergency']['Tables']['user_emergency_card_doctors']['Row'];
-export type UserEmergencyCardHospital = Database['emergency']['Tables']['user_emergency_card_hospitals']['Row'];
-
-// SWE Types
-export type UserSweCard = Database['swe']['Tables']['user_swe_cards']['Row'];
-export type UserSweCategory = Database['swe']['Tables']['user_swe_categories']['Row'];
-export type SweCategory = Database['swe']['Tables']['swe_categories']['Row'];
-export type UserSweMeasure = Database['swe']['Tables']['user_swe_measures']['Row'];
-export type SweMeasure = Database['swe']['Tables']['swe_measures']['Row'];
-
-export type UserSweCategoryWithDetails = UserSweCategory & {
-  swe_category?: SweCategory | null;
-};
-
-export type UserSweMeasureWithDetails = UserSweMeasure & {
-  swe_measure?: SweMeasure | null;
-};
-
 export const Constants = {
   allergies: {
     Enums: {},
@@ -3535,3 +3504,72 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
+// Custom Type Aliases
+// Note: These are manually maintained and should be preserved when regenerating types
+
+// Allergen Types
+export type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
+export type UserReactionProfile = Database['allergies']['Tables']['user_reaction_profiles']['Row'];
+export type UserReactionSymptom = Database['allergies']['Tables']['user_reaction_symptoms']['Row'];
+export type ReactionSymptom = Database['allergies']['Tables']['symptoms']['Row'];
+export type UserReactionSymptomWithDetails = UserReactionSymptom & {
+  reaction_symptom?: ReactionSymptom | null;
+};
+export type UserSafetyLevel = Database['allergies']['Tables']['user_safety_levels']['Row'];
+export type SafetyLevel = Database['allergies']['Tables']['safety_levels']['Row'];
+export type UserSafetyLevelWithDetails = UserSafetyLevel & {
+  safety_level?: SafetyLevel | null;
+};
+export type UserSafetyRule = Database['allergies']['Tables']['user_safety_rules']['Row'];
+export type UserSafetyRuleWithDetails = UserSafetyRule;
+
+// EpiPen Types
+export type UserEpipenCard = Database['epipen']['Tables']['user_epipen_cards']['Row'];
+export type UserEpipenInstruction = Database['epipen']['Tables']['user_epipen_instructions']['Row'];
+export type EpipenInstruction = Database['epipen']['Tables']['epipen_instructions']['Row'];
+export type UserEpipenInstructionWithDetails = UserEpipenInstruction & {
+  epipen_instruction?: EpipenInstruction | null;
+};
+
+// Web Profile Types
+export type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
+export type UserProfile = Database['core']['Tables']['user_profiles']['Row'];
+export type UserWebProfileWithUserData = UserWebProfile & {
+  first_name?: string | null;
+  last_name?: string | null;
+  account_type?: Database['public']['Enums']['account_type'];
+};
+
+// Emergency Types
+export type UserEmergencyCard = Database['emergency']['Tables']['user_emergency_cards']['Row'];
+export type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
+export type UserEmergencyCardDoctor = Database['emergency']['Tables']['user_emergency_card_doctors']['Row'];
+export type UserEmergencyCardHospital = Database['emergency']['Tables']['user_emergency_card_hospitals']['Row'];
+
+// SWE Types
+export type UserSweCard = Database['swe']['Tables']['user_swe_cards']['Row'];
+export type UserSweCategory = Database['swe']['Tables']['user_swe_categories']['Row'];
+export type SweCategory = Database['swe']['Tables']['swe_categories']['Row'];
+export type UserSweMeasure = Database['swe']['Tables']['user_swe_measures']['Row'];
+export type SweMeasure = Database['swe']['Tables']['swe_measures']['Row'];
+
+export type UserSweCategoryWithDetails = UserSweCategory & {
+  swe_category?: SweCategory | null;
+};
+
+export type UserSweMeasureWithDetails = UserSweMeasure & {
+  swe_measure?: SweMeasure | null;
+};
+
+// Travel Types
+export type UserTravelCard = Database['travel']['Tables']['user_travel_cards']['Row'];
+export type UserTravelLanguage = Database['travel']['Tables']['user_travel_languages']['Row'];
+export type TravelPhrase = Database['travel']['Tables']['travel_phrases']['Row'];
+export type TravelPhraseCategory = Database['travel']['Tables']['travel_phrase_categories']['Row'];
+export type UserTravelPhrase = Database['travel']['Tables']['user_travel_phrases']['Row'];
+
+export type UserTravelPhraseWithDetails = UserTravelPhrase & {
+  travel_phrase?: TravelPhrase | null;
+  category?: TravelPhraseCategory | null;
+};

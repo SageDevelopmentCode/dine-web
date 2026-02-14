@@ -13,6 +13,9 @@ import EmergencyCardContent from "./EmergencyCardContent";
 import EpipenCardContent from "./EpipenCardContent";
 import SweCardContent from "./SweCardContent";
 import TravelCardContent from "./TravelCardContent";
+import FilteredEmergencyCard from "./FilteredEmergencyCard";
+import FilteredEpipenCard from "./FilteredEpipenCard";
+import FilteredTravelCard from "./FilteredTravelCard";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
@@ -34,6 +37,7 @@ import type {
   UserAllergen,
   Database,
 } from "@/lib/supabase/types";
+import type { SelectedCardData } from "@/lib/supabase/swe/get_swe_selected_cards";
 
 interface CardPageRightSectionProps {
   cardType: ValidCardType;
@@ -61,6 +65,7 @@ interface CardPageRightSectionProps {
         sweCard: UserSweCard | null;
         sweCategories: UserSweCategoryWithDetails[];
         sweMeasures: UserSweMeasureWithDetails[];
+        selectedCards?: SelectedCardData[];
       }
     | {
         travelCard: UserTravelCard | null;
@@ -115,7 +120,7 @@ export default function CardPageRightSection({
 
       {/* Card Content - No outer background wrapper */}
       <div>
-        {cardType === "food-allergies" && "reactionProfile" in cardData ? (
+        {cardType === "food-allergies" && "safetyLevels" in cardData ? (
           <FoodAllergiesContent
             reactionProfile={cardData.reactionProfile}
             reactionSymptoms={cardData.reactionSymptoms}
@@ -169,6 +174,65 @@ export default function CardPageRightSection({
           </p>
         )}
       </div>
+
+      {/* Important Information Section - Only for SWE cards with selected cards */}
+      {cardType === "swe" && "sweCard" in cardData && cardData.selectedCards && cardData.selectedCards.length > 0 && (
+        <div className="mt-8">
+          <h2
+            className="text-xl font-merriweather font-bold mb-4"
+            style={{ color: COLORS.BLACK }}
+          >
+            Important Information
+          </h2>
+          <div className="space-y-6">
+            {cardData.selectedCards.map((selectedCard, index) => {
+              if (selectedCard.type === 'emergency') {
+                return (
+                  <div key={index}>
+                    <FilteredEmergencyCard
+                      card={selectedCard.card}
+                      contacts={selectedCard.contacts}
+                      doctors={selectedCard.doctors}
+                      hospitals={selectedCard.hospitals}
+                      reactionProfile={selectedCard.reactionProfile}
+                      selectedSubitems={selectedCard.selectedSubitems}
+                      textColor={COLORS.BLACK}
+                      variant="dedicated"
+                    />
+                  </div>
+                );
+              } else if (selectedCard.type === 'epipen') {
+                return (
+                  <div key={index}>
+                    <FilteredEpipenCard
+                      card={selectedCard.card}
+                      instructions={selectedCard.instructions}
+                      selectedSubitems={selectedCard.selectedSubitems}
+                      textColor={COLORS.BLACK}
+                      variant="dedicated"
+                    />
+                  </div>
+                );
+              } else if (selectedCard.type === 'travel') {
+                return (
+                  <div key={index}>
+                    <FilteredTravelCard
+                      travelCard={selectedCard.travelCard}
+                      travelLanguages={selectedCard.travelLanguages}
+                      travelPhrases={selectedCard.travelPhrases}
+                      travelCategories={selectedCard.travelCategories}
+                      selectedSubitems={selectedCard.selectedSubitems}
+                      textColor={COLORS.BLACK}
+                      variant="dedicated"
+                    />
+                  </div>
+                );
+              }
+              return null;
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
