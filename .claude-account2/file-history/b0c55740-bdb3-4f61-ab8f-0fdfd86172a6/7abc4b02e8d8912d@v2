@@ -9,90 +9,6 @@ import type { Database, UserAllergen } from "@/lib/supabase/types";
 
 type UserReactionProfile = Database["allergies"]["Tables"]["user_reaction_profiles"]["Row"];
 
-/**
- * Component to render allergens section separately
- */
-export function AllergensSection({ allergens }: { allergens: UserAllergen[] }) {
-  // Group allergens by severity
-  const severeAllergens = allergens.filter((a) => a.severity === "severe");
-  const moderateAllergens = allergens.filter((a) => a.severity === "moderate");
-  const mildAllergens = allergens.filter((a) => a.severity === "mild");
-
-  if (allergens.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="mb-6">
-      {/* Severe Allergens */}
-      {severeAllergens.length > 0 && (
-        <div className="mb-6">
-          <h3
-            className="text-sm font-merriweather mb-3"
-            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-          >
-            Severe
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            {severeAllergens.map((allergen) => (
-              <AllergenCard
-                key={allergen.id}
-                emojiHex={allergen.twemoji}
-                label={allergen.allergen}
-                severity="severe"
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Moderate Allergens */}
-      {moderateAllergens.length > 0 && (
-        <div className="mb-6">
-          <h3
-            className="text-sm font-merriweather mb-3"
-            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-          >
-            Moderate
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            {moderateAllergens.map((allergen) => (
-              <AllergenCard
-                key={allergen.id}
-                emojiHex={allergen.twemoji}
-                label={allergen.allergen}
-                severity="moderate"
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Mild Allergens */}
-      {mildAllergens.length > 0 && (
-        <div className="mb-6">
-          <h3
-            className="text-sm font-merriweather mb-3"
-            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-          >
-            Mild
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            {mildAllergens.map((allergen) => (
-              <AllergenCard
-                key={allergen.id}
-                emojiHex={allergen.twemoji}
-                label={allergen.allergen}
-                severity="mild"
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
 interface FilteredFoodAllergiesCardProps {
   allergens: UserAllergen[];
   reactionProfile: UserReactionProfile | null;
@@ -100,7 +16,6 @@ interface FilteredFoodAllergiesCardProps {
   selectedSubitems: any;
   textColor: string;
   variant: "expandable" | "dedicated";
-  hideAllergens?: boolean;
 }
 
 /**
@@ -115,7 +30,6 @@ export default function FilteredFoodAllergiesCard({
   selectedSubitems,
   textColor,
   variant,
-  hideAllergens = false,
 }: FilteredFoodAllergiesCardProps) {
   // Group allergens by severity
   const severeAllergens = allergens.filter((a) => a.severity === "severe");
@@ -156,86 +70,84 @@ export default function FilteredFoodAllergiesCard({
 
   return (
     <div className="space-y-4">
-      {/* Allergens Section - conditionally rendered */}
-      {!hideAllergens && (
-        <div className="mb-6">
-          {/* Heading - only show for expandable variant */}
-          {variant === "expandable" && (
-            <h2
-              className="text-xl font-merriweather font-bold mb-6"
-              style={{ color: COLORS.BLACK }}
+      {/* Allergens Section */}
+      <div className="mb-6">
+        {/* Heading - only show for expandable variant */}
+        {variant === "expandable" && (
+          <h2
+            className="text-xl font-merriweather font-bold mb-6"
+            style={{ color: COLORS.BLACK }}
+          >
+            Hi! I have food allergies. Please read carefully:
+          </h2>
+        )}
+
+        {/* Severe Allergens */}
+        {severeAllergens.length > 0 && (
+          <div className="mb-6">
+            <h3
+              className="text-sm font-merriweather mb-3"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
-              Hi! I have food allergies. Please read carefully:
-            </h2>
-          )}
-
-          {/* Severe Allergens */}
-          {severeAllergens.length > 0 && (
-            <div className="mb-6">
-              <h3
-                className="text-sm font-merriweather mb-3"
-                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-              >
-                Severe
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {severeAllergens.map((allergen) => (
-                  <AllergenCard
-                    key={allergen.id}
-                    emojiHex={allergen.twemoji}
-                    label={allergen.allergen}
-                    severity="severe"
-                  />
-                ))}
-              </div>
+              Severe
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {severeAllergens.map((allergen) => (
+                <AllergenCard
+                  key={allergen.id}
+                  emojiHex={allergen.twemoji}
+                  label={allergen.allergen}
+                  severity="severe"
+                />
+              ))}
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Moderate Allergens */}
-          {moderateAllergens.length > 0 && (
-            <div className="mb-6">
-              <h3
-                className="text-sm font-merriweather mb-3"
-                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-              >
-                Moderate
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {moderateAllergens.map((allergen) => (
-                  <AllergenCard
-                    key={allergen.id}
-                    emojiHex={allergen.twemoji}
-                    label={allergen.allergen}
-                    severity="moderate"
-                  />
-                ))}
-              </div>
+        {/* Moderate Allergens */}
+        {moderateAllergens.length > 0 && (
+          <div className="mb-6">
+            <h3
+              className="text-sm font-merriweather mb-3"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+            >
+              Moderate
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {moderateAllergens.map((allergen) => (
+                <AllergenCard
+                  key={allergen.id}
+                  emojiHex={allergen.twemoji}
+                  label={allergen.allergen}
+                  severity="moderate"
+                />
+              ))}
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Mild Allergens */}
-          {mildAllergens.length > 0 && (
-            <div className="mb-6">
-              <h3
-                className="text-sm font-merriweather mb-3"
-                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-              >
-                Mild
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {mildAllergens.map((allergen) => (
-                  <AllergenCard
-                    key={allergen.id}
-                    emojiHex={allergen.twemoji}
-                    label={allergen.allergen}
-                    severity="mild"
-                  />
-                ))}
-              </div>
+        {/* Mild Allergens */}
+        {mildAllergens.length > 0 && (
+          <div className="mb-6">
+            <h3
+              className="text-sm font-merriweather mb-3"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+            >
+              Mild
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {mildAllergens.map((allergen) => (
+                <AllergenCard
+                  key={allergen.id}
+                  emojiHex={allergen.twemoji}
+                  label={allergen.allergen}
+                  severity="mild"
+                />
+              ))}
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
 
       {/* Reaction Profile Section */}
       {reactionProfile && (

@@ -6,6 +6,7 @@ import {
   cardTitles,
   cardDescriptions,
   cardIcons,
+  cardBackgroundColors,
 } from "@/constants/card-config";
 import Image from "next/image";
 import FoodAllergiesContent from "./FoodAllergiesContent";
@@ -16,7 +17,7 @@ import TravelCardContent from "./TravelCardContent";
 import FilteredEmergencyCard from "./FilteredEmergencyCard";
 import FilteredEpipenCard from "./FilteredEpipenCard";
 import FilteredTravelCard from "./FilteredTravelCard";
-import FilteredFoodAllergiesCard from "./FilteredFoodAllergiesCard";
+import FilteredFoodAllergiesCard, { AllergensSection } from "./FilteredFoodAllergiesCard";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
@@ -187,58 +188,206 @@ export default function CardPageRightSection({
           </h2>
           <div className="space-y-6">
             {cardData.selectedCards.map((selectedCard, index) => {
+              // Map database card type to ValidCardType
+              const getValidCardType = (type: string): ValidCardType => {
+                switch (type) {
+                  case 'allergy':
+                    return 'food-allergies';
+                  case 'emergency':
+                    return 'emergency';
+                  case 'epipen':
+                    return 'epipen';
+                  case 'travel':
+                    return 'travel';
+                  default:
+                    return 'food-allergies';
+                }
+              };
+
+              const validCardType = getValidCardType(selectedCard.type);
+              const cardTitle = cardTitles[validCardType];
+              const cardIcon = cardIcons[validCardType];
+              const backgroundColor = cardBackgroundColors[validCardType];
+
               if (selectedCard.type === 'emergency') {
                 return (
-                  <div key={index}>
-                    <FilteredEmergencyCard
-                      card={selectedCard.card}
-                      contacts={selectedCard.contacts}
-                      doctors={selectedCard.doctors}
-                      hospitals={selectedCard.hospitals}
-                      reactionProfile={selectedCard.reactionProfile}
-                      selectedSubitems={selectedCard.selectedSubitems}
-                      textColor={COLORS.BLACK}
-                      variant="dedicated"
-                    />
+                  <div key={index} className="w-full rounded-2xl" style={{ backgroundColor }}>
+                    <div className="relative">
+                      <div className="w-full px-6 py-2 flex items-center gap-4 min-h-[120px]">
+                        {/* Icon */}
+                        <div className="flex-shrink-0 -ml-8 h-[110px]">
+                          <Image
+                            src={cardIcon}
+                            alt={cardTitle}
+                            width={110}
+                            height={110}
+                            quality={100}
+                            unoptimized={true}
+                            className="object-contain w-auto h-full"
+                          />
+                        </div>
+
+                        {/* Text Content */}
+                        <div className="flex-1 text-left">
+                          <h3
+                            className="text-lg font-merriweather font-regular"
+                            style={{ color: COLORS.WHITE }}
+                          >
+                            {cardTitle}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="px-4 pb-6">
+                      <FilteredEmergencyCard
+                        card={selectedCard.card}
+                        contacts={selectedCard.contacts}
+                        doctors={selectedCard.doctors}
+                        hospitals={selectedCard.hospitals}
+                        reactionProfile={selectedCard.reactionProfile}
+                        selectedSubitems={selectedCard.selectedSubitems}
+                        textColor={COLORS.WHITE}
+                        variant="dedicated"
+                      />
+                    </div>
                   </div>
                 );
               } else if (selectedCard.type === 'epipen') {
                 return (
-                  <div key={index}>
-                    <FilteredEpipenCard
-                      card={selectedCard.card}
-                      instructions={selectedCard.instructions}
-                      selectedSubitems={selectedCard.selectedSubitems}
-                      textColor={COLORS.BLACK}
-                      variant="dedicated"
-                    />
+                  <div key={index} className="w-full rounded-2xl" style={{ backgroundColor }}>
+                    <div className="relative">
+                      <div className="w-full px-6 py-2 flex items-center gap-4 min-h-[120px]">
+                        {/* Icon */}
+                        <div className="flex-shrink-0 -ml-8 h-[110px]">
+                          <Image
+                            src={cardIcon}
+                            alt={cardTitle}
+                            width={110}
+                            height={110}
+                            quality={100}
+                            unoptimized={true}
+                            className="object-contain w-auto h-full"
+                          />
+                        </div>
+
+                        {/* Text Content */}
+                        <div className="flex-1 text-left">
+                          <h3
+                            className="text-lg font-merriweather font-regular"
+                            style={{ color: COLORS.WHITE }}
+                          >
+                            {cardTitle}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="px-4 pb-6">
+                      <FilteredEpipenCard
+                        card={selectedCard.card}
+                        instructions={selectedCard.instructions}
+                        selectedSubitems={selectedCard.selectedSubitems}
+                        textColor={COLORS.WHITE}
+                        variant="dedicated"
+                      />
+                    </div>
                   </div>
                 );
               } else if (selectedCard.type === 'travel') {
                 return (
-                  <div key={index}>
-                    <FilteredTravelCard
-                      travelCard={selectedCard.travelCard}
-                      travelLanguages={selectedCard.travelLanguages}
-                      travelPhrases={selectedCard.travelPhrases}
-                      travelCategories={selectedCard.travelCategories}
-                      selectedSubitems={selectedCard.selectedSubitems}
-                      textColor={COLORS.BLACK}
-                      variant="dedicated"
-                    />
+                  <div key={index} className="w-full rounded-2xl" style={{ backgroundColor }}>
+                    <div className="relative">
+                      <div className="w-full px-6 py-2 flex items-center gap-4 min-h-[120px]">
+                        {/* Icon */}
+                        <div className="flex-shrink-0 -ml-8 h-[110px]">
+                          <Image
+                            src={cardIcon}
+                            alt={cardTitle}
+                            width={110}
+                            height={110}
+                            quality={100}
+                            unoptimized={true}
+                            className="object-contain w-auto h-full"
+                          />
+                        </div>
+
+                        {/* Text Content */}
+                        <div className="flex-1 text-left">
+                          <h3
+                            className="text-lg font-merriweather font-regular"
+                            style={{ color: COLORS.WHITE }}
+                          >
+                            {cardTitle}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="px-4 pb-6">
+                      <FilteredTravelCard
+                        travelCard={selectedCard.travelCard}
+                        travelLanguages={selectedCard.travelLanguages}
+                        travelPhrases={selectedCard.travelPhrases}
+                        travelCategories={selectedCard.travelCategories}
+                        selectedSubitems={selectedCard.selectedSubitems}
+                        textColor={COLORS.WHITE}
+                        variant="dedicated"
+                      />
+                    </div>
                   </div>
                 );
               } else if (selectedCard.type === 'allergy') {
                 return (
                   <div key={index}>
-                    <FilteredFoodAllergiesCard
-                      allergens={selectedCard.allergens}
-                      reactionProfile={selectedCard.reactionProfile}
-                      reactionSymptoms={selectedCard.reactionSymptoms}
-                      selectedSubitems={selectedCard.selectedSubitems}
-                      textColor={COLORS.BLACK}
-                      variant="dedicated"
-                    />
+                    {/* Allergens Section - Outside Card */}
+                    <AllergensSection allergens={selectedCard.allergens} />
+
+                    {/* Card Container - Only for Reaction Profile and Symptoms */}
+                    <div className="w-full rounded-2xl mt-4" style={{ backgroundColor }}>
+                      <div className="relative">
+                        <div className="w-full px-6 py-2 flex items-center gap-4 min-h-[120px]">
+                          {/* Icon */}
+                          <div className="flex-shrink-0 -ml-8 h-[110px]">
+                            <Image
+                              src={cardIcon}
+                              alt={cardTitle}
+                              width={110}
+                              height={110}
+                              quality={100}
+                              unoptimized={true}
+                              className="object-contain w-auto h-full"
+                            />
+                          </div>
+
+                          {/* Text Content */}
+                          <div className="flex-1 text-left">
+                            <h3
+                              className="text-lg font-merriweather font-regular"
+                              style={{ color: COLORS.WHITE }}
+                            >
+                              {cardTitle}
+                            </h3>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Card Content - Hide Allergens */}
+                      <div className="px-4 pb-6">
+                        <FilteredFoodAllergiesCard
+                          allergens={selectedCard.allergens}
+                          reactionProfile={selectedCard.reactionProfile}
+                          reactionSymptoms={selectedCard.reactionSymptoms}
+                          selectedSubitems={selectedCard.selectedSubitems}
+                          textColor={COLORS.WHITE}
+                          variant="dedicated"
+                          hideAllergens={true}
+                        />
+                      </div>
+                    </div>
                   </div>
                 );
               }
