@@ -188,7 +188,8 @@ export default async function CardPage({ params }: CardPageProps) {
           // Fetch selected cards for this SWE card
           const selectedCards = await getSweSelectedCards(
             sweCardLookup.id,
-            userId
+            userId,
+            initialData.allergens
           );
 
           cardData = {

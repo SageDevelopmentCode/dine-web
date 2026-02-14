@@ -9,30 +9,30 @@
 DROP FUNCTION IF EXISTS swe.get_swe_selected_card_types(UUID, UUID);
 
 CREATE OR REPLACE FUNCTION swe.get_swe_selected_card_types(
-  p_swe_card_id UUID,
-  p_user_id UUID
+p_swe_card_id UUID,
+p_user_id UUID
 )
 RETURNS TABLE(
-  selected_card_id UUID,
-  card_type TEXT,
-  selected_subitems JSON
+selected_card_id UUID,
+card_type TEXT,
+selected_subitems JSON
 )
 LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
 BEGIN
-  RETURN QUERY
-  SELECT
-    sc.selected_card_id,
-    uc.card_type::TEXT,
-    sc.selected_subitems
-  FROM swe.user_swe_selected_cards sc
-  LEFT JOIN core.user_cards uc ON sc.selected_card_id = uc.id
-  WHERE sc.swe_card_id = p_swe_card_id
-    AND sc.user_id = p_user_id
-    AND sc.is_deleted = false
-    AND uc.is_active = true
-  ORDER BY sc.created_at ASC;
+RETURN QUERY
+SELECT
+  sc.selected_card_id,
+  uc.card_type::TEXT,
+  sc.selected_subitems
+FROM swe.user_swe_selected_cards sc
+LEFT JOIN core.user_cards uc ON sc.selected_card_id = uc.id
+WHERE sc.swe_card_id = p_swe_card_id
+  AND sc.user_id = p_user_id
+  AND sc.is_deleted = false
+  AND uc.is_active = true
+ORDER BY sc.created_at ASC;
 END;
 $$;
 

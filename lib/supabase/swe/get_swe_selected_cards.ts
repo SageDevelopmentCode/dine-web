@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database } from '@/lib/supabase/types';
+import { Database, UserAllergen } from '@/lib/supabase/types';
 import { getEmergencyCardData } from '@/lib/supabase/emergency/get_emergency_card_data';
 import { getEpipenCardData } from '@/lib/supabase/epipen/get_epipen_card_data';
 import { getTravelCardData } from '@/lib/supabase/travel/get_travel_card_data';
@@ -36,8 +36,7 @@ export type SelectedCardData =
     }
   | {
       type: 'allergy';
-      // Food allergies card - for now we'll include a placeholder
-      // This can be expanded when food allergies fetcher is available
+      allergens: UserAllergen[];
       selectedSubitems: any;
     };
 
@@ -64,11 +63,13 @@ function mapCardType(dbCardType: CardType): 'emergency' | 'epipen' | 'travel' | 
  * Fetches all cards that have been marked as important for this SWE card
  * @param sweCardId - The SWE card_id
  * @param userId - The user ID who owns the cards
+ * @param allergens - User's allergens (for allergy card type)
  * @returns Array of selected cards with their data and selectedSubitems
  */
 export async function getSweSelectedCards(
   sweCardId: string,
-  userId: string
+  userId: string,
+  allergens: UserAllergen[] = []
 ): Promise<SelectedCardData[]> {
   const supabase = await createClient();
 
@@ -157,9 +158,10 @@ export async function getSweSelectedCards(
         }
 
         case 'allergy': {
-          // Food allergies - placeholder for now
+          // Food allergies - use allergens passed from page
           return {
             type: 'allergy',
+            allergens,
             selectedSubitems: row.selected_subitems,
           };
         }

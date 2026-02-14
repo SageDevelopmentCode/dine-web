@@ -16,6 +16,7 @@ import TravelCardContent from "./TravelCardContent";
 import FilteredEmergencyCard from "./FilteredEmergencyCard";
 import FilteredEpipenCard from "./FilteredEpipenCard";
 import FilteredTravelCard from "./FilteredTravelCard";
+import FilteredFoodAllergiesCard from "./FilteredFoodAllergiesCard";
 import type {
   UserReactionProfile,
   UserReactionSymptomWithDetails,
@@ -221,6 +222,17 @@ export default function CardPageRightSection({
                       travelLanguages={selectedCard.travelLanguages}
                       travelPhrases={selectedCard.travelPhrases}
                       travelCategories={selectedCard.travelCategories}
+                      selectedSubitems={selectedCard.selectedSubitems}
+                      textColor={COLORS.BLACK}
+                      variant="dedicated"
+                    />
+                  </div>
+                );
+              } else if (selectedCard.type === 'allergy') {
+                return (
+                  <div key={index}>
+                    <FilteredFoodAllergiesCard
+                      allergens={selectedCard.allergens}
                       selectedSubitems={selectedCard.selectedSubitems}
                       textColor={COLORS.BLACK}
                       variant="dedicated"
