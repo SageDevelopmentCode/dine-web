@@ -3,6 +3,7 @@ import { Database, UserAllergen } from '@/lib/supabase/types';
 import { getEmergencyCardData } from '@/lib/supabase/emergency/get_emergency_card_data';
 import { getEpipenCardData } from '@/lib/supabase/epipen/get_epipen_card_data';
 import { getTravelCardData } from '@/lib/supabase/travel/get_travel_card_data';
+import { getFoodAllergiesData } from '@/lib/supabase/allergies/get_food_allergies_data';
 
 // Type aliases
 type UserSweSelectedCard = Database['swe']['Tables']['user_swe_selected_cards']['Row'];
@@ -37,6 +38,8 @@ export type SelectedCardData =
   | {
       type: 'allergy';
       allergens: UserAllergen[];
+      reactionProfile: Awaited<ReturnType<typeof getFoodAllergiesData>>['reactionProfile'];
+      reactionSymptoms: Awaited<ReturnType<typeof getFoodAllergiesData>>['reactionSymptoms'];
       selectedSubitems: any;
     };
 
@@ -64,12 +67,14 @@ function mapCardType(dbCardType: CardType): 'emergency' | 'epipen' | 'travel' | 
  * @param sweCardId - The SWE card_id
  * @param userId - The user ID who owns the cards
  * @param allergens - User's allergens (for allergy card type)
+ * @param slug - User's profile slug (for fetching full allergy data)
  * @returns Array of selected cards with their data and selectedSubitems
  */
 export async function getSweSelectedCards(
   sweCardId: string,
   userId: string,
-  allergens: UserAllergen[] = []
+  allergens: UserAllergen[] = [],
+  slug?: string
 ): Promise<SelectedCardData[]> {
   const supabase = await createClient();
 
@@ -158,10 +163,23 @@ export async function getSweSelectedCards(
         }
 
         case 'allergy': {
-          // Food allergies - use allergens passed from page
+          // Fetch full food allergies data if slug is provided
+          if (slug) {
+            const allergyData = await getFoodAllergiesData(slug);
+            return {
+              type: 'allergy',
+              allergens,
+              reactionProfile: allergyData.reactionProfile,
+              reactionSymptoms: allergyData.reactionSymptoms,
+              selectedSubitems: row.selected_subitems,
+            };
+          }
+          // Fallback if no slug provided
           return {
             type: 'allergy',
             allergens,
+            reactionProfile: null,
+            reactionSymptoms: [],
             selectedSubitems: row.selected_subitems,
           };
         }

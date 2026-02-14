@@ -233,6 +233,8 @@ export default function CardPageRightSection({
                   <div key={index}>
                     <FilteredFoodAllergiesCard
                       allergens={selectedCard.allergens}
+                      reactionProfile={selectedCard.reactionProfile}
+                      reactionSymptoms={selectedCard.reactionSymptoms}
                       selectedSubitems={selectedCard.selectedSubitems}
                       textColor={COLORS.BLACK}
                       variant="dedicated"

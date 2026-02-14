@@ -189,7 +189,8 @@ export default async function CardPage({ params }: CardPageProps) {
           const selectedCards = await getSweSelectedCards(
             sweCardLookup.id,
             userId,
-            initialData.allergens
+            initialData.allergens,
+            slug
           );
 
           cardData = {

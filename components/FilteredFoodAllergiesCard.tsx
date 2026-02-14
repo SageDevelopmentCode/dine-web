@@ -1,9 +1,18 @@
 "use client";
 
-import { UserAllergen } from "@/lib/supabase/types";
+import { COLORS } from "@/constants/colors";
+import AllergenCard from "./AllergenCard";
+import type {
+  UserReactionSymptomWithDetails,
+} from "@/lib/supabase/allergies/get_food_allergies_data";
+import type { Database, UserAllergen } from "@/lib/supabase/types";
+
+type UserReactionProfile = Database["allergies"]["Tables"]["user_reaction_profiles"]["Row"];
 
 interface FilteredFoodAllergiesCardProps {
   allergens: UserAllergen[];
+  reactionProfile: UserReactionProfile | null;
+  reactionSymptoms: UserReactionSymptomWithDetails[];
   selectedSubitems: any;
   textColor: string;
   variant: "expandable" | "dedicated";
@@ -13,52 +22,41 @@ interface FilteredFoodAllergiesCardProps {
  * Filter food allergies data based on selected subitems
  * Expected structure of selectedSubitems:
  * ["dining-allergies", "symptoms"] - array of section identifiers
- *
- * For now, we'll display all allergens since the filtering is based on
- * which sections of the full food allergies card to show, not which
- * specific allergens. The allergens themselves are the core content.
  */
 export default function FilteredFoodAllergiesCard({
   allergens,
+  reactionProfile,
+  reactionSymptoms,
   selectedSubitems,
   textColor,
   variant,
 }: FilteredFoodAllergiesCardProps) {
-  // For food allergies, the allergens are the main content
-  // The selected_subitems typically refers to which card sections to show
-  // (e.g., "dining-allergies", "symptoms", etc.)
-
-  // Since we're in the "Important Information" context,
-  // we'll display the allergens in a simple, clear format
-
   // Group allergens by severity
-  const severeAllergens = allergens.filter(a => a.severity === 'severe');
-  const moderateAllergens = allergens.filter(a => a.severity === 'moderate');
-  const mildAllergens = allergens.filter(a => a.severity === 'mild');
+  const severeAllergens = allergens.filter((a) => a.severity === "severe");
+  const moderateAllergens = allergens.filter((a) => a.severity === "moderate");
+  const mildAllergens = allergens.filter((a) => a.severity === "mild");
+
+  // Group symptoms by severity
+  const severeSymptoms = reactionSymptoms.filter(
+    (s) => s.symptom?.severity === "severe" || s.custom_symptom_severity === "severe"
+  );
+  const moderateSymptoms = reactionSymptoms.filter(
+    (s) => s.symptom?.severity === "moderate" || s.custom_symptom_severity === "moderate"
+  );
+  const mildSymptoms = reactionSymptoms.filter(
+    (s) => s.symptom?.severity === "mild" || s.custom_symptom_severity === "mild"
+  );
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'severe':
-        return '#FEE2E2'; // Light red
-      case 'moderate':
-        return '#FEF3C7'; // Light yellow
-      case 'mild':
-        return '#DBEAFE'; // Light blue
+      case "severe":
+        return COLORS.SEVERE_BORDER;
+      case "moderate":
+        return COLORS.MODERATE_BORDER;
+      case "mild":
+        return COLORS.MILD_BORDER;
       default:
-        return '#F3F4F6'; // Light gray
-    }
-  };
-
-  const getSeverityBorder = (severity: string) => {
-    switch (severity) {
-      case 'severe':
-        return '#DC2626'; // Red
-      case 'moderate':
-        return '#D97706'; // Orange
-      case 'mild':
-        return '#2563EB'; // Blue
-      default:
-        return '#9CA3AF'; // Gray
+        return COLORS.SECONDARY_TEXT_GRAY;
     }
   };
 
@@ -72,70 +70,187 @@ export default function FilteredFoodAllergiesCard({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-merriweather font-bold" style={{ color: textColor }}>
-        Food Allergies
-      </h3>
+      {/* Allergens Section */}
+      <div className="mb-6">
+        {/* Heading */}
+        <h2
+          className="text-xl font-merriweather font-bold mb-6"
+          style={{ color: COLORS.BLACK }}
+        >
+          Hi! I have food allergies. Please read carefully:
+        </h2>
 
-      {severeAllergens.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-semibold" style={{ color: textColor }}>Severe</p>
-          <div className="flex flex-wrap gap-2">
-            {severeAllergens.map(allergen => (
-              <div
-                key={allergen.id}
-                className="px-3 py-2 rounded-lg border-l-4"
-                style={{
-                  backgroundColor: getSeverityColor('severe'),
-                  borderLeftColor: getSeverityBorder('severe'),
-                }}
-              >
-                <span className="text-2xl mr-2">{String.fromCodePoint(parseInt(allergen.twemoji, 16))}</span>
-                <span className="font-medium" style={{ color: textColor }}>{allergen.allergen}</span>
-              </div>
-            ))}
+        {/* Severe Allergens */}
+        {severeAllergens.length > 0 && (
+          <div className="mb-6">
+            <h3
+              className="text-sm font-merriweather mb-3"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+            >
+              Severe
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {severeAllergens.map((allergen) => (
+                <AllergenCard
+                  key={allergen.id}
+                  emojiHex={allergen.twemoji}
+                  label={allergen.allergen}
+                  severity="severe"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Moderate Allergens */}
+        {moderateAllergens.length > 0 && (
+          <div className="mb-6">
+            <h3
+              className="text-sm font-merriweather mb-3"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+            >
+              Moderate
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {moderateAllergens.map((allergen) => (
+                <AllergenCard
+                  key={allergen.id}
+                  emojiHex={allergen.twemoji}
+                  label={allergen.allergen}
+                  severity="moderate"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Mild Allergens */}
+        {mildAllergens.length > 0 && (
+          <div className="mb-6">
+            <h3
+              className="text-sm font-merriweather mb-3"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+            >
+              Mild
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {mildAllergens.map((allergen) => (
+                <AllergenCard
+                  key={allergen.id}
+                  emojiHex={allergen.twemoji}
+                  label={allergen.allergen}
+                  severity="mild"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Reaction Profile Section */}
+      {reactionProfile && (
+        <div
+          className="rounded-lg p-4"
+          style={{ backgroundColor: COLORS.WHITE }}
+        >
+          <h4 className="text-sm font-merriweather font-semibold mb-3" style={{ color: COLORS.BLACK }}>
+            Reaction Profile
+          </h4>
+          <div className="space-y-2 text-xs font-merriweather" style={{ color: COLORS.BLACK }}>
+            {reactionProfile.has_anaphylaxis && (
+              <p>⚠️ Has history of anaphylaxis</p>
+            )}
+            {reactionProfile.first_symptom && (
+              <p><strong>First symptom:</strong> {reactionProfile.first_symptom}</p>
+            )}
+            {reactionProfile.reaction_speed && (
+              <p><strong>Reaction speed:</strong> {reactionProfile.reaction_speed} minutes</p>
+            )}
           </div>
         </div>
       )}
 
-      {moderateAllergens.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-semibold" style={{ color: textColor }}>Moderate</p>
-          <div className="flex flex-wrap gap-2">
-            {moderateAllergens.map(allergen => (
-              <div
-                key={allergen.id}
-                className="px-3 py-2 rounded-lg border-l-4"
-                style={{
-                  backgroundColor: getSeverityColor('moderate'),
-                  borderLeftColor: getSeverityBorder('moderate'),
-                }}
-              >
-                <span className="text-2xl mr-2">{String.fromCodePoint(parseInt(allergen.twemoji, 16))}</span>
-                <span className="font-medium" style={{ color: textColor }}>{allergen.allergen}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Symptoms Section */}
+      {reactionSymptoms.length > 0 && (
+        <div
+          className="rounded-lg p-4"
+          style={{ backgroundColor: COLORS.WHITE }}
+        >
+          <h4 className="text-sm font-merriweather font-semibold mb-3" style={{ color: COLORS.BLACK }}>
+            My Symptoms
+          </h4>
 
-      {mildAllergens.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-semibold" style={{ color: textColor }}>Mild</p>
-          <div className="flex flex-wrap gap-2">
-            {mildAllergens.map(allergen => (
-              <div
-                key={allergen.id}
-                className="px-3 py-2 rounded-lg border-l-4"
-                style={{
-                  backgroundColor: getSeverityColor('mild'),
-                  borderLeftColor: getSeverityBorder('mild'),
-                }}
-              >
-                <span className="text-2xl mr-2">{String.fromCodePoint(parseInt(allergen.twemoji, 16))}</span>
-                <span className="font-medium" style={{ color: textColor }}>{allergen.allergen}</span>
+          {/* Severe Symptoms */}
+          {severeSymptoms.length > 0 && (
+            <div className="mb-3">
+              <p className="text-xs font-merriweather mb-2" style={{ color: COLORS.BLACK, opacity: 0.9 }}>
+                Severe
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {severeSymptoms.map((symptom) => (
+                  <span
+                    key={symptom.id}
+                    className="px-3 py-1 rounded-full text-xs font-merriweather"
+                    style={{
+                      backgroundColor: COLORS.WHITE,
+                      color: COLORS.BLACK,
+                      border: `1.5px solid ${getSeverityColor("severe")}`,
+                    }}
+                  >
+                    {symptom.is_custom ? symptom.custom_symptom : symptom.symptom?.display_name}
+                  </span>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
+
+          {/* Moderate Symptoms */}
+          {moderateSymptoms.length > 0 && (
+            <div className="mb-3">
+              <p className="text-xs font-merriweather mb-2" style={{ color: COLORS.BLACK, opacity: 0.9 }}>
+                Moderate
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {moderateSymptoms.map((symptom) => (
+                  <span
+                    key={symptom.id}
+                    className="px-3 py-1 rounded-full text-xs font-merriweather"
+                    style={{
+                      backgroundColor: COLORS.WHITE,
+                      color: COLORS.BLACK,
+                      border: `1.5px solid ${getSeverityColor("moderate")}`,
+                    }}
+                  >
+                    {symptom.is_custom ? symptom.custom_symptom : symptom.symptom?.display_name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Mild Symptoms */}
+          {mildSymptoms.length > 0 && (
+            <div>
+              <p className="text-xs font-merriweather mb-2" style={{ color: COLORS.BLACK, opacity: 0.9 }}>
+                Mild
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {mildSymptoms.map((symptom) => (
+                  <span
+                    key={symptom.id}
+                    className="px-3 py-1 rounded-full text-xs font-merriweather"
+                    style={{
+                      backgroundColor: COLORS.WHITE,
+                      color: COLORS.BLACK,
+                      border: `1.5px solid ${getSeverityColor("mild")}`,
+                    }}
+                  >
+                    {symptom.is_custom ? symptom.custom_symptom : symptom.symptom?.display_name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
