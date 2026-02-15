@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database, UserAllergen } from '@/lib/supabase/types';
+import { Database, UserAllergen, Json } from '@/lib/supabase/types';
 import { getEmergencyCardData } from '@/lib/supabase/emergency/get_emergency_card_data';
 import { getEpipenCardData } from '@/lib/supabase/epipen/get_epipen_card_data';
 import { getTravelCardData } from '@/lib/supabase/travel/get_travel_card_data';
@@ -10,6 +10,24 @@ type UserSweSelectedCard = Database['swe']['Tables']['user_swe_selected_cards'][
 type UserCard = Database['core']['Tables']['user_cards']['Row'];
 type CardType = Database['public']['Enums']['card_type'];
 
+// Selected subitems types for each card type
+type EmergencySelectedSubitems = {
+  contacts?: string[];
+  doctors?: string[];
+  hospitals?: string[];
+} | null;
+
+type EpipenSelectedSubitems = {
+  instructions?: string[];
+} | null;
+
+type TravelSelectedSubitems = {
+  languages?: string[];
+  phrases?: string[];
+} | null;
+
+type AllergySelectedSubitems = string[] | null;
+
 // Union type for all possible card data structures
 export type SelectedCardData =
   | {
@@ -19,13 +37,13 @@ export type SelectedCardData =
       doctors: Awaited<ReturnType<typeof getEmergencyCardData>>['doctors'];
       hospitals: Awaited<ReturnType<typeof getEmergencyCardData>>['hospitals'];
       reactionProfile: Awaited<ReturnType<typeof getEmergencyCardData>>['reactionProfile'];
-      selectedSubitems: any;
+      selectedSubitems: EmergencySelectedSubitems;
     }
   | {
       type: 'epipen';
       card: Awaited<ReturnType<typeof getEpipenCardData>>['card'];
       instructions: Awaited<ReturnType<typeof getEpipenCardData>>['instructions'];
-      selectedSubitems: any;
+      selectedSubitems: EpipenSelectedSubitems;
     }
   | {
       type: 'travel';
@@ -33,14 +51,14 @@ export type SelectedCardData =
       travelLanguages: Awaited<ReturnType<typeof getTravelCardData>>['travelLanguages'];
       travelPhrases: Awaited<ReturnType<typeof getTravelCardData>>['travelPhrases'];
       travelCategories: Awaited<ReturnType<typeof getTravelCardData>>['travelCategories'];
-      selectedSubitems: any;
+      selectedSubitems: TravelSelectedSubitems;
     }
   | {
       type: 'allergy';
       allergens: UserAllergen[];
       reactionProfile: Awaited<ReturnType<typeof getFoodAllergiesData>>['reactionProfile'];
       reactionSymptoms: Awaited<ReturnType<typeof getFoodAllergiesData>>['reactionSymptoms'];
-      selectedSubitems: any;
+      selectedSubitems: AllergySelectedSubitems;
     };
 
 /**
@@ -83,8 +101,8 @@ export async function getSweSelectedCards(
   const { data: cardTypesData, error: cardTypesError } = await supabase
     .schema('swe')
     .rpc('get_swe_selected_card_types', {
-      p_swe_card_id: sweCardId as any,
-      p_user_id: userId as any,
+      p_swe_card_id: sweCardId,
+      p_user_id: userId,
     });
 
   if (cardTypesError) {
@@ -107,7 +125,7 @@ export async function getSweSelectedCards(
   const cardDataPromises = cardTypesData.map(async (row: {
     selected_card_id: string;
     card_type: string;
-    selected_subitems: any;
+    selected_subitems: Json;
   }): Promise<SelectedCardData | null> => {
     const cardType = mapCardType(row.card_type as CardType);
     if (!cardType) return null;
@@ -129,7 +147,7 @@ export async function getSweSelectedCards(
           return {
             type: 'emergency',
             ...emergencyData,
-            selectedSubitems: row.selected_subitems,
+            selectedSubitems: row.selected_subitems as unknown as EmergencySelectedSubitems,
           };
         }
 
@@ -148,7 +166,7 @@ export async function getSweSelectedCards(
           return {
             type: 'epipen',
             ...epipenData,
-            selectedSubitems: row.selected_subitems,
+            selectedSubitems: row.selected_subitems as unknown as EpipenSelectedSubitems,
           };
         }
 
@@ -158,7 +176,7 @@ export async function getSweSelectedCards(
           return {
             type: 'travel',
             ...travelData,
-            selectedSubitems: row.selected_subitems,
+            selectedSubitems: row.selected_subitems as unknown as TravelSelectedSubitems,
           };
         }
 
@@ -171,7 +189,7 @@ export async function getSweSelectedCards(
               allergens,
               reactionProfile: allergyData.reactionProfile,
               reactionSymptoms: allergyData.reactionSymptoms,
-              selectedSubitems: row.selected_subitems,
+              selectedSubitems: row.selected_subitems as unknown as AllergySelectedSubitems,
             };
           }
           // Fallback if no slug provided
@@ -180,7 +198,7 @@ export async function getSweSelectedCards(
             allergens,
             reactionProfile: null,
             reactionSymptoms: [],
-            selectedSubitems: row.selected_subitems,
+            selectedSubitems: row.selected_subitems as unknown as AllergySelectedSubitems,
           };
         }
 

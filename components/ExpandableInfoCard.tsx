@@ -184,7 +184,7 @@ export default function ExpandableInfoCard({
             </p>
           ) : cardData &&
             cardType === "food-allergies" &&
-            "reactionProfile" in cardData ? (
+            "reactionSymptoms" in cardData ? (
             <FoodAllergiesContent
               reactionProfile={cardData.reactionProfile}
               reactionSymptoms={cardData.reactionSymptoms}

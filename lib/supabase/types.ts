@@ -3505,10 +3505,9 @@ export const Constants = {
   },
 } as const
 
-// Custom Type Aliases
-// Note: These are manually maintained and should be preserved when regenerating types
+// Custom Type Exports
 
-// Allergen Types
+// Allergy Types
 export type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
 export type UserReactionProfile = Database['allergies']['Tables']['user_reaction_profiles']['Row'];
 export type UserReactionSymptom = Database['allergies']['Tables']['user_reaction_symptoms']['Row'];
