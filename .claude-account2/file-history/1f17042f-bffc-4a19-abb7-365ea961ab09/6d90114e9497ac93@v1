@@ -343,8 +343,11 @@ export default function CardPageRightSection({
               } else if (selectedCard.type === 'allergy') {
                 return (
                   <div key={index}>
-                    {/* Card Container */}
-                    <div className="w-full rounded-2xl" style={{ backgroundColor }}>
+                    {/* Allergens Section - Outside Card */}
+                    <AllergensSection allergens={selectedCard.allergens} />
+
+                    {/* Card Container - Only for Reaction Profile and Symptoms */}
+                    <div className="w-full rounded-2xl mt-4" style={{ backgroundColor }}>
                       <div className="relative">
                         <div className="w-full px-6 py-2 flex items-center gap-4 min-h-[120px]">
                           {/* Icon */}
@@ -372,7 +375,7 @@ export default function CardPageRightSection({
                         </div>
                       </div>
 
-                      {/* Card Content */}
+                      {/* Card Content - Hide Allergens */}
                       <div className="px-4 pb-6">
                         <FilteredFoodAllergiesCard
                           allergens={selectedCard.allergens}
@@ -381,7 +384,7 @@ export default function CardPageRightSection({
                           selectedSubitems={selectedCard.selectedSubitems}
                           textColor={COLORS.WHITE}
                           variant="dedicated"
-                          hideAllergens={false}
+                          hideAllergens={true}
                         />
                       </div>
                     </div>

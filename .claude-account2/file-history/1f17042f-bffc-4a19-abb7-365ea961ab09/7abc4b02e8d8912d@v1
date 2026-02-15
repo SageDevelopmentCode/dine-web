@@ -174,7 +174,7 @@ export default function FilteredFoodAllergiesCard({
             <div className="mb-6">
               <h3
                 className="text-sm font-merriweather mb-3"
-                style={{ color: COLORS.WHITE }}
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
               >
                 Severe
               </h3>
@@ -196,7 +196,7 @@ export default function FilteredFoodAllergiesCard({
             <div className="mb-6">
               <h3
                 className="text-sm font-merriweather mb-3"
-                style={{ color: COLORS.WHITE }}
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
               >
                 Moderate
               </h3>
@@ -218,7 +218,7 @@ export default function FilteredFoodAllergiesCard({
             <div className="mb-6">
               <h3
                 className="text-sm font-merriweather mb-3"
-                style={{ color: COLORS.WHITE }}
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
               >
                 Mild
               </h3>

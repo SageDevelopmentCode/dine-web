@@ -5,7 +5,10 @@
   "tipsHistory": {
     "new-user-warmup": 1,
     "plan-mode-for-complex-tasks": 1,
-    "terminal-setup": 1
+    "terminal-setup": 1,
+    "shift-enter-setup": 1,
+    "memory-command": 1,
+    "theme-command": 1
   },
   "cachedStatsigGates": {
     "tengu_disable_bypass_permissions_mode": false,
@@ -64,5 +67,8 @@
       "timestamp": 1771109628488
     }
   },
-  "lastPlanModeUse": 1771109933799
+  "lastPlanModeUse": 1771114721833,
+  "feedbackSurveyState": {
+    "lastShownTime": 1771110832825
+  }
 }

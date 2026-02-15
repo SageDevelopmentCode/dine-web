@@ -1200,3 +1200,8 @@
   "accepted_count": 9,
   "rejected_count": 0
 }
+2026-02-14T23:13:08.094Z [DEBUG] AutoUpdaterWrapper: Installation type: npm-global
+2026-02-14T23:13:08.095Z [DEBUG] Getting matching hook commands for SessionEnd with query: clear
+2026-02-14T23:13:08.095Z [DEBUG] Found 0 hook matchers in settings
+2026-02-14T23:13:08.095Z [DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+2026-02-14T23:13:08.097Z [DEBUG] Cleared all session hooks for session b0c55740-bdb3-4f61-ab8f-0fdfd86172a6
