@@ -48,6 +48,12 @@ export default function OtherCardPreview({
           >
             {cardTitles[cardType]}
           </h3>
+          <p
+            className="text-xs font-lato mt-1 font-regular"
+            style={{ color: COLORS.WHITE, opacity: 0.9 }}
+          >
+            {cardDescriptions[cardType]}
+          </p>
         </div>
       </div>
     </Link>

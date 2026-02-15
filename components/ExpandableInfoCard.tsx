@@ -55,7 +55,9 @@ type CardDataType =
       emergencyContacts: UserEmergencyCardContact[];
       emergencyDoctors: UserEmergencyCardDoctor[];
       emergencyHospitals: UserEmergencyCardHospital[];
-      reactionProfile: Database['allergies']['Tables']['user_reaction_profiles']['Row'] | null;
+      reactionProfile:
+        | Database["allergies"]["Tables"]["user_reaction_profiles"]["Row"]
+        | null;
     }
   | {
       epipenCard: UserEpipenCard | null;
@@ -151,7 +153,7 @@ export default function ExpandableInfoCard({
               {title}
             </h3>
             <p
-              className="text-xs font-lato font-light"
+              className="text-xs font-lato font-regular"
               style={{ color: COLORS.WHITE }}
             >
               {description}
@@ -177,10 +179,7 @@ export default function ExpandableInfoCard({
       >
         <div className="px-4 pb-6 overflow-y-auto max-h-[550px]">
           {isLoading ? (
-            <p
-              className="text-sm font-lato"
-              style={{ color: COLORS.WHITE }}
-            >
+            <p className="text-sm font-lato" style={{ color: COLORS.WHITE }}>
               Loading...
             </p>
           ) : cardData &&
@@ -202,25 +201,19 @@ export default function ExpandableInfoCard({
               emergencyHospitals={cardData.emergencyHospitals}
               reactionProfile={cardData.reactionProfile}
             />
-          ) : cardData &&
-            cardType === "epipen" &&
-            "epipenCard" in cardData ? (
+          ) : cardData && cardType === "epipen" && "epipenCard" in cardData ? (
             <EpipenCardContent
               epipenCard={cardData.epipenCard}
               epipenInstructions={cardData.epipenInstructions}
             />
-          ) : cardData &&
-            cardType === "swe" &&
-            "sweCard" in cardData ? (
+          ) : cardData && cardType === "swe" && "sweCard" in cardData ? (
             <SweCardContent
               sweCard={cardData.sweCard}
               sweCategories={cardData.sweCategories}
               sweMeasures={cardData.sweMeasures}
               firstName={firstName}
             />
-          ) : cardData &&
-            cardType === "travel" &&
-            "travelCard" in cardData ? (
+          ) : cardData && cardType === "travel" && "travelCard" in cardData ? (
             <TravelCardContent
               travelCard={cardData.travelCard}
               travelLanguages={cardData.travelLanguages}
@@ -229,10 +222,7 @@ export default function ExpandableInfoCard({
             />
           ) : (
             children || (
-              <p
-                className="text-sm font-lato"
-                style={{ color: COLORS.WHITE }}
-              >
+              <p className="text-sm font-lato" style={{ color: COLORS.WHITE }}>
                 Content coming soon...
               </p>
             )
