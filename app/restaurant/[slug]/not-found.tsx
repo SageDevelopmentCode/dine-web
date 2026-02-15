@@ -1,11 +1,12 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { COLORS } from "@/constants/colors";
 import Link from "next/link";
 
 export default function RestaurantNotFound() {
   return (
     <div
-      className="h-screen flex flex-col"
+      className="min-h-screen flex flex-col"
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
@@ -36,6 +37,7 @@ export default function RestaurantNotFound() {
           </Link>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

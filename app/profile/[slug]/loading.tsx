@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { COLORS } from "@/constants/colors";
 import ProfileLeftSectionSkeleton from "@/components/ProfileLeftSectionSkeleton";
 import ProfileRightSectionSkeleton from "@/components/ProfileRightSectionSkeleton";
@@ -6,7 +7,7 @@ import ProfileRightSectionSkeleton from "@/components/ProfileRightSectionSkeleto
 export default function Loading() {
   return (
     <div
-      className="h-screen flex flex-col"
+      className="min-h-screen flex flex-col"
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
@@ -18,6 +19,7 @@ export default function Loading() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

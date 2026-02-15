@@ -1,11 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
     <header className="bg-[white] w-full">
       <div className="flex items-center justify-between px-2 py-4 sm:px-4 md:px-8 lg:px-12">
         {/* Logo on the left */}
-        <div className="flex-shrink-0">
+        <Link href="/" className="flex-shrink-0">
           <Image
             src="/assets/Logo.png"
             alt="Dine by SageField"
@@ -14,7 +15,7 @@ export default function Header() {
             priority
             className="h-12 w-auto"
           />
-        </div>
+        </Link>
 
         {/* App store buttons on the right */}
         <div className="hidden md:flex items-center gap-3">

@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { COLORS } from "@/constants/colors";
 import RestaurantLeftSection from "@/components/RestaurantLeftSection";
 import RestaurantRightSection from "@/components/RestaurantRightSection";
@@ -52,7 +53,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
   return (
     <div
-      className="h-screen flex flex-col"
+      className="min-h-screen flex flex-col"
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
@@ -81,6 +82,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

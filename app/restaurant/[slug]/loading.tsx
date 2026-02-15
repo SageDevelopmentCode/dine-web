@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { COLORS } from "@/constants/colors";
 import RestaurantImageCarouselSkeleton from "@/components/RestaurantImageCarouselSkeleton";
 import RestaurantLeftSectionSkeleton from "@/components/RestaurantLeftSectionSkeleton";
@@ -7,7 +8,7 @@ import RestaurantRightSectionSkeleton from "@/components/RestaurantRightSectionS
 export default function Loading() {
   return (
     <div
-      className="h-screen flex flex-col"
+      className="min-h-screen flex flex-col"
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
@@ -24,6 +25,7 @@ export default function Loading() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

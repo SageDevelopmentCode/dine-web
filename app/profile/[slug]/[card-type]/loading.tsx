@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { COLORS } from "@/constants/colors";
 import ProfileLeftSectionCardSkeleton from "@/components/ProfileLeftSectionCardSkeleton";
 import CardPageRightSectionSkeleton from "@/components/CardPageRightSectionSkeleton";
@@ -7,7 +8,7 @@ import UserOtherCardsSectionSkeleton from "@/components/UserOtherCardsSectionSke
 export default function Loading() {
   return (
     <div
-      className="h-screen flex flex-col overflow-y-auto"
+      className="min-h-screen flex flex-col overflow-y-auto"
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
@@ -22,6 +23,7 @@ export default function Loading() {
           <UserOtherCardsSectionSkeleton />
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

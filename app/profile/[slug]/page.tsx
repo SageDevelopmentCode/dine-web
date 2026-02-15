@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { COLORS } from "@/constants/colors";
 import ProfileLeftSection from "@/components/ProfileLeftSection";
 import ProfileRightSection from "@/components/ProfileRightSection";
@@ -53,7 +54,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
   return (
     <div
-      className="h-screen flex flex-col"
+      className="min-h-screen flex flex-col"
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
@@ -76,6 +77,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

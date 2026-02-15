@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { COLORS } from "@/constants/colors";
 import ProfileLeftSectionCard from "@/components/ProfileLeftSectionCard";
 import CardPageRightSection from "@/components/CardPageRightSection";
@@ -218,7 +219,7 @@ export default async function CardPage({ params }: CardPageProps) {
 
   return (
     <div
-      className="h-screen flex flex-col overflow-y-auto"
+      className="min-h-screen flex flex-col overflow-y-auto"
       style={{ backgroundColor: COLORS.PAGE_BACKGROUND }}
     >
       <Header />
@@ -246,6 +247,7 @@ export default async function CardPage({ params }: CardPageProps) {
           />
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
