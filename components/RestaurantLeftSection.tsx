@@ -4,6 +4,7 @@ import { formatPhoneNumber, formatStateCode } from "@/utils/formatters";
 import DownloadDineSection from "./DownloadDineSection";
 import { Database } from "@/lib/supabase/types";
 import { Star } from "lucide-react";
+import { RestaurantReviewWithDetails } from "@/lib/supabase/restaurant_profiles/get_restaurant_profile_data";
 
 type Restaurant = Database["restaurant"]["Tables"]["restaurants"]["Row"];
 type RestaurantAddress =
@@ -18,6 +19,7 @@ interface RestaurantLeftSectionProps {
   address: RestaurantAddress | null;
   cuisineOptions: RestaurantCuisineOption[];
   dietaryOptions: RestaurantDietaryOption[];
+  restaurantReviews: RestaurantReviewWithDetails[];
 }
 
 export default function RestaurantLeftSection({
@@ -25,6 +27,7 @@ export default function RestaurantLeftSection({
   address,
   cuisineOptions,
   dietaryOptions,
+  restaurantReviews,
 }: RestaurantLeftSectionProps) {
   // Format location string
   const locationString =
@@ -45,6 +48,16 @@ export default function RestaurantLeftSection({
       .join(" ");
   };
 
+  // Calculate average rating and review count
+  const reviewCount = restaurantReviews.length;
+  const validRatings = restaurantReviews
+    .map((r) => r.review.overall_rating)
+    .filter((rating): rating is number => rating !== null);
+  const averageRating =
+    validRatings.length > 0
+      ? validRatings.reduce((sum, rating) => sum + rating, 0) / validRatings.length
+      : 0;
+
   return (
     <div className="flex flex-col items-start justify-between w-full md:w-[25%] overflow-y-visible md:overflow-y-auto h-auto md:h-[86vh]">
       {/* Top Section Group */}
@@ -58,42 +71,66 @@ export default function RestaurantLeftSection({
         </h2>
 
         {/* Star Rating Section */}
-        <div className="flex items-center gap-2 mb-4">
-          {/* Stars */}
-          <div className="flex items-center gap-1">
-            {/* 4 filled stars */}
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Star
-                key={i}
-                size={20}
-                fill={COLORS.STAR_RATING}
-                color={COLORS.STAR_RATING}
-              />
-            ))}
-            {/* 80% filled star */}
-            <div style={{ position: "relative", display: "inline-block" }}>
-              <Star size={20} fill="none" color={COLORS.STAR_RATING} />
-              <Star
-                size={20}
-                fill={COLORS.STAR_RATING}
-                color={COLORS.STAR_RATING}
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  top: 0,
-                  clipPath: "inset(0 20% 0 0)",
-                }}
-              />
+        {reviewCount > 0 ? (
+          <div className="flex items-center gap-2 mb-4">
+            {/* Stars */}
+            <div className="flex items-center gap-1">
+              {/* Full stars */}
+              {Array.from({ length: Math.floor(averageRating) }).map((_, i) => (
+                <Star
+                  key={`full-${i}`}
+                  size={20}
+                  fill={COLORS.STAR_RATING}
+                  color={COLORS.STAR_RATING}
+                />
+              ))}
+              {/* Partial star (if there's a decimal) */}
+              {averageRating % 1 !== 0 && (
+                <div style={{ position: "relative", display: "inline-block" }}>
+                  <Star size={20} fill="none" color={COLORS.STAR_RATING} />
+                  <Star
+                    size={20}
+                    fill={COLORS.STAR_RATING}
+                    color={COLORS.STAR_RATING}
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      top: 0,
+                      clipPath: `inset(0 ${100 - (averageRating % 1) * 100}% 0 0)`,
+                    }}
+                  />
+                </div>
+              )}
+              {/* Empty stars */}
+              {Array.from({
+                length: 5 - Math.ceil(averageRating),
+              }).map((_, i) => (
+                <Star
+                  key={`empty-${i}`}
+                  size={20}
+                  fill="none"
+                  color={COLORS.STAR_RATING}
+                />
+              ))}
             </div>
+            {/* Review count */}
+            <span
+              className="text-sm font-lato"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+            >
+              ({reviewCount})
+            </span>
           </div>
-          {/* Review count */}
-          <span
-            className="text-sm font-lato"
-            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-          >
-            (127)
-          </span>
-        </div>
+        ) : (
+          <div className="flex items-center gap-2 mb-4">
+            <span
+              className="text-sm font-lato"
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
+            >
+              No reviews yet
+            </span>
+          </div>
+        )}
 
         {/* Badges Section */}
         {(activeDietaryOptions.length > 0 ||
