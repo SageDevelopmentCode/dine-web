@@ -11,6 +11,13 @@ import {
   MenuItemReviewWithDetails,
 } from "@/lib/supabase/restaurant_profiles/get_restaurant_profile_data";
 
+interface Restaurant {
+  id: string;
+  name: string;
+  menu_url: string | null;
+  [key: string]: unknown;
+}
+
 interface RestaurantAllergen {
   allergen_id: string;
   allergen: string;
@@ -109,6 +116,7 @@ interface RestaurantMenuItem {
 }
 
 interface RestaurantRightSectionProps {
+  restaurant: Restaurant;
   allergensHandled: RestaurantAllergen[];
   kitchenProtocols: RestaurantKitchenProtocol[];
   menuCategories: RestaurantMenuCategory[];
@@ -118,6 +126,7 @@ interface RestaurantRightSectionProps {
 }
 
 export default function RestaurantRightSection({
+  restaurant,
   allergensHandled,
   kitchenProtocols,
   menuCategories,
@@ -207,7 +216,11 @@ export default function RestaurantRightSection({
         </div>
       )}
 
-      <MenuSection menuCategories={menuCategories} menuItems={menuItems} />
+      <MenuSection
+        menuCategories={menuCategories}
+        menuItems={menuItems}
+        menuUrl={restaurant.menu_url}
+      />
 
       <RestaurantReviewsSection
         restaurantReviews={restaurantReviews}

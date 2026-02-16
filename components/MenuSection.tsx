@@ -1,5 +1,6 @@
 import { COLORS } from "@/constants/colors";
 import MenuItemCard from "./MenuItemCard";
+import { Twemoji } from "@/utils/twemoji";
 
 interface RestaurantMenuCategory {
   id: string;
@@ -84,11 +85,13 @@ interface RestaurantMenuItem {
 interface MenuSectionProps {
   menuCategories: RestaurantMenuCategory[];
   menuItems: RestaurantMenuItem[];
+  menuUrl?: string | null;
 }
 
 export default function MenuSection({
   menuCategories,
   menuItems,
+  menuUrl,
 }: MenuSectionProps) {
   // Filter active categories and sort by sort_order
   const activeCategories = menuCategories
@@ -121,6 +124,24 @@ export default function MenuSection({
       >
         Our Menu:
       </h2>
+
+      {menuUrl && (
+        <a
+          href={menuUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 p-4 rounded-lg mb-4 transition-opacity hover:opacity-80"
+          style={{ backgroundColor: COLORS.WHITE }}
+        >
+          <Twemoji hex="1f517" size={20} />
+          <span
+            className="text-sm font-lato break-all"
+            style={{ color: COLORS.BLACK }}
+          >
+            {menuUrl}
+          </span>
+        </a>
+      )}
 
       {itemsByCategory.map(({ category, items }) => {
         // Skip empty categories
