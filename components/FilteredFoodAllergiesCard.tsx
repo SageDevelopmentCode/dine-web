@@ -5,8 +5,9 @@ import AllergenCard from "./AllergenCard";
 import type {
   UserReactionSymptomWithDetails,
 } from "@/lib/supabase/allergies/get_food_allergies_data";
-import type { Database, UserAllergen } from "@/lib/supabase/types";
+import type { Database } from "@/lib/supabase/types";
 
+type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
 type UserReactionProfile = Database["allergies"]["Tables"]["user_reaction_profiles"]["Row"];
 
 /**

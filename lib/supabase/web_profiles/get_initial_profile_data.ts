@@ -1,5 +1,11 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database, UserWebProfileWithUserData, UserEmergencyCardContact, Json } from '@/lib/supabase/types';
+import type { Database, Json } from '@/lib/supabase/types';
+
+type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
+type UserProfile = Database['core']['Tables']['user_profiles']['Row'];
+// The RPC returns user_profiles fields flattened into the web profile object
+type UserWebProfileWithUserData = UserWebProfile & UserProfile;
+type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
 
 // Type aliases for better readability
 type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];

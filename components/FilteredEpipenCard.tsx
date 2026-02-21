@@ -1,10 +1,14 @@
 "use client";
 
 import EpipenCardContent from "./EpipenCardContent";
-import type {
-  UserEpipenCard,
-  UserEpipenInstructionWithDetails,
-} from "@/lib/supabase/types";
+import type { Database } from "@/lib/supabase/types";
+
+type UserEpipenCard = Database['epipen']['Tables']['user_epipen_cards']['Row'];
+type UserEpipenInstruction = Database['epipen']['Tables']['user_epipen_instructions']['Row'];
+type EpipenInstruction = Database['epipen']['Tables']['epipen_instructions']['Row'];
+type UserEpipenInstructionWithDetails = UserEpipenInstruction & {
+  epipen_instruction?: EpipenInstruction | null;
+};
 
 interface FilteredEpipenCardProps {
   card: UserEpipenCard | null;
