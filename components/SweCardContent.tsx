@@ -186,7 +186,7 @@ export default function SweCardContent({
                           className="flex items-start gap-2 text-xs font-merriweather rounded-lg p-3 bg-white shadow-sm"
                         >
                           <span className="flex-1 text-gray-900">
-                            {replaceUserName(measure.instruction_text)}
+                            {replaceUserName(measure.instruction_text ?? "")}
                           </span>
                         </div>
                       ))}
