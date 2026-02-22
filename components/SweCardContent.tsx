@@ -7,7 +7,7 @@ import type {
   UserSweCard,
   UserSweCategoryWithDetails,
   UserSweMeasureWithDetails,
-} from "@/lib/supabase/types";
+} from "@/lib/supabase";
 
 interface SweCardContentProps {
   sweCard: UserSweCard | null;

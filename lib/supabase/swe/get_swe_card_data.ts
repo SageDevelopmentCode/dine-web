@@ -3,7 +3,7 @@ import type {
   UserSweCard,
   UserSweCategoryWithDetails,
   UserSweMeasureWithDetails,
-} from '@/lib/supabase/types';
+} from '@/lib/supabase';
 
 /**
  * Normalize category display names to slugified keys for color mapping
