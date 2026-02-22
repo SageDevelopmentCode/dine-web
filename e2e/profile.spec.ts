@@ -29,7 +29,7 @@ test.describe('Profile Page', () => {
     await page.goto(`/profile/${TEST_SLUGS.profile.invalid}`);
 
     // Wait for the page to load
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify 404 page is shown
     const bodyText = await page.locator('body').textContent();
