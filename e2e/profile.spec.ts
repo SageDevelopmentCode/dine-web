@@ -29,7 +29,7 @@ test.describe('Profile Page', () => {
     await page.goto(`/profile/${TEST_SLUGS.profile.invalid}`);
 
     // Wait for the page to load
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify 404 page is shown
     const bodyText = await page.locator('body').textContent();
@@ -117,13 +117,27 @@ test.describe('Profile Page', () => {
     await page.goto(`/profile/${TEST_SLUGS.profile.valid}`);
     await page.waitForLoadState('networkidle');
 
-    // Try to expand a card first
-    const expandableCard = page.locator('[class*="cursor-pointer"]').first();
+    // Look for expandable info cards (not allergen cards which open modals)
+    // Info cards are in the expandable section and contain chevron icons
+    const expandableCard = page.locator('[class*="cursor-pointer"]').filter({
+      has: page.locator('svg'),
+    }).first();
+
     const exists = await expandableCard.isVisible();
 
     if (exists) {
       await expandableCard.click();
       await page.waitForTimeout(1000);
+
+      // Check if a modal opened (allergen modal) and close it
+      const modal = page.locator('[class*="fixed"][class*="inset-0"]');
+      const isModalOpen = await modal.isVisible().catch(() => false);
+
+      if (isModalOpen) {
+        // Close the modal by pressing ESC
+        await page.keyboard.press('Escape');
+        await page.waitForTimeout(500);
+      }
 
       // Look for "View Full Card" button
       const viewFullCardButton = page.locator('text=View Full Card').first();

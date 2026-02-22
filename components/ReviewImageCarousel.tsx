@@ -11,7 +11,8 @@ interface ReviewImage {
   image_url: string;
   sort_order: number | null;
   created_at: string;
-  restaurant_review_id: string;
+  restaurant_review_id?: string;
+  restaurant_menu_item_review_id?: string;
   user_id: string;
   updated_at: string | null;
 }

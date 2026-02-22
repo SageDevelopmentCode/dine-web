@@ -18,27 +18,45 @@ import FilteredEmergencyCard from "./FilteredEmergencyCard";
 import FilteredEpipenCard from "./FilteredEpipenCard";
 import FilteredTravelCard from "./FilteredTravelCard";
 import FilteredFoodAllergiesCard, { AllergensSection } from "./FilteredFoodAllergiesCard";
+import type { Database } from "@/lib/supabase/types";
+// Import only the exported composite types from data fetching modules
 import type {
-  UserReactionProfile,
   UserReactionSymptomWithDetails,
   UserSafetyLevelWithDetails,
   UserSafetyRuleWithDetails,
-  UserEmergencyCard,
-  UserEmergencyCardContact,
-  UserEmergencyCardDoctor,
-  UserEmergencyCardHospital,
-  UserEpipenCard,
-  UserEpipenInstructionWithDetails,
-  UserSweCard,
-  UserSweCategoryWithDetails,
-  UserSweMeasureWithDetails,
-  UserTravelCard,
-  UserTravelLanguage,
+} from "@/lib/supabase/allergies/get_food_allergies_data";
+import type {
   UserTravelPhraseWithDetails,
   TravelPhraseCategory,
-  UserAllergen,
-  Database,
-} from "@/lib/supabase/types";
+} from "@/lib/supabase/travel/get_travel_card_data";
+
+// Type aliases for simple table types derived from Database schema
+type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
+type UserReactionProfile = Database['allergies']['Tables']['user_reaction_profiles']['Row'];
+type UserEmergencyCard = Database['emergency']['Tables']['user_emergency_cards']['Row'];
+type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
+type UserEmergencyCardDoctor = Database['emergency']['Tables']['user_emergency_card_doctors']['Row'];
+type UserEmergencyCardHospital = Database['emergency']['Tables']['user_emergency_card_hospitals']['Row'];
+type UserEpipenCard = Database['epipen']['Tables']['user_epipen_cards']['Row'];
+type UserSweCard = Database['swe']['Tables']['user_swe_cards']['Row'];
+type UserTravelCard = Database['travel']['Tables']['user_travel_cards']['Row'];
+type UserTravelLanguage = Database['travel']['Tables']['user_travel_languages']['Row'];
+
+// Define composite types that aren't exported
+type UserEpipenInstruction = Database['epipen']['Tables']['user_epipen_instructions']['Row'];
+type EpipenInstruction = Database['epipen']['Tables']['epipen_instructions']['Row'];
+type UserEpipenInstructionWithDetails = UserEpipenInstruction & {
+  epipen_instruction?: EpipenInstruction | null;
+};
+
+type UserSweCategory = Database['swe']['Tables']['user_swe_categories']['Row'];
+type SweCategory = Database['swe']['Tables']['swe_categories']['Row'];
+type UserSweCategoryWithDetails = UserSweCategory & {
+  swe_category?: SweCategory | null;
+};
+
+type UserSweMeasure = Database['swe']['Tables']['user_swe_measures']['Row'];
+type UserSweMeasureWithDetails = UserSweMeasure;
 import type { SelectedCardData } from "@/lib/supabase/swe/get_swe_selected_cards";
 
 interface CardPageRightSectionProps {

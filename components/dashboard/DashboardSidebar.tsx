@@ -151,10 +151,9 @@ export default function DashboardSidebar() {
                   }
                 }}
               >
-                <Icon
-                  className="w-5 h-5 flex-shrink-0"
-                  style={{ color: item.color }}
-                />
+                <span style={{ color: item.color }}>
+                  <Icon className="w-5 h-5 flex-shrink-0" />
+                </span>
                 <span>{item.name}</span>
               </Link>
             </motion.div>

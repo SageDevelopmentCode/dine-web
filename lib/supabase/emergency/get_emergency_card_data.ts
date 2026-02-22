@@ -5,7 +5,7 @@ import {
   UserEmergencyCardDoctor,
   UserEmergencyCardHospital,
   Database,
-} from '@/lib/supabase/types';
+} from '@/lib/supabase';
 
 // Type alias for reaction profile
 type UserReactionProfile = Database['allergies']['Tables']['user_reaction_profiles']['Row'];

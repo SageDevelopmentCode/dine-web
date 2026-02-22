@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import { X } from "lucide-react";
 import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
-import { UserAllergen } from "@/lib/supabase/types";
+import type { Database } from "@/lib/supabase/types";
 
+type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
 type Severity = "severe" | "moderate" | "mild";
 
 interface AllergenDetailModalProps {

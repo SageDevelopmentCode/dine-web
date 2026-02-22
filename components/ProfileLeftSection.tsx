@@ -1,7 +1,12 @@
 import { COLORS } from "@/constants/colors";
 import { User } from "lucide-react";
 import { Twemoji } from "@/utils/twemoji";
-import { UserWebProfileWithUserData, UserEmergencyCardContact } from "@/lib/supabase/types";
+import type { Database } from "@/lib/supabase/types";
+
+type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
+type UserProfile = Database['core']['Tables']['user_profiles']['Row'];
+type UserWebProfileWithUserData = UserWebProfile & UserProfile;
+type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
 
 import { formatTimestamp, formatPhoneNumber } from "@/utils/formatters";
 import DownloadDineSection from "./DownloadDineSection";

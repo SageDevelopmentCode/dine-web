@@ -1,13 +1,12 @@
 "use client";
 
 import { COLORS } from "@/constants/colors";
-import type {
-  UserEmergencyCard,
-  UserEmergencyCardContact,
-  UserEmergencyCardDoctor,
-  UserEmergencyCardHospital,
-  Database,
-} from "@/lib/supabase/types";
+import type { Database } from "@/lib/supabase/types";
+
+type UserEmergencyCard = Database['emergency']['Tables']['user_emergency_cards']['Row'];
+type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
+type UserEmergencyCardDoctor = Database['emergency']['Tables']['user_emergency_card_doctors']['Row'];
+type UserEmergencyCardHospital = Database['emergency']['Tables']['user_emergency_card_hospitals']['Row'];
 
 interface EmergencyCardContentProps {
   emergencyCard: UserEmergencyCard | null;
@@ -30,12 +29,12 @@ export default function EmergencyCardContent({
 }: EmergencyCardContentProps) {
   // Sort contacts by priority
   const sortedContacts = [...emergencyContacts].sort(
-    (a, b) => a.priority - b.priority
+    (a, b) => (a.priority ?? 0) - (b.priority ?? 0)
   );
 
   // Sort hospitals by priority
   const sortedHospitals = [...emergencyHospitals].sort(
-    (a, b) => a.priority - b.priority
+    (a, b) => (a.priority ?? 0) - (b.priority ?? 0)
   );
 
   // Group doctors by type

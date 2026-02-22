@@ -1,5 +1,12 @@
 import { createClient } from '@/lib/supabase/server';
-import type { UserEpipenCard, UserEpipenInstructionWithDetails } from '@/lib/supabase/types';
+import type { Database } from '@/lib/supabase/types';
+
+type UserEpipenCard = Database['epipen']['Tables']['user_epipen_cards']['Row'];
+type UserEpipenInstruction = Database['epipen']['Tables']['user_epipen_instructions']['Row'];
+type EpipenInstruction = Database['epipen']['Tables']['epipen_instructions']['Row'];
+export type UserEpipenInstructionWithDetails = UserEpipenInstruction & {
+  epipen_instruction?: EpipenInstruction | null;
+};
 
 /**
  * Get comprehensive epipen card data using the RPC function

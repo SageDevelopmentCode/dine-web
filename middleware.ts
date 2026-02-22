@@ -41,7 +41,7 @@ export async function middleware(request: NextRequest) {
       statusCode: response.status,
       responseTime,
       userAgent: request.headers.get("user-agent") || "",
-      ipAddress: request.ip || request.headers.get("x-forwarded-for") || "",
+      ipAddress: request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "",
     }).catch((error) => {
       // Silent fail - don't break the request if logging fails
       console.error("Failed to log metrics:", error);
@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
       stackTrace: error instanceof Error ? error.stack || "" : "",
       statusCode,
       userAgent: request.headers.get("user-agent") || "",
-      ipAddress: request.ip || request.headers.get("x-forwarded-for") || "",
+      ipAddress: request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "",
     }).catch((err) => {
       console.error("Failed to log error:", err);
     });

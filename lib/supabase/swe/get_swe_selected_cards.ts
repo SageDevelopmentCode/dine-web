@@ -1,11 +1,12 @@
 import { createClient } from '@/lib/supabase/server';
-import { Database, UserAllergen, Json } from '@/lib/supabase/types';
+import type { Database, Json } from '@/lib/supabase/types';
 import { getEmergencyCardData } from '@/lib/supabase/emergency/get_emergency_card_data';
 import { getEpipenCardData } from '@/lib/supabase/epipen/get_epipen_card_data';
 import { getTravelCardData } from '@/lib/supabase/travel/get_travel_card_data';
 import { getFoodAllergiesData } from '@/lib/supabase/allergies/get_food_allergies_data';
 
 // Type aliases
+type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
 type UserSweSelectedCard = Database['swe']['Tables']['user_swe_selected_cards']['Row'];
 type UserCard = Database['core']['Tables']['user_cards']['Row'];
 type CardType = Database['public']['Enums']['card_type'];

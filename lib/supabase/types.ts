@@ -1162,6 +1162,25 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_family_profile_complete: {
+        Args: {
+          p_children_data: Json
+          p_children_safety_rules_data: Json
+          p_children_user_ids: string[]
+          p_parent_data: Json
+          p_parent_safety_rules_data: Json
+          p_parent_user_id: string
+        }
+        Returns: Json
+      }
+      create_user_profile_complete: {
+        Args: {
+          p_profile_data: Json
+          p_safety_rules_data: Json
+          p_user_id: string
+        }
+        Returns: Json
+      }
       get_food_allergies_data: { Args: { profile_slug: string }; Returns: Json }
       get_initial_profile_data: {
         Args: { profile_slug: string }
@@ -2098,6 +2117,7 @@ export type Database = {
           id: string
           is_deleted: boolean
           is_verified: boolean
+          menu_url: string | null
           name: string
           owner_id: string
           phone: string | null
@@ -2116,6 +2136,7 @@ export type Database = {
           id?: string
           is_deleted: boolean
           is_verified?: boolean
+          menu_url?: string | null
           name: string
           owner_id: string
           phone?: string | null
@@ -2134,6 +2155,7 @@ export type Database = {
           id?: string
           is_deleted?: boolean
           is_verified?: boolean
+          menu_url?: string | null
           name?: string
           owner_id?: string
           phone?: string | null
@@ -3505,70 +3527,10 @@ export const Constants = {
   },
 } as const
 
-// Custom Type Exports
-
-// Allergy Types
-export type UserAllergen = Database['allergies']['Tables']['user_allergens']['Row'];
-export type UserReactionProfile = Database['allergies']['Tables']['user_reaction_profiles']['Row'];
-export type UserReactionSymptom = Database['allergies']['Tables']['user_reaction_symptoms']['Row'];
-export type ReactionSymptom = Database['allergies']['Tables']['symptoms']['Row'];
-export type UserReactionSymptomWithDetails = UserReactionSymptom & {
-  reaction_symptom?: ReactionSymptom | null;
-};
-export type UserSafetyLevel = Database['allergies']['Tables']['user_safety_levels']['Row'];
-export type SafetyLevel = Database['allergies']['Tables']['safety_levels']['Row'];
-export type UserSafetyLevelWithDetails = UserSafetyLevel & {
-  safety_level?: SafetyLevel | null;
-};
-export type UserSafetyRule = Database['allergies']['Tables']['user_safety_rules']['Row'];
-export type UserSafetyRuleWithDetails = UserSafetyRule;
-
-// EpiPen Types
-export type UserEpipenCard = Database['epipen']['Tables']['user_epipen_cards']['Row'];
-export type UserEpipenInstruction = Database['epipen']['Tables']['user_epipen_instructions']['Row'];
-export type EpipenInstruction = Database['epipen']['Tables']['epipen_instructions']['Row'];
-export type UserEpipenInstructionWithDetails = UserEpipenInstruction & {
-  epipen_instruction?: EpipenInstruction | null;
-};
-
-// Web Profile Types
-export type UserWebProfile = Database['web_profiles']['Tables']['user_web_profiles']['Row'];
-export type UserProfile = Database['core']['Tables']['user_profiles']['Row'];
-export type UserWebProfileWithUserData = UserWebProfile & {
-  first_name?: string | null;
-  last_name?: string | null;
-  account_type?: Database['public']['Enums']['account_type'];
-};
-
-// Emergency Types
-export type UserEmergencyCard = Database['emergency']['Tables']['user_emergency_cards']['Row'];
-export type UserEmergencyCardContact = Database['emergency']['Tables']['user_emergency_card_contacts']['Row'];
-export type UserEmergencyCardDoctor = Database['emergency']['Tables']['user_emergency_card_doctors']['Row'];
-export type UserEmergencyCardHospital = Database['emergency']['Tables']['user_emergency_card_hospitals']['Row'];
-
-// SWE Types
-export type UserSweCard = Database['swe']['Tables']['user_swe_cards']['Row'];
-export type UserSweCategory = Database['swe']['Tables']['user_swe_categories']['Row'];
-export type SweCategory = Database['swe']['Tables']['swe_categories']['Row'];
-export type UserSweMeasure = Database['swe']['Tables']['user_swe_measures']['Row'];
-export type SweMeasure = Database['swe']['Tables']['swe_measures']['Row'];
-
-export type UserSweCategoryWithDetails = UserSweCategory & {
-  swe_category?: SweCategory | null;
-};
-
-export type UserSweMeasureWithDetails = UserSweMeasure & {
-  swe_measure?: SweMeasure | null;
-};
-
-// Travel Types
-export type UserTravelCard = Database['travel']['Tables']['user_travel_cards']['Row'];
-export type UserTravelLanguage = Database['travel']['Tables']['user_travel_languages']['Row'];
-export type TravelPhrase = Database['travel']['Tables']['travel_phrases']['Row'];
-export type TravelPhraseCategory = Database['travel']['Tables']['travel_phrase_categories']['Row'];
-export type UserTravelPhrase = Database['travel']['Tables']['user_travel_phrases']['Row'];
-
-export type UserTravelPhraseWithDetails = UserTravelPhrase & {
-  travel_phrase?: TravelPhrase | null;
-  category?: TravelPhraseCategory | null;
-};
+// ============================================================================
+// IMPORTANT: DO NOT ADD CUSTOM TYPE EXPORTS HERE
+// ============================================================================
+// This file is auto-generated by Supabase CLI and will be overwritten.
+// For custom type exports, use: lib/supabase/types.custom.ts
+// To import types, use the barrel export: import { ... } from '@/lib/supabase'
+// ============================================================================
