@@ -14,7 +14,10 @@ export default function HeroSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -106,7 +109,17 @@ export default function HeroSection() {
             className="font-merriweather text-base lg:text-lg leading-relaxed"
             style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
-            My name is Julius and I built{" "}
+            My name is{" "}
+            <a
+              href="https://www.juliuscecilia.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-merriweather text-base lg:text-lg leading-relaxed underline hover:opacity-70 transition-opacity"
+              style={{ color: COLORS.DOWNLOAD_SECTION_BLUE }}
+            >
+              Julius
+            </a>{" "}
+            and I built{" "}
             <span style={{ color: COLORS.DOWNLOAD_SECTION_BLUE }}>Dine</span> to
             help people with food allergies share their allergies with others in
             a simple and easy way.

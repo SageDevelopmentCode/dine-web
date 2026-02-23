@@ -13,7 +13,10 @@ export default function InspirationSection() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -22,7 +25,10 @@ export default function InspirationSection() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -74,8 +80,18 @@ export default function InspirationSection() {
               style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               In 2020, during my college days at the University of Washington,
-              an article was written about my sister and her journey with food
-              allergies by the UW Informatics department.
+              an{" "}
+              <a
+                href="https://ischool.uw.edu/news/2023/01/informatics-student-inspired-improve-health-care"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-merriweather text-base lg:text-lg leading-relaxed underline hover:opacity-70 transition-opacity"
+                style={{ color: COLORS.DOWNLOAD_SECTION_BLUE }}
+              >
+                article
+              </a>{" "}
+              was written about my sister and her journey with food allergies by
+              the UW Informatics department.
             </p>
 
             <div
@@ -86,9 +102,19 @@ export default function InspirationSection() {
                 className="font-merriweather text-base leading-relaxed"
                 style={{ color: COLORS.BLACK }}
               >
-                That article sparked something in me. As a software engineering
-                student, I realized I could use technology to solve the problems
-                my sister and millions of others face every day.
+                That{" "}
+                <a
+                  href="https://ischool.uw.edu/news/2023/01/informatics-student-inspired-improve-health-care"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-merriweather text-base lg:text-base leading-relaxed underline hover:opacity-70 transition-opacity"
+                  style={{ color: COLORS.DOWNLOAD_SECTION_BLUE }}
+                >
+                  article
+                </a>{" "}
+                sparked something in me. As a software engineering student, I
+                realized I could use technology to solve the problems my sister
+                and millions of others face every day.
               </p>
               <p
                 className="font-merriweather text-base leading-relaxed"

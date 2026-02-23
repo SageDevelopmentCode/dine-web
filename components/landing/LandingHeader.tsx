@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { COLORS } from "@/constants/colors";
 
@@ -7,7 +8,7 @@ export default function LandingHeader() {
     <header className="w-full px-8 py-6">
       <nav className="w-full mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src="/assets/Logo.png"
             alt="Dine Logo"
@@ -18,7 +19,7 @@ export default function LandingHeader() {
             quality={100}
             unoptimized={true}
           />
-        </div>
+        </Link>
 
         {/* Menu Items */}
         <div className="hidden md:flex items-center gap-12">
