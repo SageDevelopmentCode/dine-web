@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Image from "next/image";
 import { COLORS } from "@/constants/colors";
 
 export default function InspirationSection() {
@@ -47,18 +48,16 @@ export default function InspirationSection() {
             animate={isInView ? "visible" : "hidden"}
             className="flex items-center justify-center order-2 lg:order-1"
           >
-            <div
-              className="w-full h-[400px] lg:h-[500px] rounded-2xl flex items-center justify-center"
-              style={{ backgroundColor: COLORS.WHITE }}
-            >
-              <p
-                className="font-merriweather text-lg text-center px-8"
-                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-              >
-                [Placeholder: UW Informatics article or University of Washington
-                campus scene]
-              </p>
-            </div>
+            <Image
+              src="/assets/Informatics.png"
+              alt="UW Informatics article about food allergy awareness"
+              width={1628}
+              height={1025}
+              className="w-full h-[400px] lg:h-[500px] object-contain rounded-2xl"
+              loading="lazy"
+              quality={100}
+              unoptimized={true}
+            />
           </motion.div>
 
           {/* Content */}

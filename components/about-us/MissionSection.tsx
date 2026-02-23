@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Image from "next/image";
 import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
 
@@ -14,7 +15,10 @@ export default function MissionSection() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -23,7 +27,10 @@ export default function MissionSection() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -124,25 +131,23 @@ export default function MissionSection() {
             </p>
           </motion.div>
 
-          {/* Placeholder Image */}
+          {/* Logo Image */}
           <motion.div
             variants={fadeInRight}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             className="flex items-center justify-center"
           >
-            <div
-              className="w-full h-[400px] lg:h-[500px] rounded-2xl flex items-center justify-center"
-              style={{ backgroundColor: COLORS.LANDING_PAGE_BACKGROUND }}
-            >
-              <p
-                className="font-merriweather text-lg text-center px-8"
-                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
-              >
-                [Placeholder: App interface showing allergy communication
-                feature or mobile mockup]
-              </p>
-            </div>
+            <Image
+              src="/assets/Logo.png"
+              alt="Dine App Logo"
+              width={200}
+              height={200}
+              className="w-full h-[200px] lg:h-[200px] rounded-2xl object-contain"
+              loading="lazy"
+              quality={100}
+              unoptimized={true}
+            />
           </motion.div>
         </div>
       </div>

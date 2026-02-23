@@ -15,7 +15,10 @@ export default function OriginStorySection() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -24,7 +27,10 @@ export default function OriginStorySection() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -118,11 +124,11 @@ export default function OriginStorySection() {
             className="flex items-center justify-center"
           >
             <Image
-              src="/assets/Informatics.png"
+              src="/assets/PersonalStory.jpg"
               alt="Family photo representing food allergy awareness"
               width={1628}
               height={1025}
-              className="w-full h-[400px] lg:h-[500px] object-contain rounded-2xl"
+              className="w-full h-[300px] lg:h-[400px] object-cover rounded-2xl"
               loading="lazy"
               quality={100}
               unoptimized={true}

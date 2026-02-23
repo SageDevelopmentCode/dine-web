@@ -5,6 +5,7 @@ import InspirationSection from "@/components/about-us/InspirationSection";
 import MissionSection from "@/components/about-us/MissionSection";
 import CommunityVisionSection from "@/components/about-us/CommunityVisionSection";
 import CallToAction from "@/components/about-us/CallToAction";
+import Footer from "@/components/Footer";
 import { COLORS } from "@/constants/colors";
 
 export const metadata = {
@@ -25,6 +26,7 @@ export default function AboutUsPage() {
       <MissionSection />
       <CommunityVisionSection />
       <CallToAction />
+      <Footer />
     </div>
   );
 }
