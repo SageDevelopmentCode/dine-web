@@ -14,7 +14,10 @@ export default function CommunityVisionSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -23,7 +26,11 @@ export default function CommunityVisionSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+        delay,
+      },
     },
   });
 
@@ -49,10 +56,10 @@ export default function CommunityVisionSection() {
           </h2>
           <p
             className="font-merriweather text-base lg:text-lg leading-relaxed max-w-3xl mx-auto"
-            style={{ color: COLORS.GRAY }}
+            style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
           >
-            Dine is more than just an app—it's a platform for people with food
-            allergies to connect, share, and support each other.
+            Dine is more than just an app—it&apos;s a platform for people with
+            food allergies to connect, share, and support each other.
           </p>
         </motion.div>
 
@@ -80,10 +87,10 @@ export default function CommunityVisionSection() {
             </h3>
             <p
               className="font-merriweather text-base leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
-              Connect with others who understand your journey. Share your stories,
-              challenges, and victories with a supportive community.
+              Connect with others who understand your journey. Share your
+              stories, challenges, and victories with a supportive community.
             </p>
           </motion.div>
 
@@ -109,10 +116,11 @@ export default function CommunityVisionSection() {
             </h3>
             <p
               className="font-merriweather text-base leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
-              Exchange safe recipes, cooking methods, and foods you've tried. Help
-              others discover delicious options that work for their restrictions.
+              Exchange safe recipes, cooking methods, and foods you&apos;ve
+              tried. Help others discover delicious options that work for their
+              restrictions.
             </p>
           </motion.div>
 
@@ -138,7 +146,7 @@ export default function CommunityVisionSection() {
             </h3>
             <p
               className="font-merriweather text-base leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               Help build a trusted database of allergy-aware restaurants. Vote,
               comment, and rate establishments based on your experiences.
@@ -165,14 +173,15 @@ export default function CommunityVisionSection() {
             </h3>
             <p
               className="font-merriweather text-base lg:text-lg leading-relaxed mb-4"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
-              Dine also provides restaurants and stores with a platform to promote
-              their allergy-awareness and commitment to safe dining experiences.
+              Dine also provides restaurants and stores with a platform to
+              promote their allergy-awareness and commitment to safe dining
+              experiences.
             </p>
             <p
               className="font-merriweather text-base lg:text-lg leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               By joining the community, establishments can showcase their
               practices, earn trust through transparent ratings and reviews, and

@@ -10,6 +10,11 @@ import FamilyManagementSection from "@/components/landing/FamilyManagementSectio
 import RestaurantDiscoverySection from "@/components/landing/RestaurantDiscoverySection";
 import Footer from "@/components/Footer";
 
+export const metadata = {
+  title: "Dine - Food Allergy Communication Made Simple",
+  description: "Share your food allergies with restaurants, schools, and others in a simple and easy way. Communicate safely and confidently.",
+};
+
 export default function Home() {
   return (
     <div

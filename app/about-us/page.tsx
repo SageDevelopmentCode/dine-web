@@ -7,6 +7,11 @@ import CommunityVisionSection from "@/components/about-us/CommunityVisionSection
 import CallToAction from "@/components/about-us/CallToAction";
 import { COLORS } from "@/constants/colors";
 
+export const metadata = {
+  title: "About Us - Dine",
+  description: "Learn about Julius's personal journey and mission to help people with food allergies communicate safely and confidently.",
+};
+
 export default function AboutUsPage() {
   return (
     <div
