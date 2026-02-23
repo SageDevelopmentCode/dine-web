@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { COLORS } from "@/constants/colors";
+import { Twemoji } from "@/utils/twemoji";
 
 export default function MissionSection() {
   const ref = useRef(null);
@@ -50,7 +51,7 @@ export default function MissionSection() {
 
             <p
               className="font-merriweather text-base lg:text-lg leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               The goal of Dine is simple but ambitious:{" "}
               <span
@@ -77,7 +78,7 @@ export default function MissionSection() {
                 className="font-merriweather text-base leading-relaxed flex items-start gap-3"
                 style={{ color: COLORS.BLACK }}
               >
-                <span className="text-xl">&#x2705;</span>
+                <Twemoji hex="2705" size={20} />
                 <span>
                   Feel safer and more confident ordering food at restaurants
                 </span>
@@ -86,7 +87,7 @@ export default function MissionSection() {
                 className="font-merriweather text-base leading-relaxed flex items-start gap-3"
                 style={{ color: COLORS.BLACK }}
               >
-                <span className="text-xl">&#x2705;</span>
+                <Twemoji hex="2705" size={20} />
                 <span>
                   Navigate school events, work gatherings, and social occasions
                   without fear
@@ -96,7 +97,7 @@ export default function MissionSection() {
                 className="font-merriweather text-base leading-relaxed flex items-start gap-3"
                 style={{ color: COLORS.BLACK }}
               >
-                <span className="text-xl">&#x2705;</span>
+                <Twemoji hex="2705" size={20} />
                 <span>
                   Travel internationally with confidence, breaking down language
                   barriers
@@ -106,7 +107,7 @@ export default function MissionSection() {
                 className="font-merriweather text-base leading-relaxed flex items-start gap-3"
                 style={{ color: COLORS.BLACK }}
               >
-                <span className="text-xl">&#x2705;</span>
+                <Twemoji hex="2705" size={20} />
                 <span>
                   Clearly communicate their dietary restrictions without
                   misunderstanding
@@ -116,7 +117,7 @@ export default function MissionSection() {
 
             <p
               className="font-merriweather text-base lg:text-lg leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               No one should have to risk their health just to enjoy a meal. Dine
               is here to change that.
@@ -136,7 +137,7 @@ export default function MissionSection() {
             >
               <p
                 className="font-merriweather text-lg text-center px-8"
-                style={{ color: COLORS.GRAY }}
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
               >
                 [Placeholder: App interface showing allergy communication
                 feature or mobile mockup]

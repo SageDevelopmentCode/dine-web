@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { COLORS } from "@/constants/colors";
+import { Twemoji } from "@/utils/twemoji";
 
 export default function CommunityVisionSection() {
   const ref = useRef(null);
@@ -66,10 +67,10 @@ export default function CommunityVisionSection() {
             style={{ backgroundColor: COLORS.WHITE }}
           >
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+              className="w-12 h-12 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: COLORS.FOOD_ALLERGIES_BG }}
             >
-              💬
+              <Twemoji hex="1f4ac" size={32} />
             </div>
             <h3
               className="font-merriweather text-xl font-semibold"
@@ -95,10 +96,10 @@ export default function CommunityVisionSection() {
             style={{ backgroundColor: COLORS.WHITE }}
           >
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+              className="w-12 h-12 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: COLORS.EMERGENCY_MEDICAL_BG }}
             >
-              🍽️
+              <Twemoji hex="1f37d" size={32} />
             </div>
             <h3
               className="font-merriweather text-xl font-semibold"
@@ -124,10 +125,10 @@ export default function CommunityVisionSection() {
             style={{ backgroundColor: COLORS.WHITE }}
           >
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+              className="w-12 h-12 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: COLORS.RESTAURANT_DISCOVERY_BG }}
             >
-              ⭐
+              <Twemoji hex="2b50" size={32} />
             </div>
             <h3
               className="font-merriweather text-xl font-semibold"

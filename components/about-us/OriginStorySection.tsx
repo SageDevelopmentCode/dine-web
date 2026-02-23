@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { COLORS } from "@/constants/colors";
+import { Twemoji } from "@/utils/twemoji";
 
 export default function OriginStorySection() {
   const ref = useRef(null);
@@ -50,7 +51,7 @@ export default function OriginStorySection() {
 
             <p
               className="font-merriweather text-base lg:text-lg leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               Growing up, my sister had severe food allergies. Our family faced
               challenges that many with food allergies know all too well.
@@ -64,7 +65,7 @@ export default function OriginStorySection() {
                 className="font-merriweather text-base leading-relaxed flex items-start gap-3"
                 style={{ color: COLORS.BLACK }}
               >
-                <span className="text-xl">&#x2705;</span>
+                <Twemoji hex="2705" size={20} />
                 <span>
                   Food allergy attacks from cross-contamination at restaurants
                 </span>
@@ -73,7 +74,7 @@ export default function OriginStorySection() {
                 className="font-merriweather text-base leading-relaxed flex items-start gap-3"
                 style={{ color: COLORS.BLACK }}
               >
-                <span className="text-xl">&#x2705;</span>
+                <Twemoji hex="2705" size={20} />
                 <span>
                   Miscommunication about allergies when traveling in foreign
                   countries
@@ -83,7 +84,7 @@ export default function OriginStorySection() {
                 className="font-merriweather text-base leading-relaxed flex items-start gap-3"
                 style={{ color: COLORS.BLACK }}
               >
-                <span className="text-xl">&#x2705;</span>
+                <Twemoji hex="2705" size={20} />
                 <span>
                   Difficulty finding safe restaurants, stores, and food brands
                   she could trust
@@ -93,16 +94,14 @@ export default function OriginStorySection() {
                 className="font-merriweather text-base leading-relaxed flex items-start gap-3"
                 style={{ color: COLORS.BLACK }}
               >
-                <span className="text-xl">&#x2705;</span>
-                <span>
-                  The constant stress and anxiety around every meal
-                </span>
+                <Twemoji hex="2705" size={20} />
+                <span>The constant stress and anxiety around every meal</span>
               </p>
             </div>
 
             <p
               className="font-merriweather text-base lg:text-lg leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               Watching her navigate these challenges every day made me realize
               how difficult it is for millions of people with food allergies to
@@ -123,7 +122,7 @@ export default function OriginStorySection() {
             >
               <p
                 className="font-merriweather text-lg text-center px-8"
-                style={{ color: COLORS.GRAY }}
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
               >
                 [Placeholder: Family photo or image representing food allergy
                 awareness]

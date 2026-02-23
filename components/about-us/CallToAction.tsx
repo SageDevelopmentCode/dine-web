@@ -42,9 +42,10 @@ export default function CallToAction() {
             className="font-merriweather text-base lg:text-lg leading-relaxed"
             style={{ color: COLORS.WHITE }}
           >
-            Whether you're someone with food allergies, a parent, a restaurant
-            owner, or simply someone who cares—you're welcome here. Together, we
-            can make dining safer, easier, and more enjoyable for everyone.
+            Whether you&apos;re someone with food allergies, a parent, a
+            restaurant owner, or simply someone who cares, you&apos;re welcome
+            here. Together, we can make dining safer, easier, and more enjoyable
+            for everyone.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

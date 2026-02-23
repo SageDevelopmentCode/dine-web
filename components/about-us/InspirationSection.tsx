@@ -47,7 +47,7 @@ export default function InspirationSection() {
             >
               <p
                 className="font-merriweather text-lg text-center px-8"
-                style={{ color: COLORS.GRAY }}
+                style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
               >
                 [Placeholder: UW Informatics article or University of Washington
                 campus scene]
@@ -71,10 +71,10 @@ export default function InspirationSection() {
 
             <p
               className="font-merriweather text-base lg:text-lg leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
-              In 2020, during my college days at the University of Washington, an
-              article was written about my sister and her journey with food
+              In 2020, during my college days at the University of Washington,
+              an article was written about my sister and her journey with food
               allergies by the UW Informatics department.
             </p>
 
@@ -94,8 +94,8 @@ export default function InspirationSection() {
                 className="font-merriweather text-base leading-relaxed"
                 style={{ color: COLORS.BLACK }}
               >
-                I began learning to code, driven by a mission to create something
-                meaningful.
+                I began learning to code, driven by a mission to create
+                something meaningful.
               </p>
             </div>
 
@@ -109,7 +109,7 @@ export default function InspirationSection() {
                 </p>
                 <p
                   className="font-merriweather text-sm lg:text-base"
-                  style={{ color: COLORS.GRAY }}
+                  style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
                 >
                   Started Learning
                 </p>
@@ -127,7 +127,7 @@ export default function InspirationSection() {
                 </p>
                 <p
                   className="font-merriweather text-sm lg:text-base"
-                  style={{ color: COLORS.GRAY }}
+                  style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
                 >
                   Building Dine
                 </p>
@@ -136,10 +136,11 @@ export default function InspirationSection() {
 
             <p
               className="font-merriweather text-base lg:text-lg leading-relaxed"
-              style={{ color: COLORS.GRAY }}
+              style={{ color: COLORS.SECONDARY_TEXT_GRAY }}
             >
               Five years of learning, building, and refining led to Dine—an app
-              designed to eliminate the miscommunication that puts lives at risk.
+              designed to eliminate the miscommunication that puts lives at
+              risk.
             </p>
           </motion.div>
         </div>
