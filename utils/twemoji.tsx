@@ -131,6 +131,8 @@ const emojiAssets: { [key: string]: string } = {
   "2b50": "/assets/emojis/2b50.png", // ⭐ star
   "1f4cd": "/assets/emojis/1f4cd.png", // 📍 pin
   "1f44b": "/assets/emojis/1f44b.png", // 👋 waving hand
+  "1f4ac": "/assets/emojis/1f4ac.png", // 💬 speech bubble
+  "1f37d": "/assets/emojis/1f37d.png", // 🍽 fork and knife
 };
 
 interface TwemojiProps {
