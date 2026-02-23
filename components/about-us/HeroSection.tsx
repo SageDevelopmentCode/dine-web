@@ -129,19 +129,19 @@ export default function HeroSection() {
 
       {/* Images Container - Side by Side */}
       <motion.div
-        className="flex items-end justify-center gap-4 md:gap-8 flex-1 w-full max-w-6xl px-4 -mb-[120px] md:-mb-30"
+        className="flex items-end justify-center gap-4 md:gap-8 flex-1 w-full max-w-6xl px-4 -mb-[120px] md:-mb-[50px]"
         variants={imagesVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
         {/* Web Image */}
-        <div className="relative h-full flex items-end w-full md:w-auto">
+        <div className="relative h-full items-end hidden md:flex md:w-auto">
           <Image
             src="/assets/Screens/Web.png"
             alt="Dine web profile showing allergy information and cards"
             width={600}
             height={700}
-            className="h-full w-full md:w-auto object-contain"
+            className="h-[500px] w-auto object-contain"
             loading="lazy"
             quality={100}
             unoptimized={true}
@@ -149,13 +149,13 @@ export default function HeroSection() {
         </div>
 
         {/* Mobile Image */}
-        <div className="relative h-full items-end hidden md:flex">
+        <div className="relative h-full flex items-end w-full md:w-auto justify-center md:justify-start">
           <Image
             src="/assets/Screens/Mobile.png"
             alt="Dine mobile app showing allergy cards"
             width={350}
             height={700}
-            className="h-full w-auto object-contain"
+            className="h-full md:h-[500px] w-auto max-w-[250px] md:max-w-[350px] object-contain"
             loading="lazy"
             quality={100}
             unoptimized={true}

@@ -143,7 +143,7 @@ export default function MissionSection() {
               alt="Dine App Logo"
               width={200}
               height={200}
-              className="w-full h-[200px] lg:h-[200px] rounded-2xl object-contain"
+              className="w-32 h-32 sm:w-40 sm:h-40 lg:w-[200px] lg:h-[200px] rounded-2xl object-contain"
               loading="lazy"
               quality={100}
               unoptimized={true}

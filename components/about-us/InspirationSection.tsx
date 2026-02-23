@@ -36,11 +36,11 @@ export default function InspirationSection() {
   return (
     <section
       ref={ref}
-      className="w-full px-8 py-24"
+      className="w-full px-8 py-8 lg:py-24"
       style={{ backgroundColor: COLORS.LANDING_PAGE_BACKGROUND }}
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Placeholder Image - Reversed order on desktop */}
           <motion.div
             variants={fadeInLeft}
@@ -53,7 +53,7 @@ export default function InspirationSection() {
               alt="UW Informatics article about food allergy awareness"
               width={1628}
               height={1025}
-              className="w-full h-[400px] lg:h-[500px] object-contain rounded-2xl"
+              className="w-full h-[300px] lg:h-[400px] object-cover rounded-2xl"
               loading="lazy"
               quality={100}
               unoptimized={true}
