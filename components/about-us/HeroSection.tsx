@@ -40,7 +40,7 @@ export default function HeroSection() {
   return (
     <section
       ref={ref}
-      className="w-full h-[85vh] md:h-[90vh] flex flex-col items-center justify-start overflow-hidden pt-12 md:pt-16"
+      className="w-full min-h-[85vh] md:min-h-[90vh] flex flex-col items-center justify-start pt-12 md:pt-16"
       style={{ backgroundColor: COLORS.LANDING_PAGE_BACKGROUND }}
     >
       <div className="flex flex-col items-center text-center max-w-4xl mx-auto px-8 mb-6">
