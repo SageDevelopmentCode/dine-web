@@ -37,7 +37,7 @@ export default function OriginStorySection() {
   return (
     <section
       ref={ref}
-      className="w-full px-8 py-24"
+      className="relative z-10 w-full px-8 py-24"
       style={{ backgroundColor: COLORS.WHITE }}
     >
       <div className="max-w-7xl mx-auto">
