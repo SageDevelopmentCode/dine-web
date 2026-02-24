@@ -31,7 +31,7 @@ export default function LandingHeader() {
             About us
           </a>
           <a
-            href="#for-you"
+            href="/for-you"
             className="font-merriweather text-base hover:opacity-70 transition-opacity"
             style={{ color: COLORS.BLACK }}
           >
