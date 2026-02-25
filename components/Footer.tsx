@@ -60,7 +60,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/team"
+                  href="/about-us"
                   className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5 cursor-pointer"
                   style={{ color: COLORS.BLACK }}
                 >
