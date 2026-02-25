@@ -19,13 +19,13 @@ const scenarios: Scenario[] = [
       "Walk into any restaurant with confidence, knowing your allergies are clearly communicated without awkward explanations.",
   },
   {
-    emoji: "1f389",
-    title: "Your Child's First Sleepover",
+    emoji: "1f68c",
+    title: "Field Trips & School Outings",
     description:
-      "Send your child to sleepovers and parties knowing the host has all the information they need to keep them safe.",
+      "Send your child on field trips and school outings with confidence that chaperones and teachers have their complete allergy profile.",
   },
   {
-    emoji: "2708-fe0f",
+    emoji: "2708",
     title: "Traveling Abroad",
     description:
       "Explore the world without language barriers—your allergies automatically translated into 50+ languages.",
