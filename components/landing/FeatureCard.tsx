@@ -46,7 +46,7 @@ export default function FeatureCard({
           {description}
         </p>
         <button
-          className="font-merriweather text-xs px-3 py-1.5 rounded-lg mt-auto w-fit"
+          className="font-merriweather text-xs px-3 py-1.5 rounded-lg mt-auto w-fit cursor-pointer"
           style={{ backgroundColor: buttonColor, color: COLORS.WHITE }}
         >
           View

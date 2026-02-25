@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { COLORS } from "@/constants/colors";
 
-export default function CallToAction() {
+export default function CallToActionSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
@@ -14,7 +14,10 @@ export default function CallToAction() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     },
   };
 
@@ -35,17 +38,15 @@ export default function CallToAction() {
             className="font-merriweather text-3xl lg:text-5xl font-regular leading-tight"
             style={{ color: COLORS.WHITE }}
           >
-            Join Us on This Journey
+            Ready to take control?
           </h2>
 
           <p
-            className="font-merriweather text-base lg:text-lg leading-relaxed"
+            className="font-merriweather text-base lg:text-lg leading-relaxed max-w-2xl mx-auto"
             style={{ color: COLORS.WHITE }}
           >
-            Whether you&apos;re someone with food allergies, a parent, a
-            restaurant owner, or simply someone who cares, you&apos;re welcome
-            here. Together, we can make dining safer, easier, and more enjoyable
-            for everyone.
+            Join thousands managing their food allergies with confidence. Stop
+            explaining, start sharing.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -56,11 +57,12 @@ export default function CallToAction() {
                 color: COLORS.DOWNLOAD_SECTION_BLUE,
               }}
             >
-              Download the App
+              Download Dine
               <ChevronRight size={20} />
             </button>
 
-            <button
+            <a
+              href="/about-us"
               className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity border-2 cursor-pointer"
               style={{
                 backgroundColor: "transparent",
@@ -68,8 +70,8 @@ export default function CallToAction() {
                 borderColor: COLORS.WHITE,
               }}
             >
-              Learn More
-            </button>
+              Learn More About Us
+            </a>
           </div>
         </motion.div>
       </div>

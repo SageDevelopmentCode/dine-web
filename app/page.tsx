@@ -18,7 +18,7 @@ export const metadata = {
 export default function Home() {
   return (
     <div
-      className="min-h-screen w-full overflow-x-hidden"
+      className="min-h-screen w-full"
       style={{ backgroundColor: COLORS.LANDING_PAGE_BACKGROUND }}
     >
       {/* Home Screen Section - 100vh */}

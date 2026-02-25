@@ -153,7 +153,7 @@ export default function SweCardContent({
                   {/* Category Header */}
                   <button
                     onClick={() => toggleCategory(category.id)}
-                    className="w-full px-4 py-3 flex items-center justify-between hover:opacity-80 transition-opacity"
+                    className="w-full px-4 py-3 flex items-center justify-between hover:opacity-80 transition-opacity cursor-pointer"
                   >
                     <div className="flex-1 text-left">
                       <h5 className={`text-base font-merriweather font-semibold ${variant === "expandable" ? "text-white" : "text-gray-900"}`}>

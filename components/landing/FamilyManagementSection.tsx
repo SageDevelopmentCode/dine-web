@@ -229,7 +229,7 @@ export default function FamilyManagementSection() {
             <div>
               <button
                 className="font-merriweather text-sm md:text-base px-5
-                py-2 rounded-xl hover:opacity-90 transition-opacity"
+                py-2 rounded-xl hover:opacity-90 transition-opacity cursor-pointer"
                 style={{
                   backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
                   color: COLORS.WHITE,

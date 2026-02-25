@@ -42,34 +42,43 @@ test.describe('Profile Page', () => {
     await page.goto(`/profile/${TEST_SLUGS.profile.valid}`);
     await page.waitForLoadState('networkidle');
 
-    // Look for allergen cards (they have cursor-pointer class)
-    const allergenCards = page.locator('[class*="cursor-pointer"]').filter({
-      has: page.locator('text=/severe|moderate|mild/i'),
-    });
+    // Look for the allergen section heading to verify allergens exist
+    const allergensHeading = page.locator('text=My Allergies and Cards');
+    const hasAllergens = await allergensHeading.isVisible();
 
-    // Check if there are any allergen cards on the page
-    const count = await allergenCards.count();
+    if (hasAllergens) {
+      // Find allergen cards - they contain emoji images and are under the "Severe"/"Moderate"/"Mild" headings
+      // Look for the first clickable allergen card (has emoji img and cursor-pointer)
+      const allergenCard = page.locator('[class*="cursor-pointer"]').filter({
+        has: page.locator('img[alt="emoji"]'),
+      }).first();
 
-    if (count > 0) {
-      // Click the first allergen card
-      await allergenCards.first().click();
+      // Make sure we found an allergen card
+      const cardExists = await allergenCard.isVisible();
 
-      // Wait for modal to appear
-      await page.waitForTimeout(300); // Allow for animation
+      if (cardExists) {
+        // Click the allergen card
+        await allergenCard.click();
 
-      // Verify modal is visible by checking for close button or modal content
-      const modalVisible = await page.locator('[class*="fixed"][class*="inset-0"]').isVisible();
-      expect(modalVisible).toBeTruthy();
+        // Wait for modal to appear with proper visibility check
+        await page.waitForSelector('[class*="fixed"][class*="inset-0"]', { state: 'visible', timeout: 10000 });
 
-      // Close modal by pressing ESC
-      await page.keyboard.press('Escape');
+        // Verify modal is visible
+        const modalVisible = await page.locator('[class*="fixed"][class*="inset-0"]').isVisible();
+        expect(modalVisible).toBeTruthy();
 
-      // Wait for modal to close
-      await page.waitForTimeout(300);
+        // Close modal by pressing ESC
+        await page.keyboard.press('Escape');
 
-      // Verify modal is closed
-      const modalClosed = await page.locator('[class*="fixed"][class*="inset-0"]').isHidden();
-      expect(modalClosed).toBeTruthy();
+        // Wait for modal to close
+        await page.waitForSelector('[class*="fixed"][class*="inset-0"]', { state: 'hidden' });
+
+        // Verify modal is closed
+        const modalClosed = await page.locator('[class*="fixed"][class*="inset-0"]').isHidden();
+        expect(modalClosed).toBeTruthy();
+      } else {
+        test.skip();
+      }
     } else {
       // Skip test if no allergen cards present
       test.skip();
@@ -96,9 +105,9 @@ test.describe('Profile Page', () => {
       // Wait for expansion animation and potential API call
       await page.waitForTimeout(1000);
 
-      // Verify content is shown (the card should have more content now)
-      // This is a basic check - in a real scenario you'd check for specific expanded content
-      const hasExpandedContent = await page.locator('text=/View Full Card|Emergency|Allergy/i').isVisible();
+      // Verify content is shown by checking for "View Full Card" button
+      // Use .first() to avoid strict mode violation since multiple cards may have this button
+      const hasExpandedContent = await page.locator('text=View Full Card').first().isVisible();
       expect(hasExpandedContent).toBeTruthy();
 
       // Click to collapse
@@ -117,42 +126,39 @@ test.describe('Profile Page', () => {
     await page.goto(`/profile/${TEST_SLUGS.profile.valid}`);
     await page.waitForLoadState('networkidle');
 
-    // Look for expandable info cards (not allergen cards which open modals)
-    // Info cards are in the expandable section and contain chevron icons
-    const expandableCard = page.locator('[class*="cursor-pointer"]').filter({
-      has: page.locator('svg'),
+    // Look for expandable info cards (not allergen cards)
+    // Expandable cards have buttons with specific titles like "Food Allergies", "Emergency Medical", etc.
+    const expandableCard = page.locator('button').filter({
+      hasText: /Food Allergies|Emergency Medical|Epipen Guide|School\/Work|Travel/i
     }).first();
 
     const exists = await expandableCard.isVisible();
 
     if (exists) {
+      // Click to expand the card
       await expandableCard.click();
+
+      // Wait for card content to load
       await page.waitForTimeout(1000);
 
-      // Check if a modal opened (allergen modal) and close it
-      const modal = page.locator('[class*="fixed"][class*="inset-0"]');
-      const isModalOpen = await modal.isVisible().catch(() => false);
-
-      if (isModalOpen) {
-        // Close the modal by pressing ESC
-        await page.keyboard.press('Escape');
-        await page.waitForTimeout(500);
-      }
-
-      // Look for "View Full Card" button
-      const viewFullCardButton = page.locator('text=View Full Card').first();
+      // Look for "View Full Card" link in the expanded content
+      const viewFullCardButton = page.locator('a[href*="/profile/"]').filter({ hasText: 'View Full Card' }).first();
       const buttonExists = await viewFullCardButton.isVisible();
 
       if (buttonExists) {
-        // Click the button
-        await viewFullCardButton.click();
+        // Click the button to navigate and wait for the navigation to complete
+        await Promise.all([
+          page.waitForURL(/\/profile\/sageobnamia\/(food-allergies|emergency|epipen|swe|travel)/),
+          viewFullCardButton.click()
+        ]);
 
-        // Wait for navigation
+        // Wait for the page to fully load
         await page.waitForLoadState('networkidle');
 
         // Verify we're on a card detail page (URL should contain the profile slug and a card type)
         const url = page.url();
-        expect(url).toContain(`/profile/${TEST_SLUGS.profile.valid}/`);
+        // Check for card type in the URL (food-allergies, emergency, epipen, swe, or travel)
+        expect(url).toMatch(/\/profile\/sageobnamia\/(food-allergies|emergency|epipen|swe|travel)/);
 
         // Verify the page loaded (not 404)
         await expect(page.locator('body')).not.toContainText('404');

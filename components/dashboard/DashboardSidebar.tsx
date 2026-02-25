@@ -122,7 +122,7 @@ export default function DashboardSidebar() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`
                   relative flex items-center gap-3 px-4 py-3 rounded-lg
-                  transition-all duration-300 ease-in-out font-merriweather text-sm font-medium
+                  transition-all duration-300 ease-in-out font-merriweather text-sm font-medium cursor-pointer
                   ${isActive ? "shadow-md" : ""}
                 `}
                 style={
@@ -168,7 +168,7 @@ export default function DashboardSidebar() {
       {/* Mobile Menu Toggle Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
         style={{ backgroundColor: COLORS.DASHBOARD_DARK_SURFACE }}
         aria-label="Toggle menu"
       >
@@ -194,7 +194,7 @@ export default function DashboardSidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="lg:hidden fixed inset-0 bg-black/70 z-40"
+              className="lg:hidden fixed inset-0 bg-black/70 z-40 cursor-pointer"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.aside

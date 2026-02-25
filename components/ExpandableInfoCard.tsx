@@ -146,7 +146,7 @@ export default function ExpandableInfoCard({
       <div className="relative">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full px-6 py-2 flex items-center gap-4 hover:opacity-90 min-h-[120px]"
+          className="w-full px-6 py-2 flex items-center gap-4 hover:opacity-90 min-h-[120px] cursor-pointer"
         >
           {/* Icon */}
           <div className="flex-shrink-0 -ml-8 h-[110px]">
@@ -249,7 +249,7 @@ export default function ExpandableInfoCard({
           {cardType && slug && (
             <Link
               href={`/profile/${slug}/${cardType}`}
-              className="block w-full mt-4 px-4 py-3 rounded-lg text-sm font-lato font-bold text-center transition-opacity hover:opacity-80"
+              className="block w-full mt-4 px-4 py-3 rounded-lg text-sm font-lato font-bold text-center transition-opacity hover:opacity-80 cursor-pointer"
               style={{
                 backgroundColor: COLORS.WHITE,
                 color: backgroundColor,

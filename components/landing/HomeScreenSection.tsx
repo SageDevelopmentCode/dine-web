@@ -4,7 +4,7 @@ import PhoneShowcaseSection from "@/components/landing/PhoneShowcaseSection";
 
 export default function HomeScreenSection() {
   return (
-    <div className="h-screen w-full flex flex-col overflow-hidden">
+    <div className="min-h-screen w-full flex flex-col">
       {/* Header */}
       <LandingHeader />
 

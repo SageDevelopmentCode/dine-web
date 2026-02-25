@@ -4,6 +4,7 @@ import { COLORS } from "@/constants/colors";
 import { Twemoji } from "@/utils/twemoji";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function HeroSection() {
   const ref = useRef(null);
@@ -176,7 +177,7 @@ export default function HeroSection() {
       <div className="flex flex-col sm:flex-row items-center gap-4">
         {/* Button 1: Download App */}
         <motion.button
-          className="font-merriweather text-base lg:text-lg px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
+          className="font-merriweather text-base lg:text-lg px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto cursor-pointer"
           style={{
             backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
             color: COLORS.WHITE,
@@ -190,20 +191,22 @@ export default function HeroSection() {
         </motion.button>
 
         {/* Button 2: Discover Our Story */}
-        <motion.button
-          className="font-merriweather text-base lg:text-lg px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
-          style={{
-            backgroundColor: COLORS.WHITE,
-            color: COLORS.DOWNLOAD_SECTION_BLUE,
-            borderColor: COLORS.DOWNLOAD_SECTION_BLUE,
-          }}
-          variants={buttonVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          transition={{ delay: 0.35 }}
-        >
-          Discover Our Story
-        </motion.button>
+        <Link href="/about-us" className="w-full sm:w-auto">
+          <motion.button
+            className="font-merriweather text-base lg:text-lg px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full cursor-pointer"
+            style={{
+              backgroundColor: COLORS.WHITE,
+              color: COLORS.DOWNLOAD_SECTION_BLUE,
+              borderColor: COLORS.DOWNLOAD_SECTION_BLUE,
+            }}
+            variants={buttonVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            transition={{ delay: 0.35 }}
+          >
+            Discover Our Story
+          </motion.button>
+        </Link>
       </div>
     </section>
   );

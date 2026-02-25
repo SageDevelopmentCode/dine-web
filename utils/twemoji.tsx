@@ -133,6 +133,13 @@ const emojiAssets: { [key: string]: string } = {
   "1f44b": "/assets/emojis/1f44b.png", // 👋 waving hand
   "1f4ac": "/assets/emojis/1f4ac.png", // 💬 speech bubble
   "1f37d": "/assets/emojis/1f37d.png", // 🍽 fork and knife
+  "1f4aa": "/assets/emojis/1f4aa.png", // 💪 flexed biceps
+  "2708": "/assets/emojis/2708.png", // ✈ airplane
+  "1f691": "/assets/emojis/1f691.png", // 🚑 ambulance
+  "1f374": "/assets/emojis/1f374.png", // 🍴 fork and knife
+  "1f68c": "/assets/emojis/1f68c.png", // 🚌 bus
+  "1f3eb": "/assets/emojis/1f3eb.png", // � airplane departure
+  "1f4f1": "/assets/emojis/1f4f1.png", // � mobile phone
 };
 
 interface TwemojiProps {
