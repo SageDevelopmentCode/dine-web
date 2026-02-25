@@ -142,7 +142,7 @@ export default function RestaurantDiscoverySection() {
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
           {/* Download App Button */}
           <button
-            className="font-merriweather text-sm md:text-base px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
+            className="font-merriweather text-sm md:text-base px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto cursor-pointer"
             style={{
               backgroundColor: COLORS.RESTAURANT_DOWNLOAD_BTN,
               color: COLORS.WHITE,
@@ -153,7 +153,7 @@ export default function RestaurantDiscoverySection() {
 
           {/* Restaurant Button */}
           <button
-            className="font-merriweather text-sm md:text-base px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
+            className="font-merriweather text-sm md:text-base px-5 py-2 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto cursor-pointer"
             style={{
               backgroundColor: COLORS.WHITE,
               color: COLORS.RESTAURANT_DISCOVERY_BG,

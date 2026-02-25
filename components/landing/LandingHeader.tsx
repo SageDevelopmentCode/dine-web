@@ -25,35 +25,35 @@ export default function LandingHeader() {
         <div className="hidden md:flex items-center gap-12">
           <a
             href="/about-us"
-            className="font-merriweather text-base hover:opacity-70 transition-opacity"
+            className="font-merriweather text-base hover:opacity-70 transition-opacity cursor-pointer"
             style={{ color: COLORS.BLACK }}
           >
             About us
           </a>
           <a
             href="/for-you"
-            className="font-merriweather text-base hover:opacity-70 transition-opacity"
+            className="font-merriweather text-base hover:opacity-70 transition-opacity cursor-pointer"
             style={{ color: COLORS.BLACK }}
           >
             For You
           </a>
           <a
             href="#for-restaurants"
-            className="font-merriweather text-base hover:opacity-70 transition-opacity"
+            className="font-merriweather text-base hover:opacity-70 transition-opacity cursor-pointer"
             style={{ color: COLORS.BLACK }}
           >
             For Restaurants
           </a>
           {/* <a
             href="#blog"
-            className="font-merriweather text-base hover:opacity-70 transition-opacity"
+            className="font-merriweather text-base hover:opacity-70 transition-opacity cursor-pointer"
             style={{ color: COLORS.BLACK }}
           >
             Blog
           </a> */}
           <a
             href="#contact"
-            className="font-merriweather text-base hover:opacity-70 transition-opacity"
+            className="font-merriweather text-base hover:opacity-70 transition-opacity cursor-pointer"
             style={{ color: COLORS.BLACK }}
           >
             Contact Us
@@ -62,7 +62,7 @@ export default function LandingHeader() {
 
         {/* Download App Button */}
         <button
-          className="font-merriweather text-base px-5 py-2 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity"
+          className="font-merriweather text-base px-5 py-2 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer"
           style={{
             backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
             color: COLORS.WHITE,

@@ -60,7 +60,7 @@ export default function ProfileLeftSectionCard({
         {/* View Full Profile Button */}
         <Link
           href={`/profile/${slug}`}
-          className="w-full mt-4 py-3 rounded-lg text-center font-lato font-bold text-sm transition-opacity hover:opacity-80"
+          className="w-full mt-4 py-3 rounded-lg text-center font-lato font-bold text-sm transition-opacity hover:opacity-80 cursor-pointer"
           style={{
             backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
             color: COLORS.WHITE,

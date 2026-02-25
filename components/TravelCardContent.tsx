@@ -124,7 +124,7 @@ export default function TravelCardContent({
             <button
               key={language.id}
               onClick={() => setSelectedLanguage(language.language_code)}
-              className="px-4 py-2 rounded-lg text-xs font-merriweather font-semibold transition-all flex items-center gap-2"
+              className="px-4 py-2 rounded-lg text-xs font-merriweather font-semibold transition-all flex items-center gap-2 cursor-pointer"
               style={{
                 backgroundColor:
                   selectedLanguage === language.language_code

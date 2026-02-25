@@ -190,7 +190,7 @@ export default function RestaurantRightSection({
           {kitchenProtocols.length > 5 && (
             <button
               onClick={() => setShowAllProtocols(!showAllProtocols)}
-              className="mt-3 px-4 py-2 rounded-lg text-sm font-lato font-bold transition-opacity hover:opacity-80"
+              className="mt-3 px-4 py-2 rounded-lg text-sm font-lato font-bold transition-opacity hover:opacity-80 cursor-pointer"
               style={{
                 backgroundColor: COLORS.BLACK,
                 color: COLORS.WHITE,

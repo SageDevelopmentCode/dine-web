@@ -61,7 +61,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/team"
-                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5"
+                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5 cursor-pointer"
                   style={{ color: COLORS.BLACK }}
                 >
                   <span>About Dine</span>
@@ -74,7 +74,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/for-you"
-                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5"
+                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5 cursor-pointer"
                   style={{ color: COLORS.BLACK }}
                 >
                   <span>For you</span>
@@ -87,7 +87,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/for-restaurants"
-                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5"
+                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5 cursor-pointer"
                   style={{ color: COLORS.BLACK }}
                 >
                   <span>For Restaurants</span>
@@ -112,7 +112,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5"
+                  className="font-merriweather text-sm hover:opacity-70 transition-opacity flex items-center py-1 gap-0.5 cursor-pointer"
                   style={{ color: COLORS.BLACK }}
                 >
                   <span>Blog</span>
@@ -157,7 +157,7 @@ export default function Footer() {
                 style={{ height: 44, width: 44 }}
                 bgColor={PRIMARY_BLUE}
                 aria-label="LinkedIn"
-                className="transition-transform hover:scale-110"
+                className="transition-transform hover:scale-110 cursor-pointer"
               />
               <SocialIcon
                 url="https://facebook.com"
@@ -166,7 +166,7 @@ export default function Footer() {
                 style={{ height: 44, width: 44 }}
                 bgColor={PRIMARY_BLUE}
                 aria-label="Facebook"
-                className="transition-transform hover:scale-110"
+                className="transition-transform hover:scale-110 cursor-pointer"
               />
               <SocialIcon
                 url="https://youtube.com"
@@ -175,7 +175,7 @@ export default function Footer() {
                 style={{ height: 44, width: 44 }}
                 bgColor={PRIMARY_BLUE}
                 aria-label="YouTube"
-                className="transition-transform hover:scale-110"
+                className="transition-transform hover:scale-110 cursor-pointer"
               />
               <SocialIcon
                 url="https://instagram.com"
@@ -184,7 +184,7 @@ export default function Footer() {
                 style={{ height: 44, width: 44 }}
                 bgColor={PRIMARY_BLUE}
                 aria-label="Instagram"
-                className="transition-transform hover:scale-110"
+                className="transition-transform hover:scale-110 cursor-pointer"
               />
             </div>
           </div>

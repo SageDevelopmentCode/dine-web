@@ -21,7 +21,7 @@ export default function Header() {
         <div className="hidden md:flex items-center gap-3">
           <button
             type="button"
-            className="transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            className="transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded cursor-pointer"
             aria-label="Download on the App Store"
           >
             <Image
@@ -34,7 +34,7 @@ export default function Header() {
           </button>
           <button
             type="button"
-            className="transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+            className="transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded cursor-pointer"
             aria-label="Get it on Google Play"
           >
             <Image

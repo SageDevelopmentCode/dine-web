@@ -56,7 +56,7 @@ export default function AllergenDetailModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm cursor-pointer"
       onClick={onClose}
     >
       <div
@@ -67,7 +67,7 @@ export default function AllergenDetailModal({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X size={24} style={{ color: COLORS.SECONDARY_TEXT_GRAY }} />

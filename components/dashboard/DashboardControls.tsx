@@ -46,7 +46,7 @@ export default function DashboardControls({
           <button
             key={option.value}
             onClick={() => handleTimeRangeChange(option.value)}
-            className="px-3 py-1 rounded text-sm font-medium font-lato transition-colors shadow-sm"
+            className="px-3 py-1 rounded text-sm font-medium font-lato transition-colors shadow-sm cursor-pointer"
             style={
               currentTimeRange === option.value
                 ? {
@@ -66,7 +66,7 @@ export default function DashboardControls({
       {/* Refresh Button */}
       <button
         onClick={handleRefresh}
-        className="p-2 rounded-lg transition-colors"
+        className="p-2 rounded-lg transition-colors cursor-pointer"
         style={{
           backgroundColor: COLORS.DASHBOARD_DARK_HOVER,
           color: COLORS.DASHBOARD_DARK_TEXT_SECONDARY
@@ -84,7 +84,7 @@ export default function DashboardControls({
       {/* Logout Button */}
       <button
         onClick={handleLogout}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-lato text-sm font-medium"
+        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-lato text-sm font-medium cursor-pointer"
         style={{
           backgroundColor: COLORS.DASHBOARD_DARK_HOVER,
           color: COLORS.DASHBOARD_DARK_TEXT,

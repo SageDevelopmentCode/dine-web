@@ -123,7 +123,7 @@ export default function ForYouHeroSection() {
         <div className="flex flex-col sm:flex-row items-center gap-4">
           {/* Button 1: Get Started */}
           <motion.button
-            className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
+            className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto cursor-pointer"
             style={{
               backgroundColor: COLORS.DOWNLOAD_SECTION_BLUE,
               color: COLORS.WHITE,
@@ -138,7 +138,7 @@ export default function ForYouHeroSection() {
 
           {/* Button 2: See How It Works */}
           <motion.button
-            className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto"
+            className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto cursor-pointer"
             style={{
               backgroundColor: COLORS.WHITE,
               color: COLORS.DOWNLOAD_SECTION_BLUE,

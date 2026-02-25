@@ -51,7 +51,7 @@ export default function CallToActionSection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <button
-              className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity"
+              className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer"
               style={{
                 backgroundColor: COLORS.WHITE,
                 color: COLORS.DOWNLOAD_SECTION_BLUE,
@@ -63,7 +63,7 @@ export default function CallToActionSection() {
 
             <a
               href="/about-us"
-              className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity border-2"
+              className="font-merriweather text-base lg:text-lg px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 transition-opacity border-2 cursor-pointer"
               style={{
                 backgroundColor: "transparent",
                 color: COLORS.WHITE,

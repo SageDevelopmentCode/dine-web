@@ -95,3 +95,10 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Global cursor pointer for interactive elements */
+button,
+a,
+[role="button"] {
+  cursor: pointer;
+}
